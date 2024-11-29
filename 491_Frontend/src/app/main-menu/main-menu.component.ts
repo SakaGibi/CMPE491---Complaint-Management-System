@@ -11,10 +11,16 @@ export class MainMenuComponent {
 
   constructor(private router: Router){}
 
+  writeComplaintOrSuggestion(){
+    // doldurulucak. 
+  }
+
+  //html'e eklenicek
   goToHelpSupport() {
     this.router.navigate(['/helpSupport']);
   }
 
+  // html'e eklenicek
   goToManagementPanel() {
     this.router.navigate(['/managementPanel']);
   }
