@@ -20,9 +20,8 @@ export class MainMenuComponent {
     this.router.navigate(['/helpSupport']);
   }
 
-  // html'e eklenicek
-  goToManagementPanel() {
-    this.router.navigate(['/managementPanel']);
+  goToManagementPanelLogin() {
+    this.router.navigate(['/managementPanelLogin']);
   }
 
 }

@@ -1,0 +1,70 @@
+/* Genel sayfa düzeni */
+.management-panel-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f9fa; /* Arka plan rengi */
+  }
+  
+  /* Başlık düzeni */
+  .header {
+    margin-bottom: 30px;
+  }
+  
+  .header h1 {
+    font-size: 2rem;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Butonlar düzeni */
+  .buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+  }
+  
+  /* Buton stilleri */
+  button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 200px;
+  }
+  
+  /* Kabul et butonu */
+  .btn-submit {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .btn-submit:hover {
+    background-color: #218838;
+  }
+  
+  /* İptal et butonu */
+  .btn-cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #c82333;
+  }
+  
+  /* Yönetim paneline gitme butonu */
+  .btn-management {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .btn-management:hover {
+    background-color: #5a6268;
+  }
+  
