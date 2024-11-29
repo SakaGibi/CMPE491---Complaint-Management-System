@@ -1,1 +1,29 @@
-<p>main-menu works!</p>
+<div class="main-menu-container">
+    <!-- Header -->
+    <div class="header-panel">
+      <div class="logo">
+        <!-- Logoyu buraya ekle -->
+        <span>Logo</span>
+      </div>
+      <div class="support">
+        <button class="btn btn-support">Support</button>
+      </div>
+    </div>
+  
+    <!-- Main content area -->
+    <div class="content-area">
+      <h1>Complaint and Suggestion System</h1>
+      
+      <!-- Text Area -->
+      <textarea placeholder="Enter your complaint or suggestion..." rows="5"></textarea>
+      
+      <!-- Submit, Cancel buttons -->
+      <div class="buttons">
+        <button class="btn btn-submit">Submit</button>
+        <button class="btn btn-cancel">Cancel</button>
+      </div>
+      
+      <!-- management panel button -->
+      <button class="btn btn-management" (click)="goToManagementPanel()">Go to Management Panel</button>
+    </div>
+  </div>

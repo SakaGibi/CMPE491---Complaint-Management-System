@@ -1,0 +1,132 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Ana container - tüm sayfayı kapsayacak şekilde */
+  .main-menu-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  /* Header panel */
+  .header-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f53b4e; /* Panelin arka plan rengi */
+    color: white;
+  }
+  
+  /* Logo */
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+  /* Destek butonu */
+  .support button {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #ffffff;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .support button:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  /* İçerik alanı - tüm sayfayı kapsar */
+  .content-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background-color: #e9edf1;
+    flex: 1; /* Bu, content-area'nın kalan alanı doldurmasını sağlar */
+    height: 100%; /* Yüksekliği %100 yaparak tüm sayfayı kaplamasını sağlarız */
+  }
+  
+  /* Başlık */
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Metin kutusu */
+  textarea {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    resize: none;
+    transition: border-color 0.3s;
+  }
+  
+  textarea:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  /* Butonlar */
+  .buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-submit {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .btn-submit:hover {
+    background-color: #218838;
+  }
+  
+  .btn-cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #c82333;
+  }
+  
+  /* Yönetim paneline gitme butonu */
+  .btn-management {
+    padding: 12px 20px;
+    background-color: #6c757d;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-management:hover {
+    background-color: #5a6268;
+  }

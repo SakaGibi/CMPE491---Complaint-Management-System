@@ -12,11 +12,11 @@ export class MainMenuComponent {
   constructor(private router: Router){}
 
   goToHelpSupport() {
-    this.router.navigate(['/help-support']);
+    this.router.navigate(['/helpSupport']);
   }
 
   goToManagementPanel() {
-    this.router.navigate(['/management-panel']);
+    this.router.navigate(['/managementPanel']);
   }
 
 }
