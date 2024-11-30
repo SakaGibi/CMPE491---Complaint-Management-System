@@ -68,6 +68,11 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
+
+.chart:hover, .graph:hover {
+    background-color: #c8d3db;
 }
 
 .center-section {
@@ -116,6 +121,11 @@ html, body {
 .complaints-list li {
     padding: 10px;
     border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.complaints-list li:hover {
+    background-color: #f1f1f1;
 }
 
 .complaints-list li:last-child {
@@ -146,6 +156,11 @@ html, body {
 .suggestions-list li {
     padding: 10px;
     border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.suggestions-list li:hover {
+    background-color: #f1f1f1;
 }
 
 .suggestions-list li:last-child {
@@ -188,6 +203,7 @@ select {
   max-width: 1200px;
   max-height: 90%;
   overflow-y: auto;
+  position: relative;
 }
 
 .modal-detail {
@@ -222,3 +238,37 @@ select {
     opacity: 1;
   }
 }
+
+.filters label {
+    display: inline-block;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+.filters select {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.modal-detail h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.modal-detail p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.chart-modal {
+    background-color: lightblue;
+  }
+  
+  .graph-modal {
+    background-color: lightgreen;
+  }
+  
+  .complaint-modal {
+    background-color: lightgray;
+  }

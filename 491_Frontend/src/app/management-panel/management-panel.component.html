@@ -13,13 +13,10 @@
   <div class="content-area">
     <!-- Left Section: Chart and Graph -->
     <div class="left-section">
-      <!-- Chart -->
       <div class="chart-container">
         <h2>Complaint Chart</h2>
         <div class="chart" (click)="openDetails('chart')">[Chart Placeholder]</div>
       </div>
-
-      <!-- Graph -->
       <div class="graph-container">
         <h2>Complaint Trends</h2>
         <div class="graph" (click)="openDetails('graph')">[Graph Placeholder]</div>
@@ -45,9 +42,9 @@
       </div>
       <div class="complaints-list">
         <ul>
-          <li>Complaint 1 - [Details]</li>
-          <li>Complaint 2 - [Details]</li>
-          <li>Complaint 3 - [Details]</li>
+          <li *ngFor="let complaint of complaints" (click)="openComplaintDetails(complaint)">
+            {{ complaint.description }}
+          </li>
         </ul>
       </div>
     </div>
@@ -65,47 +62,86 @@
     </div>
   </div>
 
-  <!-- Full-screen Modal (Chart or Graph) -->
-  <div class="fullscreen-modal" *ngIf="isDetailsModalOpen">
+  <!-- Full-screen Modal for Chart/Graph -->
+  <div class="fullscreen-modal" *ngIf="isDetailsModalOpen && currentDetailsType !== 'complaint'">
     <div class="modal-content">
       <button class="close-btn" (click)="closeDetails()">X</button>
+      
       <div *ngIf="currentDetailsType === 'chart'" class="modal-detail">
         <h2>Chart Details</h2>
-        <!-- Your Chart Details Here -->
         <p>Details for the chart...</p>
-
         <!-- Filters and Sorting for Chart -->
         <div class="filters">
-          <select>
-            <option value="">Filter by Category</option>
+          <label for="chart-filter">Filter:</label>
+          <select id="chart-filter">
             <option value="pending">Pending</option>
             <option value="resolved">Resolved</option>
           </select>
-          <select>
-            <option value="">Sort by</option>
+
+          <label for="chart-order">Order by:</label>
+          <select id="chart-order">
             <option value="date">Date</option>
             <option value="status">Status</option>
+          </select>
+
+          <label for="chart-time-range">Time Range:</label>
+          <select id="chart-time-range">
+            <option value="1w">1 Week</option>
+            <option value="1m">1 Month</option>
+            <option value="3m">3 Months</option>
+            <option value="6m">6 Months</option>
+            <option value="1y">1 Year</option>
           </select>
         </div>
       </div>
+      
       <div *ngIf="currentDetailsType === 'graph'" class="modal-detail">
         <h2>Graph Details</h2>
-        <!-- Your Graph Details Here -->
         <p>Details for the graph...</p>
-
         <!-- Filters and Sorting for Graph -->
         <div class="filters">
-          <select>
-            <option value="">Filter by Category</option>
+          <label for="graph-filter">Filter:</label>
+          <select id="graph-filter">
             <option value="pending">Pending</option>
             <option value="resolved">Resolved</option>
           </select>
-          <select>
-            <option value="">Sort by</option>
+
+          <label for="graph-order">Order by:</label>
+          <select id="graph-order">
             <option value="date">Date</option>
             <option value="status">Status</option>
           </select>
+
+          <label for="graph-time-range">Time Range:</label>
+          <select id="graph-time-range">
+            <option value="1w">1 Week</option>
+            <option value="1m">1 Month</option>
+            <option value="3m">3 Months</option>
+            <option value="6m">6 Months</option>
+            <option value="1y">1 Year</option>
+          </select>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-screen Modal for Complaints -->
+  <div class="fullscreen-modal" *ngIf="isDetailsModalOpen && currentDetailsType === 'complaint'">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeDetails()">X</button>
+      <div class="modal-detail">
+        <h2>Complaint Details</h2>
+        <p><strong>ID:</strong> {{ selectedComplaint?.id || 'N/A' }}</p>
+        <p><strong>Status:</strong> {{ selectedComplaint?.status || 'N/A' }}</p>
+        <p><strong>Description:</strong> {{ selectedComplaint?.description || 'No Description Available' }}</p>
+        <p><strong>Department:</strong> {{ selectedComplaint?.department || 'N/A' }}</p>
+        <p><strong>Tracking:</strong> {{ selectedComplaint?.id || 'N/A' }}</p>
+
+        <label for="status">Update Status:</label>
+        <select id="status" [(ngModel)]="selectedComplaintStatus">
+          <option value="pending">Pending</option>
+          <option value="resolved">Resolved</option>
+        </select>
       </div>
     </div>
   </div>
