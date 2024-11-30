@@ -10,8 +10,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class ManagementPanelComponent {
   isDetailsModalOpen = false;
-  currentDetailsType: 'chart' | 'graph' | 'complaint' | null = null;
+  currentDetailsType: 'chart' | 'graph' | 'complaint' | 'suggestion' | null = null; // suggestion tipi ekledik
   selectedComplaintStatus: string | null = null;
+  selectedSuggestionStatus: string | null = null; // suggestion status ekledik
 
   selectedComplaint: {
     id: number;
@@ -20,6 +21,13 @@ export class ManagementPanelComponent {
     department?: string;
     tracking?: boolean;
   } | null = null;
+
+  selectedSuggestion: {
+    id: number;
+    description: string;
+    department?: string;
+    status: string;
+  } | null = null; // suggestion için seçilen öneri
 
   complaints = [
     {
@@ -45,6 +53,27 @@ export class ManagementPanelComponent {
     }
   ];
 
+  suggestions = [
+    {
+      id: 1,
+      description: 'Suggestion 1 details...',
+      department: 'IT',
+      status: 'pending'
+    },
+    {
+      id: 2,
+      description: 'Suggestion 2 details...',
+      department: 'HR',
+      status: 'implemented'
+    },
+    {
+      id: 3,
+      description: 'Suggestion 3 details...',
+      department: 'Customer Service',
+      status: 'pending'
+    }
+  ]; // suggestions dizisi eklendi
+
   openDetails(type: 'chart' | 'graph') {
     this.isDetailsModalOpen = true;
     this.currentDetailsType = type;
@@ -59,11 +88,21 @@ export class ManagementPanelComponent {
     }
   }
 
+  openSuggestionDetails(suggestion: any) {
+    this.isDetailsModalOpen = true;
+    this.currentDetailsType = 'suggestion';
+    this.selectedSuggestion = suggestion ? { ...suggestion } : null;
+    if (this.selectedSuggestion) {
+      this.selectedSuggestionStatus = this.selectedSuggestion.status;
+    }
+  }
+
   closeDetails() {
     this.isDetailsModalOpen = false;
     this.currentDetailsType = null;
     this.selectedComplaint = null;
-    this.selectedComplaintStatus = null; 
-
+    this.selectedSuggestion = null;
+    this.selectedComplaintStatus = null;
+    this.selectedSuggestionStatus = null; // suggestion status'ı sıfırladık
   }
 }

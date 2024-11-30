@@ -68,11 +68,6 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-}
-
-.chart:hover, .graph:hover {
-    background-color: #c8d3db;
 }
 
 .center-section {
@@ -121,11 +116,6 @@ html, body {
 .complaints-list li {
     padding: 10px;
     border-bottom: 1px solid #eee;
-    cursor: pointer;
-}
-
-.complaints-list li:hover {
-    background-color: #f1f1f1;
 }
 
 .complaints-list li:last-child {
@@ -156,11 +146,6 @@ html, body {
 .suggestions-list li {
     padding: 10px;
     border-bottom: 1px solid #eee;
-    cursor: pointer;
-}
-
-.suggestions-list li:hover {
-    background-color: #f1f1f1;
 }
 
 .suggestions-list li:last-child {
@@ -188,7 +173,7 @@ select {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8); 
+  background-color: rgba(0, 0, 0, 0.5); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,35 +181,31 @@ select {
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 80%;
-  max-width: 1200px;
-  max-height: 90%;
-  overflow-y: auto;
-  position: relative;
-}
-
-.modal-detail {
-  text-align: center;
-}
-
-.close-btn {
-  background-color: red;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-radius: 8px;
-}
-
-.close-btn:hover {
-  background-color: darkred;
-}
+    position: relative; /* Allow for positioning inside modal */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 1200px;
+    max-height: 90%;
+    overflow-y: auto;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  .close-btn:hover {
+    background-color: darkred;
+  }
 
 .fullscreen-modal {
   animation: fadeIn 0.3s ease-in-out;
@@ -243,32 +224,26 @@ select {
     display: inline-block;
     margin-right: 8px;
     font-weight: bold;
-}
-
-.filters select {
+  }
+  
+  .filters select {
     margin-right: 10px;
     padding: 5px;
     font-size: 14px;
+  }
+
+  .complaints-list li:hover,
+.suggestions-list li:hover,
+.chart:hover,
+.graph:hover {
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
 
-.modal-detail h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+.complaints-list li:active,
+.suggestions-list li:active,
+.chart:active,
+.graph:active {
+    background-color: #bbb;
 }
-
-.modal-detail p {
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.chart-modal {
-    background-color: lightblue;
-  }
-  
-  .graph-modal {
-    background-color: lightgreen;
-  }
-  
-  .complaint-modal {
-    background-color: lightgray;
-  }

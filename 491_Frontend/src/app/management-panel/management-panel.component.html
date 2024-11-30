@@ -54,9 +54,9 @@
       <h2>Suggestions</h2>
       <div class="suggestions-list">
         <ul>
-          <li>Suggestion 1 - [Details]</li>
-          <li>Suggestion 2 - [Details]</li>
-          <li>Suggestion 3 - [Details]</li>
+          <li *ngFor="let suggestion of suggestions" (click)="openSuggestionDetails(suggestion)">
+            {{ suggestion.description }}
+          </li>
         </ul>
       </div>
     </div>
@@ -145,4 +145,23 @@
       </div>
     </div>
   </div>
+
+<!-- Full-screen Modal for Suggestions -->
+<div class="fullscreen-modal suggestion-modal" *ngIf="isDetailsModalOpen && currentDetailsType === 'suggestion'">
+    <div class="modal-content">
+        <button class="close-btn" (click)="closeDetails()">X</button>
+        <div class="modal-detail">
+            <h2>Suggestion Details</h2>
+            <p><strong>ID:</strong> {{ selectedSuggestion?.id || 'N/A' }}</p>
+            <p><strong>Description:</strong> {{ selectedSuggestion?.description || 'No Description Available' }}</p>
+            <p><strong>Department:</strong> {{ selectedSuggestion?.department || 'N/A' }}</p>
+            <p><strong>Status:</strong> {{ selectedSuggestion?.status || 'N/A' }}</p>
+
+            <label for="suggestion-status">Update Status:</label>
+            <select id="suggestion-status" [(ngModel)]="selectedSuggestionStatus">
+                <option value="pending">Pending</option>
+                <option value="implemented">Implemented</option>
+            </select>
+        </div>
+    </div>
 </div>
