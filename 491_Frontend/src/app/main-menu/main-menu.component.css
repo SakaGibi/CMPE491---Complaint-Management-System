@@ -115,7 +115,6 @@ button {
     background-color: #c82333;
 }
 
-/* Yönetim paneline gitme butonu */
 .btn-management {
     padding: 12px 20px;
     background-color: #6c757d;
@@ -132,4 +131,34 @@ button {
 
 body {
   margin: 0;
+}
+
+.content-area div {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#emailInputContainer {
+    display: none;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+#emailInputContainer input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#emailInputContainer input:focus {
+    border-color: #007bff;
 }

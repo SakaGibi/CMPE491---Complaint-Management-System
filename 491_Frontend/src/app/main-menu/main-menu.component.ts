@@ -15,6 +15,19 @@ export class MainMenuComponent {
     // doldurulucak. 
   }
 
+  toggleEmailInput() {
+    const checkbox = document.getElementById('trackCheckBox') as HTMLInputElement | null;
+    const emailInput = document.getElementById('emailInputContainer') as HTMLElement | null;
+
+    if (checkbox && emailInput) { 
+      if (checkbox.checked) {
+        emailInput.style.display = 'block'; 
+      } else {
+        emailInput.style.display = 'none'; 
+      }
+    }
+  }
+
   //html'e eklenicek
   goToHelpSupport() {
     this.router.navigate(['/helpSupport']);
