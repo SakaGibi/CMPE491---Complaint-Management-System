@@ -15,6 +15,10 @@ export class ManagementPanelLoginComponent {
     this.router.navigate(['/managementPanel']);
   }
 
+  goToSupport() {
+    this.router.navigate(['/helpSupport']);
+  }
+
   
 
 }

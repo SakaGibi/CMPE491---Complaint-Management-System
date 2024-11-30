@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-help-support',
   imports: [],
   templateUrl: './help-support.component.html',
-  styleUrl: './help-support.component.css'
+  styleUrls: ['./help-support.component.css']
 })
-export class HelpSupportComponent {
+export class HelpSupportComponent { 
 
+  constructor(private router: Router){}
+  
+  goToMainMenu() {
+    this.router.navigate(['/mainMenu']);
+  }
 }

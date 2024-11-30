@@ -28,8 +28,7 @@ export class MainMenuComponent {
     }
   }
 
-  //html'e eklenicek
-  goToHelpSupport() {
+  goToSupport() {
     this.router.navigate(['/helpSupport']);
   }
 

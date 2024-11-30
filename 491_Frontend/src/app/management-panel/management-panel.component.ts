@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-management-panel',
@@ -9,10 +10,17 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./management-panel.component.css']
 })
 export class ManagementPanelComponent {
+
+  constructor(private router: Router){}
+  
   isDetailsModalOpen = false;
   currentDetailsType: 'chart' | 'graph' | 'complaint' | 'suggestion' | null = null; // suggestion tipi ekledik
   selectedComplaintStatus: string | null = null;
   selectedSuggestionStatus: string | null = null; // suggestion status ekledik
+
+  goToSupport() {
+    this.router.navigate(['/helpSupport']);
+  }
 
   selectedComplaint: {
     id: number;
