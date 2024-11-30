@@ -1,11 +1,112 @@
 <div class="management-panel-container">
-    <div class="header">
-      <h1>Yönetim Paneli</h1>
+  <!-- Header -->
+  <div class="header-panel">
+    <div class="logo">
+      <span>Logo</span>
     </div>
-    <div class="buttons">
-      <button class="btn btn-submit">Kabul Et</button>
-      <button class="btn btn-cancel">İptal Et</button>
-      <button class="btn btn-management">Yönetim Paneline Git</button>
+    <div class="support">
+      <button class="btn btn-support">Support</button>
     </div>
   </div>
-  
+
+  <!-- Main Content Area -->
+  <div class="content-area">
+    <!-- Left Section: Chart and Graph -->
+    <div class="left-section">
+      <!-- Chart -->
+      <div class="chart-container">
+        <h2>Complaint Chart</h2>
+        <div class="chart" (click)="openDetails('chart')">[Chart Placeholder]</div>
+      </div>
+
+      <!-- Graph -->
+      <div class="graph-container">
+        <h2>Complaint Trends</h2>
+        <div class="graph" (click)="openDetails('graph')">[Graph Placeholder]</div>
+      </div>
+    </div>
+
+    <!-- Center Section: Complaints List -->
+    <div class="center-section">
+      <div class="complaints-header">
+        <h2>All Complaints</h2>
+        <div class="filters">
+          <select>
+            <option value="">Filter by Category</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+          </select>
+          <select>
+            <option value="">Sort by</option>
+            <option value="date">Date</option>
+            <option value="status">Status</option>
+          </select>
+        </div>
+      </div>
+      <div class="complaints-list">
+        <ul>
+          <li>Complaint 1 - [Details]</li>
+          <li>Complaint 2 - [Details]</li>
+          <li>Complaint 3 - [Details]</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right Section: Suggestions -->
+    <div class="right-section">
+      <h2>Suggestions</h2>
+      <div class="suggestions-list">
+        <ul>
+          <li>Suggestion 1 - [Details]</li>
+          <li>Suggestion 2 - [Details]</li>
+          <li>Suggestion 3 - [Details]</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full-screen Modal (Chart or Graph) -->
+  <div class="fullscreen-modal" *ngIf="isDetailsModalOpen">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeDetails()">X</button>
+      <div *ngIf="currentDetailsType === 'chart'" class="modal-detail">
+        <h2>Chart Details</h2>
+        <!-- Your Chart Details Here -->
+        <p>Details for the chart...</p>
+
+        <!-- Filters and Sorting for Chart -->
+        <div class="filters">
+          <select>
+            <option value="">Filter by Category</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+          </select>
+          <select>
+            <option value="">Sort by</option>
+            <option value="date">Date</option>
+            <option value="status">Status</option>
+          </select>
+        </div>
+      </div>
+      <div *ngIf="currentDetailsType === 'graph'" class="modal-detail">
+        <h2>Graph Details</h2>
+        <!-- Your Graph Details Here -->
+        <p>Details for the graph...</p>
+
+        <!-- Filters and Sorting for Graph -->
+        <div class="filters">
+          <select>
+            <option value="">Filter by Category</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+          </select>
+          <select>
+            <option value="">Sort by</option>
+            <option value="date">Date</option>
+            <option value="status">Status</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
