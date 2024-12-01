@@ -21,6 +21,9 @@ export class ManagementPanelComponent {
   goToSupport() {
     this.router.navigate(['/helpSupport']);
   }
+  goToMainMenu() {
+    this.router.navigate(['/mainMenu']);
+  }
 
   selectedComplaint: {
     id: number;

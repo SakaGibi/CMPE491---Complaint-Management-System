@@ -19,6 +19,10 @@ export class ManagementPanelLoginComponent {
     this.router.navigate(['/helpSupport']);
   }
 
+  goToMainMenu() {
+    this.router.navigate(['/mainMenu']);
+  }
+
   
 
 }
