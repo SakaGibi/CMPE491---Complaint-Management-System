@@ -42,9 +42,32 @@
     <button class="btn btn-management" (click)="goToManagementPanelLogin()">Go to Management Panel</button>
   </div>
 
-  <div>
-    <h1> 
-      şikayet takip için şikayet numarasi alan bir kısım eklenicek ve şikayet öyle takip edilicek. html kodunun en altında h1 kısmında bu mesaj. gerekli şeyi yapınca sil
-    </h1>
+  <!-- Modal Trigger Button -->
+  <button class="btn btn-track" (click)="openModal()">Şikayet Takip</button>
+
+  <!-- Şikayet Takip Modal -->
+  <div id="complaintModal" class="modal" style="display: none;">
+   <div class="modal-content">
+      <button class="btn-close" (click)="closeModal()">&times;</button>
+     <h2>Complaint Tracking</h2>
+    
+     <!-- Başlangıçta gösterilen form -->
+      <div *ngIf="!isTracking">
+       <form (submit)="trackComplaint($event)">
+          <div class="form-group">
+           <label for="complaintNumber">Complaint Number:</label>
+            <input type="text" id="complaintNumber" name="complaintNumber" [(ngModel)]="complaintNumber" placeholder="Enter your complaint number" required>
+          </div>
+         <button class='btn-modalSubmit' type="submit">Track</button>
+        </form>
+      </div>
+    
+     <!-- Şikayet durumu sorgulandıktan sonra gösterilecek alan -->
+      <div *ngIf="isTracking">
+        <h3>Complaint Status</h3>
+        <p>{{ complaintStatus }}</p>
+        <button (click)="resetModal()">Back</button>
+     </div>
+    </div>
   </div>
 </div>

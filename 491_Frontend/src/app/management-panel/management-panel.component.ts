@@ -14,9 +14,9 @@ export class ManagementPanelComponent {
   constructor(private router: Router){}
   
   isDetailsModalOpen = false;
-  currentDetailsType: 'chart' | 'graph' | 'complaint' | 'suggestion' | null = null; // suggestion tipi ekledik
+  currentDetailsType: 'chart' | 'graph' | 'complaint' | 'suggestion' | null = null; 
   selectedComplaintStatus: string | null = null;
-  selectedSuggestionStatus: string | null = null; // suggestion status ekledik
+  selectedSuggestionStatus: string | null = null; 
 
   goToSupport() {
     this.router.navigate(['/helpSupport']);
@@ -38,7 +38,7 @@ export class ManagementPanelComponent {
     description: string;
     department?: string;
     status: string;
-  } | null = null; // suggestion için seçilen öneri
+  } | null = null;
 
   complaints = [
     {
@@ -83,7 +83,7 @@ export class ManagementPanelComponent {
       department: 'Customer Service',
       status: 'pending'
     }
-  ]; // suggestions dizisi eklendi
+  ];
 
   openDetails(type: 'chart' | 'graph') {
     this.isDetailsModalOpen = true;
@@ -114,6 +114,6 @@ export class ManagementPanelComponent {
     this.selectedComplaint = null;
     this.selectedSuggestion = null;
     this.selectedComplaintStatus = null;
-    this.selectedSuggestionStatus = null; // suggestion status'ı sıfırladık
+    this.selectedSuggestionStatus = null;
   }
 }
