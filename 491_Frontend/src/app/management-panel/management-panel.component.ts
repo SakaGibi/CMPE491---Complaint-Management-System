@@ -25,6 +25,10 @@ export class ManagementPanelComponent {
     this.router.navigate(['/mainMenu']);
   }
 
+  goToAdminPanel() {
+    this.router.navigate(['/adminPanel']);
+  }
+
   selectedComplaint: {
     id: number;
     status: string;

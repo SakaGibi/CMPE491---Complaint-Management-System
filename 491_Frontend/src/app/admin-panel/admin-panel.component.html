@@ -5,8 +5,8 @@
         <span>Logo</span>
       </div>
       <div>
-        <button class="btn btn-header">Main Menu</button>
-        <button class="btn btn-header">Help & Support</button>
+        <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
+        <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
       </div>
     </div>
   
@@ -23,7 +23,7 @@
         <button class="btn btn-add-user">Add User</button>
       </div>
       <div class="user-list">
-        <h3>Current Users</h3>
+        <h2>Current Users</h2>
         <ul>
           <li>users : xxx</li>
         </ul>
