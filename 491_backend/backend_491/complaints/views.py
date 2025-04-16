@@ -128,3 +128,4 @@ def delete_complaint(request, complaint_id):
         return Response({"message": "Kayıt silindi."}, status=status.HTTP_200_OK)
     except SuggestionOrComplaint.DoesNotExist:
         return Response({"error": "Şikayet veya öneri bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
+
