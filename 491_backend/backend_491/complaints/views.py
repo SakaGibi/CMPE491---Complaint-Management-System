@@ -39,3 +39,16 @@ def track_complaint(request, complaint_id):
         return Response(data, status=status.HTTP_200_OK)
     except SuggestionOrComplaint.DoesNotExist:
         return Response({"error": "Şikayet bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def retrive_complaint_by_id(request, complaint_id):
+    try:
+        complaint = SuggestionOrComplaint.objects.get(id=complaint_id)
+        serializer = SuggestionOrComplaintSerializer(complaint)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except SuggestionOrComplaint.DoesNotExist:
+        return Response({"error": "Şikayet bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
+
+
+
