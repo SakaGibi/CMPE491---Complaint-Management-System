@@ -87,3 +87,12 @@ def update_complaint_status(request, complaint_id):
     except SuggestionOrComplaint.DoesNotExist:
         return Response({"error": "Şikayet bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
 
+
+@api_view(['DELETE'])
+def delete_complaint(request, complaint_id):
+    try:
+        complaint = SuggestionOrComplaint.objects.get(id=complaint_id)
+        complaint.delete()
+        return Response({"message": "Kayıt silindi."}, status=status.HTTP_200_OK)
+    except SuggestionOrComplaint.DoesNotExist:
+        return Response({"error": "Şikayet veya öneri bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
