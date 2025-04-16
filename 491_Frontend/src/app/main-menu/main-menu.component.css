@@ -121,7 +121,7 @@ button {
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s;    
 }
 
 .btn-management:hover {
