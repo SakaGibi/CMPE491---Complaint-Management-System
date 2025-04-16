@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -5,23 +6,54 @@ from .models import SuggestionOrComplaint
 from .serializers import SuggestionOrComplaintSerializer
 
 
+def classify_all(description): #PLACEHOLDER FOR ML ALGORITHM. CHANGE WHEN READY
+    desc = description.lower()
+    if "öneri" in desc or "olsun" in desc or "eklenebilir" in desc:
+        return "suggestion", "app", "features"
+    elif "geç" in desc or "kargo" in desc:
+        return "complaint", "delivery", "late"
+    elif "bozuk" in desc or "çalışmıyor" in desc:
+        return "complaint", "product", "defective"
+    elif "donuyor" in desc:
+        return "complaint", "app", "performance"
+    else:
+        return "complaint", "general", "unspecified"
+
 @api_view(['POST'])
 def submit_suggestion_or_complaint(request):
-    serializer = SuggestionOrComplaintSerializer(data=request.data)
+    description = request.data.get('description')
+    is_trackable = request.data.get('isTrackable', False)
+    email = request.data.get('email') if is_trackable else None
+
+    if not description:
+        return Response({"error": "Şikayet metni zorunludur."}, status=status.HTTP_400_BAD_REQUEST)
+
+    if is_trackable and not email:
+        return Response({"error": "Takip için e‑posta gereklidir."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # ML sınıflandırma
+    type_, category, sub_category = classify_all(description)
+
+    data = {
+        "sender_id": 1,  # sabit, login ile dinamik hale getirilebilir
+        "type": type_,
+        "category": category,
+        "sub_category": sub_category,
+        "description": description,
+        "status": "new",
+        "created_at": timezone.now(),
+        "updated_at": timezone.now(),
+        "isTrackable": is_trackable,
+        "email": email,
+        "response": "",
+        "response_at": None
+    }
+
+    serializer = SuggestionOrComplaintSerializer(data=data)
     if serializer.is_valid():
-        is_trackable = serializer.validated_data.get('isTrackable')
-        email = serializer.validated_data.get('email')
-
-        if is_trackable and not email:
-            return Response({"error": "Takip etmek için e‑posta girilmelidir."}, status=status.HTTP_400_BAD_REQUEST)
-
-        complaint = serializer.save()
-
-        return Response({'message': 'Kayıt başarıyla eklendi!'}, status=status.HTTP_201_CREATED)
-    else:
-        print(serializer.errors)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        serializer.save()
+        return Response({'message': 'Kayıt başarıyla eklendi.'}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def track_complaint(request, complaint_id):
