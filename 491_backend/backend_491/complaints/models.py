@@ -22,7 +22,7 @@ class SuggestionOrComplaint(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
     isTrackable = models.BooleanField()
-    email = models.CharField(max_length=255)
+    email = models.CharField(max_length=255, null=True, blank=True)
     response = models.TextField(null=True, blank=True)
     response_at = models.DateTimeField(null=True, blank=True)
 
