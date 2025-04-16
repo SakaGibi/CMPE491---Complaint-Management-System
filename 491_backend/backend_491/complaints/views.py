@@ -71,3 +71,19 @@ def get_complaints(request):
     serializer = SuggestionOrComplaintSerializer(complaints, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+@api_view(['PUT'])
+def update_complaint_status(request, complaint_id):
+    new_status = request.data.get('status')
+
+    if not new_status:
+        return Response({"error": "Yeni durum belirtilmelidir."}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        complaint = SuggestionOrComplaint.objects.get(id=complaint_id)
+        complaint.status = new_status
+        complaint.save()
+        return Response({"message": "Durum güncellendi.", "new_status": complaint.status}, status=status.HTTP_200_OK)
+    except SuggestionOrComplaint.DoesNotExist:
+        return Response({"error": "Şikayet bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
+
