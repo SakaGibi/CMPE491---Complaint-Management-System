@@ -50,5 +50,24 @@ def retrive_complaint_by_id(request, complaint_id):
     except SuggestionOrComplaint.DoesNotExist:
         return Response({"error": "Şikayet bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET'])
+def get_complaints(request):
+    complaints = SuggestionOrComplaint.objects.all()
 
+    type_param = request.GET.get('type')
+    status_param = request.GET.get('status')
+    category_param = request.GET.get('category')
+    trackable_param = request.GET.get('isTrackable')
+
+    if type_param:
+        complaints = complaints.filter(type=type_param)
+    if status_param:
+        complaints = complaints.filter(status=status_param)
+    if category_param:
+        complaints = complaints.filter(category=category_param)
+    if trackable_param:
+        complaints = complaints.filter(isTrackable=trackable_param.lower() == 'true')
+
+    serializer = SuggestionOrComplaintSerializer(complaints, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
