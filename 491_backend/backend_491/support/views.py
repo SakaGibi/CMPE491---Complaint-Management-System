@@ -21,3 +21,20 @@ def submit_support_message(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['GET'])
+def get_faq(request):
+    faqs = SupportMessage.objects.filter(type='question')
+    serializer = SupportMessageSerializer(faqs, many=True)
+    return Response(serializer.data, status=200)
+
+
+@api_view(['DELETE'])
+def delete_support_message(request, message_id):
+    try:
+        message = SupportMessage.objects.get(message_id=message_id)
+        message.delete()
+        return Response({"message": "Mesaj silindi."}, status=200)
+    except SupportMessage.DoesNotExist:
+        return Response({"error": "Mesaj bulunamadı."}, status=404)
+
+
