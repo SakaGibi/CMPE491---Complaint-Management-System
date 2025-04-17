@@ -68,3 +68,32 @@ def delete_user(request):
         return Response({"error": "Kullanıcı bulunamadı."}, status=404)
 
 
+@api_view(['GET'])
+def get_user_list(request):
+    employees = Employee.objects.all().values('employee_id', 'username', 'email', 'role', 'created_at')
+    return Response(list(employees), status=200)
+
+
+@api_view(['PUT'])
+def change_user_role(request):
+    username = request.data.get('username')
+    new_role = request.data.get('role')
+
+    if not username or not new_role:
+        return Response({"error": "Kullanıcı adı ve yeni rol zorunludur."}, status=400)
+
+    if new_role not in ['employee', 'admin']:
+        return Response({"error": "Geçersiz rol."}, status=400)
+
+    try:
+        user = Employee.objects.get(username=username)
+        user.role = new_role
+        user.updated_at = timezone.now()
+        user.save()
+
+        return Response({
+            "message": f"Kullanıcının rolü '{new_role}' olarak güncellendi."
+        }, status=200)
+
+    except Employee.DoesNotExist:
+        return Response({"error": "Kullanıcı bulunamadı."}, status=404)
