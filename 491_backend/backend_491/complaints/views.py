@@ -180,3 +180,16 @@ def get_complaint_trends(request):
 
     trend = qs.annotate(day=TruncDay('created_at')).values('day').annotate(count=Count('id')).order_by('day')
     return Response(trend, status=200)
+
+
+# LLM RAPOR OLUŞTURMA İÇİN PLACEHOLDER
+@api_view(['POST'])
+def generate_report(request):
+    report_type = request.data.get('reportType')
+    filters = request.data.get('filters', {})
+
+    return Response({
+        "message": "Bu endpoint gelecekte yapay zeka destekli bir rapor oluşturacaktır.",
+        "reportType": report_type,
+        "filters": filters
+    }, status=200)
