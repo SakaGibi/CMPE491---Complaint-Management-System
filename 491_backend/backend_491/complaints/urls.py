@@ -8,5 +8,8 @@ urlpatterns = [
     path('complaints/', views.get_complaints, name='get_complaints'),
     path('update-status/<int:complaint_id>/', views.update_complaint_status, name='update_complaint_status'),
     path('delete/<int:complaint_id>/', views.delete_complaint, name='delete_complaint'),
+    path('statistics/', views.get_complaint_statistics, name='get_complaint_statistics'),
+    path('statistics/', views.get_complaint_statistics, name='get_complaint_statistics'),
+    path('trends/', views.get_complaint_trends, name='get_complaint_trends'),
 
 ]

@@ -1,3 +1,6 @@
+from datetime import timedelta
+from django.db.models import Count
+from django.db.models.functions import TruncDay
 from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -129,3 +132,51 @@ def delete_complaint(request, complaint_id):
     except SuggestionOrComplaint.DoesNotExist:
         return Response({"error": "Şikayet veya öneri bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
 
+
+# İHTİYAÇ HALİNDE GÜNCELLENİCEK
+@api_view(['GET'])
+def get_complaint_statistics(request):
+    range_param = request.GET.get('range')  # '7d', '1m', '3m', '6m'
+
+    qs = SuggestionOrComplaint.objects.filter(type='complaint')
+
+    if range_param:
+        now = timezone.now()
+        if range_param == '7d':
+            qs = qs.filter(created_at__gte=now - timedelta(days=7))
+        elif range_param == '1m':
+            qs = qs.filter(created_at__gte=now - timedelta(days=30))
+        elif range_param == '3m':
+            qs = qs.filter(created_at__gte=now - timedelta(days=90))
+        elif range_param == '6m':
+            qs = qs.filter(created_at__gte=now - timedelta(days=180))
+
+    stats = qs.values('category').annotate(count=Count('id')).order_by('-count')
+
+    return Response(stats, status=200)
+
+
+# İHTİYAÇ HALİNDE GÜNCELLENİCEK.
+@api_view(['GET'])
+def get_complaint_trends(request):
+    category = request.GET.get('category')
+    range_param = request.GET.get('range')
+
+    qs = SuggestionOrComplaint.objects.filter(type='complaint')
+
+    if category:
+        qs = qs.filter(category=category)
+
+    if range_param:
+        now = timezone.now()
+        if range_param == '7d':
+            qs = qs.filter(created_at__gte=now - timedelta(days=7))
+        elif range_param == '1m':
+            qs = qs.filter(created_at__gte=now - timedelta(days=30))
+        elif range_param == '3m':
+            qs = qs.filter(created_at__gte=now - timedelta(days=90))
+        elif range_param == '6m':
+            qs = qs.filter(created_at__gte=now - timedelta(days=180))
+
+    trend = qs.annotate(day=TruncDay('created_at')).values('day').annotate(count=Count('id')).order_by('day')
+    return Response(trend, status=200)
