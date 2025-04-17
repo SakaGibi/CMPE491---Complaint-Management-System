@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -22,3 +23,48 @@ def employee_login(request):
             return Response({"error": "Kullanıcı adı veya şifre hatalı."}, status=status.HTTP_401_UNAUTHORIZED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def add_user(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    email = request.data.get('email')
+    role = request.data.get('role', 'employee')  # default: employee
+
+    if not username or not password:
+        return Response({"error": "Kullanıcı adı ve şifre zorunludur."}, status=400)
+
+    if role not in ['employee', 'admin']:
+        return Response({"error": "Geçersiz rol."}, status=400)
+
+    if Employee.objects.filter(username=username).exists():
+        return Response({"error": "Bu kullanıcı adı zaten var."}, status=400)
+
+    Employee.objects.create(
+        username=username,
+        password=password,
+        email=email,
+        role=role,
+        created_at=timezone.now(),
+        updated_at=timezone.now()
+    )
+
+    return Response({"message": "Kullanıcı başarıyla eklendi."}, status=201)
+
+
+@api_view(['DELETE'])
+def delete_user(request):
+    username = request.data.get('username')
+
+    if not username:
+        return Response({"error": "Kullanıcı adı zorunludur."}, status=400)
+
+    try:
+        user = Employee.objects.get(username=username)
+        user.delete()
+        return Response({"message": "Kullanıcı silindi."}, status=200)
+    except Employee.DoesNotExist:
+        return Response({"error": "Kullanıcı bulunamadı."}, status=404)
+
+
