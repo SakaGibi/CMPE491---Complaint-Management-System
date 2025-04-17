@@ -97,3 +97,21 @@ def change_user_role(request):
 
     except Employee.DoesNotExist:
         return Response({"error": "Kullanıcı bulunamadı."}, status=404)
+
+
+@api_view(['POST'])
+def forgot_password(request):
+    username = request.data.get('username')
+
+    if not username:
+        return Response({"error": "Kullanıcı adı zorunludur."}, status=400)
+
+    try:
+        user = Employee.objects.get(username=username)
+        # şifre sıfırlama maili place holder.
+        return Response({
+            "message": f"{user.email} adresine şifre sıfırlama bağlantısı gönderildi (simülasyon)."
+        }, status=200)
+
+    except Employee.DoesNotExist:
+        return Response({"error": "Kullanıcı bulunamadı."}, status=404)
