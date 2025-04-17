@@ -1,0 +1,72 @@
+<div class="main-menu-container">
+    <!-- Header -->
+  <div class="header-panel">
+   <div class="logo">
+     <img src="assets/images/bilgiUni.webp"/>  </div>
+   <div class="support">
+      <button class="btn btn-support" (click)="goToSupport()">Help & Support</button>
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div class="content-area">
+    <h1>Complaint and Suggestion System</h1>
+
+    <!-- Text Area -->
+    <textarea placeholder="Enter your complaint or suggestion..." rows="5"></textarea>
+
+    <!-- Şikayetinizi takip etmek istiyor musunuz kısmı -->
+    <div>
+      <input 
+        type="checkbox" 
+        id="trackCheckBox" 
+        (change)="toggleEmailInput()" 
+      />
+      <label for="trackCheckBox">Do you want to track your complaint?</label>
+    </div>
+
+    <!-- Email giriş alanı -->
+    <div id="emailInputContainer" style="display: none;">
+      <input type="email" placeholder="Enter your email (only for updates)" />
+    </div>
+
+    <!-- Submit, Cancel buttons -->
+    <div class="buttons">
+      <button class="btn btn-submit">Submit</button>
+      <button class="btn btn-cancel">Cancel</button>
+    </div>
+
+    <!-- management panel button -->
+    <button class="btn btn-management" (click)="goToManagementPanelLogin()">Go to Management Panel</button>
+  </div>
+
+  <!-- Modal Trigger Button -->
+  <button class="btn btn-track" (click)="openModal()">Complaint Tracking</button>
+
+  <!-- Şikayet Takip Modal -->
+  <div id="complaintModal" class="modal" style="display: none;">
+   <div class="modal-content">
+      <button class="btn-close" (click)="closeModal()">&times;</button>
+     <h2>Complaint Tracking</h2>
+    
+     <!-- Başlangıçta gösterilen form -->
+      <div *ngIf="!isTracking">
+       <form (submit)="trackComplaint($event)">
+          <div class="form-group">
+           <label for="complaintNumber">Complaint Number:</label>
+            <input type="text" id="complaintNumber" name="complaintNumber" [(ngModel)]="complaintNumber" placeholder="Enter your complaint number" required>
+          </div>
+         <button class='btn-modalSubmit' type="submit">Track</button>
+        </form>
+      </div>
+    
+     <!-- Şikayet durumu sorgulandıktan sonra gösterilecek alan -->
+      <div *ngIf="isTracking">
+        <h3>Complaint Status</h3>
+        <p>{{ complaintStatus }}</p>
+        <button (click)="resetModal()">Back</button>
+     </div>
+    </div>
+  </div>
+
+</div>

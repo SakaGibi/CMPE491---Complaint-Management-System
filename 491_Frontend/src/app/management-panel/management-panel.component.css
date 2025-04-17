@@ -1,0 +1,249 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.management-panel-container {
+    display: flex;
+    flex-direction: column;
+    height: 98vh;
+}
+
+.header-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f53b4e;
+    color: white;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.btn-header {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: white;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-header:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.content-area {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+    background-color: #f4f4f4;
+}
+
+.left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.chart-container, .graph-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chart, .graph {
+    height: 268px; 
+    background-color: #e9edf1;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.complaints-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.complaints-header h2 {
+    margin: 0;
+}
+
+.filters select {
+    margin-left: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.complaints-list {
+    flex: 1;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.complaints-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.complaints-list li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.complaints-list li:last-child {
+    border-bottom: none;
+}
+
+.right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.right-section h2 {
+    margin-top: 0;
+}
+
+.suggestions-list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.suggestions-list li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.suggestions-list li:last-child {
+    border-bottom: none;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+button {
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+select {
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.fullscreen-modal {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; 
+}
+
+.modal-content {
+    position: relative; /* Allow for positioning inside modal */
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 1200px;
+    max-height: 90%;
+    overflow-y: auto;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  .close-btn:hover {
+    background-color: darkred;
+  }
+
+.fullscreen-modal {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.filters label {
+    display: inline-block;
+    margin-right: 8px;
+    font-weight: bold;
+  }
+  
+  .filters select {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 14px;
+  }
+
+  .complaints-list li:hover,
+.suggestions-list li:hover,
+.chart:hover,
+.graph:hover {
+    background-color: #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.complaints-list li:active,
+.suggestions-list li:active,
+.chart:active,
+.graph:active {
+    background-color: #bbb;
+}
