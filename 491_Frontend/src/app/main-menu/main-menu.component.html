@@ -12,28 +12,48 @@
   <div class="content-area">
     <h1>Complaint and Suggestion System</h1>
 
-    <!-- Text Area -->
-    <textarea placeholder="Enter your complaint or suggestion..." rows="5"></textarea>
+    <textarea
+      [(ngModel)]="complaintText"
+      placeholder="Enter your complaint or suggestion..."
+      rows="5"
+      class="complaint-textarea"
+      ngSkipHydration>
+    </textarea>
+  
 
     <!-- Şikayetinizi takip etmek istiyor musunuz kısmı -->
-    <div>
+    <div class="track-option">
       <input 
         type="checkbox" 
         id="trackCheckBox" 
+        [(ngModel)]="isTracking"
         (change)="toggleEmailInput()" 
       />
       <label for="trackCheckBox">Do you want to track your complaint?</label>
     </div>
 
     <!-- Email giriş alanı -->
-    <div id="emailInputContainer" style="display: none;">
-      <input type="email" placeholder="Enter your email (only for updates)" />
+    <div id="emailInputContainer" style="display: none;" class="email-input-container">
+      <input 
+        [(ngModel)]="email" 
+        type="email" 
+        placeholder="Enter your email (only for updates)" 
+       class="email-input"
+     />
     </div>
 
     <!-- Submit, Cancel buttons -->
     <div class="buttons">
-      <button class="btn btn-submit">Submit</button>
-      <button class="btn btn-cancel">Cancel</button>
+      <button 
+       class="btn btn-submit" 
+       (click)="writeComplaintOrSuggestion()">
+       Submit
+      </button>
+     <button 
+       class="btn btn-cancel" 
+       (click)="resetModal()">
+       Cancel
+     </button>
     </div>
 
     <!-- management panel button -->

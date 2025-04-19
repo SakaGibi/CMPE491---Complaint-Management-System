@@ -2,23 +2,62 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-main-menu',
   imports: [FormsModule, CommonModule],
   templateUrl: './main-menu.component.html',
-  styleUrl: './main-menu.component.css'
+  styleUrl: './main-menu.component.css',
+  host: { 'ngSkipHydration': 'true' }
 })
 export class MainMenuComponent {
 
   complaintNumber: string = '';
   complaintStatus: string = '';
   isTracking: boolean = false;
+  complaintText: string = '';
+  email: string = '';
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,
+    private apiService: ApiService
+  ){}
 
-  writeComplaintOrSuggestion(){
-    // doldurulucak. 
+  writeComplaintOrSuggestion() {
+    console.log('Fonksiyon tetiklendi');
+
+    if (!this.complaintText || this.complaintText.trim() === '') {
+      alert('Lütfen şikayet ya da öneri metni girin.');
+      return;
+    }
+  
+    if (this.isTracking && (!this.email || this.email.trim() === '')) {
+      alert('Takip etmek için e‑posta adresi gereklidir.');
+      return;
+    }
+  
+    const payload = {
+      description: this.complaintText,
+      isTrackable: this.isTracking,
+      email: this.isTracking ? this.email : undefined,
+    };
+  
+    console.log('Payload:', payload);
+  
+    this.apiService.submitComplaintOrSuggestion(payload).subscribe({
+      next: (res) => {
+        console.log('BAŞARILI:', res);
+        alert('Şikayet/Bilgi başarıyla gönderildi.');
+        this.closeModal();
+        this.resetModal();
+      },
+      error: (err) => {
+        console.error('HATA:', err);
+        alert('Bir hata oluştu: ' + (err.error?.error || 'Sunucuya ulaşılamadı.'));
+      },
+    });
   }
 
   toggleEmailInput() {
