@@ -16,8 +16,7 @@
       [(ngModel)]="complaintText"
       placeholder="Enter your complaint or suggestion..."
       rows="5"
-      class="complaint-textarea"
-      ngSkipHydration>
+      class="complaint-textarea">
     </textarea>
   
 
@@ -81,11 +80,26 @@
       </div>
     
      <!-- Şikayet durumu sorgulandıktan sonra gösterilecek alan -->
-      <div *ngIf="isTracking">
-        <h3>Complaint Status</h3>
-        <p>{{ complaintStatus }}</p>
-        <button (click)="resetModal()">Back</button>
-     </div>
+     <div *ngIf="isTracking">
+      <h3>Complaint Status</h3>
+    
+      <!-- Başarılı takip durumu -->
+      <div *ngIf="complaintStatus && !complaintStatus.error">
+        <p><strong>Status:</strong> {{ complaintStatus.status }}</p>
+        <p><strong>Category:</strong> {{ complaintStatus.category }}</p>
+        <p><strong>Description:</strong> {{ complaintStatus.description }}</p>
+        <p><strong>Created:</strong> {{ complaintStatus.created_at }}</p>
+        <p><strong>Updated:</strong> {{ complaintStatus.updated_at }}</p>
+        <p><strong>Trackable:</strong> {{ complaintStatus.trackable }}</p>
+      </div>
+    
+      <!-- Hatalı takip durumu -->
+      <p *ngIf="complaintStatus?.error" class="error-message">
+        {{ complaintStatus.error }}
+      </p>
+    
+      <button (click)="resetModal()">Back</button>
+    </div>
     </div>
   </div>
 

@@ -15,7 +15,7 @@ import { ApiService } from '../services/api.service';
 export class MainMenuComponent {
 
   complaintNumber: string = '';
-  complaintStatus: string = '';
+  complaintStatus: any = null;
   isTracking: boolean = false;
   complaintText: string = '';
   email: string = '';
@@ -95,17 +95,49 @@ export class MainMenuComponent {
     }
   }
 
-  trackComplaint(event: Event) {
+  trackComplaint(event: Event): void {
     event.preventDefault();
-    if (this.complaintNumber.trim() !== '') {
-      this.complaintStatus = `Complaint #${this.complaintNumber} is currently being processed.`; // Dinamik veri buraya bağlanabilir
+  
+    const trimmedId = this.complaintNumber.trim();
+    const id = Number(trimmedId);
+  
+    if (!trimmedId || isNaN(id)) {
+      this.complaintStatus = { error: 'Please enter a valid complaint number.' };
       this.isTracking = true;
-    } else {
-      this.complaintStatus = 'Please enter a valid complaint number.';
+      return;
     }
+  
+    this.apiService.trackComplaint(id).subscribe({
+      next: (res) => {
+        console.log('TRACK RESPONSE:', res);
+  
+        this.complaintStatus = {
+          status: res.status,
+          category: `${res.category} > ${res.sub_category}`,
+          description: res.description,
+          created_at: new Date(res.created_at).toLocaleString(),
+          updated_at: new Date(res.updated_at).toLocaleString(),
+          trackable: res.isTrackable ? 'Yes' : 'No'
+        };
+  
+        this.isTracking = true;
+      },
+      error: (err) => {
+        console.error('Şikayet takibi hatası:', err);
+  
+        this.complaintStatus = {
+          error: err.status === 404 ? 'Complaint not found.' : 'Something went wrong. Please try again.'
+        };
+  
+        this.isTracking = true;
+      }
+    });
   }
+  
 
-  resetModal() {
+  resetModal(): void {
+    this.complaintText = '';
+    this.email = '';
     this.complaintNumber = '';
     this.complaintStatus = '';
     this.isTracking = false;

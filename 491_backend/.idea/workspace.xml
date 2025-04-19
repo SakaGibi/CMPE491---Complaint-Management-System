@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8120945-27d7-4ca9-a8a5-780d0ace18d0" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../491_Frontend/src/app/app.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../491_Frontend/src/app/app.config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../491_Frontend/src/app/main-menu/main-menu.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../491_Frontend/src/app/main-menu/main-menu.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../491_Frontend/src/app/main-menu/main-menu.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../491_Frontend/src/app/main-menu/main-menu.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/491_backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/491_backend.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../491_Frontend/src/app/services/api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../491_Frontend/src/app/services/api.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_491/backend_491/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend_491/backend_491/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +67,7 @@
       <workItem from="1744933752599" duration="5000" />
       <workItem from="1745071369641" duration="2875000" />
       <workItem from="1745078426758" duration="279000" />
-      <workItem from="1745078713270" duration="1561000" />
+      <workItem from="1745078713270" duration="2603000" />
     </task>
     <servers />
   </component>

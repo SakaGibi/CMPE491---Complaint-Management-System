@@ -18,5 +18,7 @@ export class ApiService {
     return this.http.post(`${this.BASE_URL}/complaints/submit/`, data);
   }
 
-  
+  trackComplaint(id: number): Observable<any> {
+    return this.http.get(`${this.BASE_URL}/complaints/track/${id}/`);
+  }
 }
