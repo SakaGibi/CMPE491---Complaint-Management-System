@@ -36,4 +36,17 @@ export class ApiService {
       message: data.message
     });
   }
+
+  addUser(data: {
+    username: string;
+    password: string;
+    email?: string;
+    role: 'employee' | 'admin';
+  }): Observable<any> {
+    return this.http.post(`${this.BASE_URL}/employees/add/`, data);
+  }
+
+  getUserList(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.BASE_URL}/employees/list/`);
+  }
 }

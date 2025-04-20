@@ -1,47 +1,112 @@
 <div class="management-panel-container">
-    <!-- Header -->
-    <div class="header-panel">
-      <div class="logo">
-        <span>Logo</span>
-      </div>
-      <div>
-        <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
-        <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
-      </div>
+  <!-- Header -->
+  <div class="header-panel">
+    <div class="logo">
+      <span>Logo</span>
     </div>
-  
-    <!-- User Transactions -->
-    <div class="user-management">
-      <h2>User Transactions</h2>
-      <div class="user-form">
-        <label for="user-name">Username:</label>
-        <input type="text" id="user-name" placeholder="Enter a username" />
+    <div>
+      <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
+      <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
+    </div>
+  </div>
 
-        <label for="user-password">Password:</label>
-        <input type="password" id="user-password" placeholder="Enter a password" />
+  <!-- User Transactions -->
+  <div class="user-management">
+    <h2>User Transactions</h2>
 
-        <button class="btn btn-add-user">Add User</button>
+    <div class="user-form">
+      <label for="user-name">Username:</label>
+      <input
+        type="text"
+        id="user-name"
+        name="username"
+        placeholder="Enter a username"
+        [(ngModel)]="username"
+      />
+
+      <label for="user-password">Password:</label>
+      <input
+        type="password"
+        id="user-password"
+        name="password"
+        placeholder="Enter a password"
+        [(ngModel)]="password"
+      />
+
+      <label for="user-email">Email:</label>
+      <input
+        type="email"
+        id="user-email"
+        name="email"
+        placeholder="Enter an email"
+        [(ngModel)]="email"
+      />
+
+      <label for="isAdminCheck">Is Admin:</label>
+      <div class="form-group checkbox-group">
+        <input
+          type="checkbox"
+          id="isAdminCheck"
+          [(ngModel)]="isAdmin"
+          (change)="role = isAdmin ? 'admin' : 'employee'"
+          name="isAdmin"
+        />
       </div>
-      <div class="user-list">
-        <h2>Current Users</h2>
-        <ul>
-          <li>users : xxx</li>
-        </ul>
-      </div>
+
+      <button class="btn btn-add-user" (click)="addNewUser()">Add User</button>
+      <p *ngIf="addUserMessage" class="user-message">{{ addUserMessage }}</p>
     </div>
-  
-    <!-- Öneriler -->
-    <div class="suggestions-section">
-      <h2>Suggestions and Questions</h2>
-      <div class="suggestions-list">
-        <ul>
-          <li>
-            suggestions and questions: xxx
-          </li>
-          <li>
-            add more languages ??
-          </li>
-        </ul>
-      </div>
+
+    <div class="user-list">
+      <h2>Current Users</h2>
+      <ul *ngIf="userList.length > 0; else noUsers">
+        <li
+          *ngFor="let user of userList"
+          (click)="openUserModal(user)"
+          class="clickable-user"
+        >
+          <strong>{{ user.username }}</strong> ({{ user.role }}) - {{ user.email }}
+        </li>
+      </ul>
+
+      <ng-template #noUsers>
+        <p>No users found.</p>
+      </ng-template>
     </div>
+  </div>
+
+  <!-- Öneriler -->
+  <div class="suggestions-section">
+    <h2>Suggestions and Questions</h2>
+    <div class="suggestions-list">
+      <ul>
+        <li>suggestions and questions: xxx</li>
+        <li>add more languages ??</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ✅ Kullanıcı Modalı -->
+  <div class="user-modal-overlay" *ngIf="isUserModalOpen">
+    <div class="user-modal">
+      <h3>User Details</h3>
+      <p><strong>ID:</strong> {{ selectedUser.employee_id }}</p>
+      <p><strong>Username:</strong> {{ selectedUser.username }}</p>
+      <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+      <p><strong>Role:</strong> {{ selectedUser.role }}</p>
+      <p><strong>Created:</strong> {{ selectedUser.created_at | date: 'short' }}</p>
+
+      <hr />
+
+      <label>Change Role:</label>
+      <select [(ngModel)]="selectedUser.role">
+        <option value="employee">Employee</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button>Change Role</button>
+
+      <button class="btn-danger">Delete User</button>
+      <button (click)="closeUserModal()">Close</button>
+    </div>
+  </div>
 </div>

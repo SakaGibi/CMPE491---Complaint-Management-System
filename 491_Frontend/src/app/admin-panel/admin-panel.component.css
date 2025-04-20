@@ -158,3 +158,84 @@ html, body {
     color: #555;
   }
   
+  /* Modal Arka Planı */
+.user-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* Modal Kutusu */
+.user-modal {
+  background-color: white;
+  padding: 24px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-family: Arial, sans-serif;
+}
+
+/* Modal Başlığı */
+.user-modal h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+  color: #333;
+}
+
+/* Modal İçeriği */
+.user-modal p {
+  margin: 8px 0;
+  color: #444;
+  font-size: 15px;
+}
+
+/* Select ve Butonlar */
+.user-modal select {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Genel Modal Butonlar */
+.user-modal button {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Kırmızı (Silme) Butonu */
+.user-modal .btn-danger {
+  background-color: #f53b4e;
+  color: white;
+}
+
+.user-modal .btn-danger:hover {
+  background-color: #e03e4b;
+}
+
+/* Renkli Aksiyon Butonu (Örn: Change Role) */
+.user-modal button:not(.btn-danger) {
+  background-color: #007bff;
+  color: white;
+}
+
+.user-modal button:not(.btn-danger):hover {
+  background-color: #0056b3;
+}
