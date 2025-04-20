@@ -25,4 +25,9 @@ export class ApiService {
   employeeLogin(credentials: {username: string; password: string }): Observable<any> {
     return this.http.post(`${this.BASE_URL}/employees/login/`, credentials);
   }
+
+  getFAQs(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.BASE_URL}/support/faq/`);
+  }
+  
 }

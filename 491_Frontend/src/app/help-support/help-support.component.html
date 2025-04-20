@@ -21,13 +21,16 @@
 
         <!-- FAQ Section -->
         <div class="faq-section">
-          <h2>Frequently Asked Questions</h2>
-          <ul>
-            <li>
-              <strong>Where can I check the status of my complaints?</strong>
-              <p>You can view the status of your complaints on the bottom of the main menu.</p>
+          <ul *ngIf="faqs.length > 0; else loading">
+            <li *ngFor="let faq of faqs" class="faq-item">
+              <p><strong>Soru:</strong> {{ faq.message }}</p>
+              <p><strong>Cevap:</strong> {{ faq.response || 'Henüz cevaplanmadı.' }}</p>
             </li>
           </ul>
+          
+          <ng-template #loading>
+            <p>SSS verileri yükleniyor...</p>
+          </ng-template>
         </div>
 
         <!-- Contact Support Section -->
