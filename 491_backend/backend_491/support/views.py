@@ -15,6 +15,9 @@ def submit_support_message(request):
     if 'status' not in data:
         data['status'] = 'new'
 
+    if 'sender_id' not in data:
+        data['sender_id'] = 0  # anonim kullanıcı için sabit
+
     serializer = SupportMessageSerializer(data=data)
     if serializer.is_valid():
         serializer.save()

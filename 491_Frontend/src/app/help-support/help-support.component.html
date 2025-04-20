@@ -1,61 +1,74 @@
 <div class="management-panel-container">
-    <!-- Header -->
-    <div class="header-panel">
-      <div class="logo">
-        <span>Logo</span>
-      </div>
-      <div class="support">
-        <button class="btn btn-support" (click)="goToMainMenu()">Main Menu</button>
-      </div>
+  <!-- Header -->
+  <div class="header-panel">
+    <div class="logo">
+      <span>Logo</span>
     </div>
-  
-    <!-- Main Content Area -->
-    <div class="content-area">
-      <div class="help-support-container">
-        <h1>Help & Support</h1>
-        
-        <!-- Support Introduction -->
-        <div class="support-intro">
-          <p>Welcome to the Help & Support page. Here, you can find answers to frequently asked questions and contact support if needed.</p>
-        </div>
+    <div class="support">
+      <button class="btn btn-support" (click)="goToMainMenu()">Main Menu</button>
+    </div>
+  </div>
 
-        <!-- FAQ Section -->
-        <div class="faq-section">
-          <ul *ngIf="faqs.length > 0; else loading">
-            <li *ngFor="let faq of faqs" class="faq-item">
-              <p><strong>Soru:</strong> {{ faq.message }}</p>
-              <p><strong>Cevap:</strong> {{ faq.response || 'Henüz cevaplanmadı.' }}</p>
-            </li>
-          </ul>
-          
-          <ng-template #loading>
-            <p>SSS verileri yükleniyor...</p>
-          </ng-template>
-        </div>
+  <!-- Main Content Area -->
+  <div class="content-area">
+    <div class="help-support-container">
+      <h1>Help & Support</h1>
 
-        <!-- Contact Support Section -->
-        <div class="contact-support-section">
-            <h2>Contact Support</h2>
-            <p>If you cannot find the solution you're looking for, feel free to contact our support team.</p>
-            
-            <form>
-              <div class="form-group">
-                <label for="email">Your Email:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email address" />
-              </div>
-              
-              <div class="form-group">
-                <label for="message">Your Message:</label>
-                <textarea id="message" name="message" placeholder="Enter your message"></textarea>
-              </div>
-              
-              <button type="submit">Submit</button>
-            </form>
+      <!-- Support Introduction -->
+      <div class="support-intro">
+        <p>
+          Welcome to the Help & Support page. Here, you can find answers to frequently asked questions and contact support if needed.
+        </p>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="faq-section">
+        <ul *ngIf="faqs.length > 0; else loading">
+          <li *ngFor="let faq of faqs" class="faq-item">
+            <p><strong>Soru:</strong> {{ faq.message }}</p>
+            <p><strong>Cevap:</strong> {{ faq.response || 'Henüz cevaplanmadı.' }}</p>
+          </li>
+        </ul>
+
+        <ng-template #loading>
+          <p>SSS verileri yükleniyor...</p>
+        </ng-template>
+      </div>
+
+      <!-- Contact Support Section -->
+      <div class="contact-support-section">
+        <h2>Contact Support</h2>
+        <p>If you cannot find the solution you're looking for, feel free to contact our support team.</p>
+
+        <form (submit)="submitSupport(); $event.preventDefault()">
+          <div class="form-group">
+            <label for="email">Your Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email address"
+              [(ngModel)]="email"
+              required
+            />
           </div>
-  
-        
-  
+
+          <div class="form-group">
+            <label for="message">Your Message:</label>
+            <textarea
+              id="message"
+              name="message"
+              placeholder="Enter your message"
+              [(ngModel)]="userMessage"
+              required
+            ></textarea>
+          </div>
+
+          <button type="submit">Submit</button>
+
+          <p *ngIf="submitMessage" class="submit-feedback">{{ submitMessage }}</p>
+        </form>
       </div>
     </div>
   </div>
-  
+</div>

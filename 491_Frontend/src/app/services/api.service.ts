@@ -30,4 +30,10 @@ export class ApiService {
     return this.http.get<any[]>(`${this.BASE_URL}/support/faq/`);
   }
   
+  submitSupportMessage(data: { email: string; message: string }): Observable<any> {
+    return this.http.post(`${this.BASE_URL}/support/submit/`, {
+      email: data.email,
+      message: data.message
+    });
+  }
 }
