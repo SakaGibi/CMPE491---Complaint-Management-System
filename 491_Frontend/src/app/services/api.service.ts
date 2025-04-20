@@ -21,4 +21,8 @@ export class ApiService {
   trackComplaint(id: number): Observable<any> {
     return this.http.get(`${this.BASE_URL}/complaints/track/${id}/`);
   }
+
+  employeeLogin(credentials: {username: string; password: string }): Observable<any> {
+    return this.http.post(`${this.BASE_URL}/employees/login/`, credentials);
+  }
 }
