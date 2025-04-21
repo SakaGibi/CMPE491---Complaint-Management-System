@@ -25,11 +25,11 @@ def submit_support_message(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def answer_faq(request, message_id):
+def answer_support_message(request, message_id):
     try:
-        message = SupportMessage.objects.get(message_id=message_id, type='question')
+        message = SupportMessage.objects.get(message_id=message_id)
     except SupportMessage.DoesNotExist:
-        return Response({"error": "SSS bulunamadı."}, status=404)
+        return Response({"error": "Mesaj bulunamadı."}, status=404)
 
     response_text = request.data.get('response', '')
     if not response_text.strip():
@@ -39,12 +39,18 @@ def answer_faq(request, message_id):
     message.response_at = timezone.now()
     message.save()
 
-    return Response({"message": "SSS cevabı eklendi."}, status=200)
+    return Response({"message": "Mesaj başarıyla cevaplandı."}, status=200)
 
 @api_view(['GET'])
 def get_faq(request):
     faqs = SupportMessage.objects.filter(type='question')
     serializer = SupportMessageSerializer(faqs, many=True)
+    return Response(serializer.data, status=200)
+
+@api_view(['GET'])
+def get_support_requests(request):
+    supports = SupportMessage.objects.filter(type='support')
+    serializer = SupportMessageSerializer(supports, many=True)
     return Response(serializer.data, status=200)
 
 

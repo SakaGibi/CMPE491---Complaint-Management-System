@@ -78,15 +78,24 @@
   <!-- Öneriler -->
   <div class="suggestions-section">
     <h2>Suggestions and Questions</h2>
-    <div class="suggestions-list">
-      <ul>
-        <li>suggestions and questions: xxx</li>
-        <li>add more languages ??</li>
-      </ul>
-    </div>
+
+    <ul class="suggestions-list" *ngIf="supportMessages.length > 0; else noSuggestions">
+      <li
+        *ngFor="let message of supportMessages"
+        (click)="openSupportModal(message)"
+        class="clickable-user"
+      >
+        <strong>{{ message.message }}</strong><br />
+        <small>{{ message.created_at | date:'short' }}</small>
+      </li>
+    </ul>
+
+    <ng-template #noSuggestions>
+      <p>No suggestions or questions found.</p>
+    </ng-template>
   </div>
 
-  <!-- ✅ Kullanıcı Modalı -->
+  <!-- Kullanıcı Modalı -->
   <div class="user-modal-overlay" *ngIf="isUserModalOpen">
     <div class="user-modal">
       <h3>User Details</h3>
@@ -107,6 +116,20 @@
 
       <button class="btn-danger" (click)="deleteUser()">Delete User</button>
       <button (click)="closeUserModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Support Modal -->
+  <div class="user-modal-overlay" *ngIf="isSupportModalOpen">
+    <div class="user-modal">
+      <h3>Support Request</h3>
+      <p><strong>Email:</strong> {{ selectedSupport?.email }}</p>
+      <p><strong>Message:</strong> {{ selectedSupport?.message }}</p>
+      <p><strong>Status:</strong> {{ selectedSupport?.status }}</p>
+      <p><strong>Created:</strong> {{ selectedSupport?.created_at | date:'short' }}</p>
+
+      <button class="btn-danger" (click)="deleteSupportMessage()">Delete</button>
+      <button (click)="closeSupportModal()">Close</button>
     </div>
   </div>
 </div>

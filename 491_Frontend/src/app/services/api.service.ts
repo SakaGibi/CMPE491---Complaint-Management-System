@@ -58,4 +58,11 @@ export class ApiService {
     return this.http.put(`${this.BASE_URL}/employees/change-role/`, payload);
   }
   
+  getSupportMessages(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.BASE_URL}/support/list/`);
+  }
+  
+  deleteSupportMessage(messageId: number): Observable<any> {
+    return this.http.delete(`${this.BASE_URL}/support/delete/${messageId}/`);
+  }
 }

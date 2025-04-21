@@ -23,6 +23,9 @@ export class AdminPanelComponent {
   userList: any[] = [];
   selectedUser: any = null;
   isUserModalOpen: boolean = false;
+  supportMessages: any[] = [];
+  selectedSupport: any = null;
+  isSupportModalOpen: boolean = false;
 
   constructor(
     private router: Router,
@@ -104,6 +107,7 @@ export class AdminPanelComponent {
 
   ngOnInit(): void {
     this.loadUsers();
+    this.loadSupportMessages();
   }
   
   deleteUser(): void {
@@ -144,5 +148,44 @@ export class AdminPanelComponent {
     });
   }
   
+  loadSupportMessages(): void {
+    this.apiService.getSupportMessages().subscribe({
+      next: (res) => {
+        this.supportMessages = res;
+        console.log('[Support Mesajları]', res);
+      },
+      error: (err) => {
+        console.error('[Support GET Hatası]', err);
+      }
+    });
+  }
+
+  openSupportModal(message: any): void {
+    this.selectedSupport = message;
+    this.isSupportModalOpen = true;
+  }
+  
+  closeSupportModal(): void {
+    this.selectedSupport = null;
+    this.isSupportModalOpen = false;
+  }
+  
+  deleteSupportMessage(): void {
+    if (!this.selectedSupport?.message_id) return;
+  
+    if (!confirm('Bu mesajı silmek istediğinize emin misiniz?')) return;
+  
+    this.apiService.deleteSupportMessage(this.selectedSupport.message_id).subscribe({
+      next: (res) => {
+        console.log('[Silme Başarılı]', res);
+        this.closeSupportModal();
+        this.loadSupportMessages();
+      },
+      error: (err) => {
+        console.error('[Silme Hatası]', err);
+        alert('Mesaj silinemedi.');
+      }
+    });
+  }
 
 }
