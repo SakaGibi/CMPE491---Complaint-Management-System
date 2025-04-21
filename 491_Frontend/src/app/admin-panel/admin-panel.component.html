@@ -103,9 +103,9 @@
         <option value="employee">Employee</option>
         <option value="admin">Admin</option>
       </select>
-      <button>Change Role</button>
+      <button (click)="changeUserRole()">Change Role</button>
 
-      <button class="btn-danger">Delete User</button>
+      <button class="btn-danger" (click)="deleteUser()">Delete User</button>
       <button (click)="closeUserModal()">Close</button>
     </div>
   </div>

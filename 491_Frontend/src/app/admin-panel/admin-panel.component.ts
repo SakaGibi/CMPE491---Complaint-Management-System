@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -104,6 +104,44 @@ export class AdminPanelComponent {
 
   ngOnInit(): void {
     this.loadUsers();
+  }
+  
+  deleteUser(): void {
+    if (!this.selectedUser?.username) return;
+  
+    if (!confirm(`Are you sure you want to delete user "${this.selectedUser.username}"?`)) return;
+  
+    this.apiService.deleteUser({ username: this.selectedUser.username }).subscribe({
+      next: (res) => {
+        console.log('[Kullanıcı silindi]', res);
+        this.closeUserModal();
+        this.loadUsers(); // listeyi yenile
+      },
+      error: (err) => {
+        console.error('[Silme Hatası]', err);
+        alert(err.error?.error || 'Kullanıcı silinemedi.');
+      }
+    });
+  }
+
+  changeUserRole(): void {
+    if (!this.selectedUser?.username || !this.selectedUser?.role) return;
+  
+    this.apiService.changeUserRole({
+      username: this.selectedUser.username,
+      role: this.selectedUser.role
+    }).subscribe({
+      next: (res) => {
+        console.log('[Rol değiştirildi]', res);
+        alert(res.message || 'Rol başarıyla güncellendi.');
+        this.closeUserModal();
+        this.loadUsers(); // listeyi yenile
+      },
+      error: (err) => {
+        console.error('[Rol Değiştirme Hatası]', err);
+        alert(err.error?.error || 'Rol değiştirilemedi.');
+      }
+    });
   }
   
 

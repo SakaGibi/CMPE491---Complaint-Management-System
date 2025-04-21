@@ -49,4 +49,13 @@ export class ApiService {
   getUserList(): Observable<any[]> {
     return this.http.get<any[]>(`${this.BASE_URL}/employees/list/`);
   }
+
+  deleteUser(payload: { username: string }): Observable<any> {
+    return this.http.request('delete', `${this.BASE_URL}/employees/delete/`, { body: payload });
+  }
+  
+  changeUserRole(payload: { username: string, role: 'admin' | 'employee' }): Observable<any> {
+    return this.http.put(`${this.BASE_URL}/employees/change-role/`, payload);
+  }
+  
 }
