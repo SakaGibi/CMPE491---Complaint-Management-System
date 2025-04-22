@@ -65,4 +65,14 @@ export class ApiService {
   deleteSupportMessage(messageId: number): Observable<any> {
     return this.http.delete(`${this.BASE_URL}/support/delete/${messageId}/`);
   }
+
+  getComplaints(params?: any): Observable<any[]> {
+    console.log('[API] getComplaints çağrıldı, params:', params);
+    return this.http.get<any[]>(`${this.BASE_URL}/complaints/complaints/`, { params });
+  }
+  
+  getComplaintById(complaintId: number): Observable<any> {
+    console.log(`[API] getComplaintById çağrıldı. ID: ${complaintId}`);
+    return this.http.get<any>(`${this.BASE_URL}/complaints/detail/${complaintId}/`);
+  }
 }

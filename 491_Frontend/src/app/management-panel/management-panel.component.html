@@ -5,8 +5,8 @@
       <span>Logo</span>
     </div>
     <div>
-      <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
-      <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
+      <button class="btn btn-header">Main Menu</button>
+      <button class="btn btn-header">Help & Support</button>
     </div>
   </div>
 
@@ -16,11 +16,11 @@
     <div class="left-section">
       <div class="chart-container">
         <h2>Complaint Chart</h2>
-        <div class="chart" (click)="openDetails('chart')">[Chart Placeholder]</div>
+        <div class="chart">[Chart Placeholder]</div>
       </div>
       <div class="graph-container">
         <h2>Complaint Trends</h2>
-        <div class="graph" (click)="openDetails('graph')">[Graph Placeholder]</div>
+        <div class="graph">[Graph Placeholder]</div>
       </div>
     </div>
 
@@ -42,11 +42,14 @@
         </div>
       </div>
       <div class="complaints-list">
-        <ul>
-          <li *ngFor="let complaint of complaints" (click)="openComplaintDetails(complaint)">
+        <ul *ngIf="complaintList.length > 0; else noComplaints">
+          <li *ngFor="let complaint of complaintList" (click)="openComplaintModal(complaint.id)">
             {{ complaint.description }}
           </li>
         </ul>
+        <ng-template #noComplaints>
+          <p>No complaints found.</p>
+        </ng-template>
       </div>
     </div>
 
@@ -55,114 +58,40 @@
       <h2>Suggestions</h2>
       <div class="suggestions-list">
         <ul>
-          <li *ngFor="let suggestion of suggestions" (click)="openSuggestionDetails(suggestion)">
-            {{ suggestion.description }}
+          <li>
+            Example Suggestion Description
           </li>
         </ul>
       </div>
     </div>
   </div>
 
-  <!-- Full-screen Modal for Chart/Graph -->
-  <div class="fullscreen-modal" *ngIf="isDetailsModalOpen && currentDetailsType !== 'complaint'">
+  <!-- Placeholder Modal for Chart/Graph -->
+  <div class="fullscreen-modal" style="display: none">
     <div class="modal-content">
-      <button class="close-btn" (click)="closeDetails()">X</button>
-      
-      <div *ngIf="currentDetailsType === 'chart'" class="modal-detail">
-        <h2>Chart Details</h2>
-        <p>Details for the chart...</p>
-        <!-- Filters and Sorting for Chart -->
-        <div class="filters">
-          <label for="chart-filter">Filter:</label>
-          <select id="chart-filter">
-            <option value="pending">Pending</option>
-            <option value="resolved">Resolved</option>
-          </select>
-
-          <label for="chart-order">Order by:</label>
-          <select id="chart-order">
-            <option value="date">Date</option>
-            <option value="status">Status</option>
-          </select>
-
-          <label for="chart-time-range">Time Range:</label>
-          <select id="chart-time-range">
-            <option value="1w">1 Week</option>
-            <option value="1m">1 Month</option>
-            <option value="3m">3 Months</option>
-            <option value="6m">6 Months</option>
-            <option value="1y">1 Year</option>
-          </select>
-        </div>
-      </div>
-      
-      <div *ngIf="currentDetailsType === 'graph'" class="modal-detail">
-        <h2>Graph Details</h2>
-        <p>Details for the graph...</p>
-        <!-- Filters and Sorting for Graph -->
-        <div class="filters">
-          <label for="graph-filter">Filter:</label>
-          <select id="graph-filter">
-            <option value="pending">Pending</option>
-            <option value="resolved">Resolved</option>
-          </select>
-
-          <label for="graph-order">Order by:</label>
-          <select id="graph-order">
-            <option value="date">Date</option>
-            <option value="status">Status</option>
-          </select>
-
-          <label for="graph-time-range">Time Range:</label>
-          <select id="graph-time-range">
-            <option value="1w">1 Week</option>
-            <option value="1m">1 Month</option>
-            <option value="3m">3 Months</option>
-            <option value="6m">6 Months</option>
-            <option value="1y">1 Year</option>
-          </select>
-        </div>
+      <button class="close-btn">X</button>
+      <div class="modal-detail">
+        <h2>Modal Content</h2>
       </div>
     </div>
   </div>
 
-  <!-- Full-screen Modal for Complaints -->
-  <div class="fullscreen-modal" *ngIf="isDetailsModalOpen && currentDetailsType === 'complaint'">
+  <!-- Modal: Complaint Details -->
+  <div class="fullscreen-modal" *ngIf="isComplaintModalOpen">
     <div class="modal-content">
-      <button class="close-btn" (click)="closeDetails()">X</button>
+     <button class="close-btn" (click)="closeComplaintModal()">X</button>
       <div class="modal-detail">
         <h2>Complaint Details</h2>
-        <p><strong>ID:</strong> {{ selectedComplaint?.id || 'N/A' }}</p>
-        <p><strong>Status:</strong> {{ selectedComplaint?.status || 'N/A' }}</p>
-        <p><strong>Description:</strong> {{ selectedComplaint?.description || 'No Description Available' }}</p>
-        <p><strong>Department:</strong> {{ selectedComplaint?.department || 'N/A' }}</p>
-        <p><strong>Tracking:</strong> {{ selectedComplaint?.id || 'N/A' }}</p>
-
-        <label for="status">Update Status:</label>
-        <select id="status" [(ngModel)]="selectedComplaintStatus">
-          <option value="pending">Pending</option>
-          <option value="resolved">Resolved</option>
-        </select>
+        <p><strong>ID:</strong> {{ selectedComplaint?.id }}</p>
+        <p><strong>Status:</strong> {{ selectedComplaint?.status }}</p>
+        <p><strong>Description:</strong> {{ selectedComplaint?.description }}</p>
+        <p><strong>Category:</strong> {{ selectedComplaint?.category }}</p>
+        <p><strong>Sub-Category:</strong> {{ selectedComplaint?.sub_category }}</p>
+        <p><strong>Trackable:</strong> {{ selectedComplaint?.isTrackable ? 'Yes' : 'No' }}</p>
+        <p><strong>Email:</strong> {{ selectedComplaint?.email || 'N/A' }}</p>
+        <p><strong>Created:</strong> {{ selectedComplaint?.created_at | date:'short' }}</p>
+        <p><strong>Updated:</strong> {{ selectedComplaint?.updated_at | date:'short' }}</p>
       </div>
     </div>
   </div>
-
-<!-- Full-screen Modal for Suggestions -->
-<div class="fullscreen-modal suggestion-modal" *ngIf="isDetailsModalOpen && currentDetailsType === 'suggestion'">
-    <div class="modal-content">
-        <button class="close-btn" (click)="closeDetails()">X</button>
-        <div class="modal-detail">
-            <h2>Suggestion Details</h2>
-            <p><strong>ID:</strong> {{ selectedSuggestion?.id || 'N/A' }}</p>
-            <p><strong>Description:</strong> {{ selectedSuggestion?.description || 'No Description Available' }}</p>
-            <p><strong>Department:</strong> {{ selectedSuggestion?.department || 'N/A' }}</p>
-            <p><strong>Status:</strong> {{ selectedSuggestion?.status || 'N/A' }}</p>
-
-            <label for="suggestion-status">Update Status:</label>
-            <select id="suggestion-status" [(ngModel)]="selectedSuggestionStatus">
-                <option value="pending">Pending</option>
-                <option value="implemented">Implemented</option>
-            </select>
-        </div>
-    </div>
 </div>

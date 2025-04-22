@@ -1,119 +1,82 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-management-panel',
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './management-panel.component.html',
   styleUrls: ['./management-panel.component.css']
 })
-export class ManagementPanelComponent {
+export class ManagementPanelComponent implements OnInit {
 
-  constructor(private router: Router){}
+  complaintList: any[] = [];
+  isComplaintModalOpen: boolean = false;
+  selectedComplaint: any = null;
+
+  constructor(
+    private router: Router,
+    private apiService: ApiService
+  ) {}
+
+  ngOnInit(): void {
+    console.log('[ManagementPanel] ngOnInit çalıştı.');
+    this.fetchComplaints();
+  }
+
+  fetchComplaints(): void {
+    console.log('[fetchComplaints] Şikayetler API çağrısı başlatıldı...');
+    this.apiService.getComplaints().subscribe({
+      next: (res) => {
+        console.log('[fetchComplaints] Gelen yanıt:', res);
+        this.complaintList = res;
+      },
+      error: (err) => {
+        console.error('[fetchComplaints] API hatası:', err);
+      }
+    });
+  }
+
+  fetchComplaintDetails(id: number): void {
+    console.log(`[fetchComplaintDetails] ID ${id} için detaylar alınıyor...`);
+    this.apiService.getComplaintById(id).subscribe({
+      next: (res) => {
+        console.log('[fetchComplaintDetails] Detaylar geldi:', res);
+        this.selectedComplaint = res;
+      },
+      error: (err) => {
+        console.error('[fetchComplaintDetails] API hatası:', err);
+      }
+    });
+  }
+
+  openComplaintModal(complaintId: number): void {
+    console.log('[openComplaintModal] Açılan ID:', complaintId);
   
-  isDetailsModalOpen = false;
-  currentDetailsType: 'chart' | 'graph' | 'complaint' | 'suggestion' | null = null; 
-  selectedComplaintStatus: string | null = null;
-  selectedSuggestionStatus: string | null = null; 
+    this.apiService.getComplaintById(complaintId).subscribe({
+      next: (res) => {
+        console.log('[openComplaintModal] Şikayet verisi:', res);
+        this.selectedComplaint = res;
+        this.isComplaintModalOpen = true;
+      },
+      error: (err) => {
+        console.error('[openComplaintModal] Hata:', err);
+      }
+    });
+  }
+
+  closeComplaintModal(): void {
+    this.isComplaintModalOpen = false;
+    this.selectedComplaint = null;
+  }
 
   goToSupport() {
     this.router.navigate(['/helpSupport']);
   }
+
   goToMainMenu() {
     this.router.navigate(['/mainMenu']);
-  }
-
-  selectedComplaint: {
-    id: number;
-    status: string;
-    description: string;
-    department?: string;
-    tracking?: boolean;
-  } | null = null;
-
-  selectedSuggestion: {
-    id: number;
-    description: string;
-    department?: string;
-    status: string;
-  } | null = null;
-
-  complaints = [
-    {
-      id: 1,
-      status: 'pending',
-      description: 'Complaint 1 details...',
-      department: 'IT',
-      tracking: true
-    },
-    {
-      id: 2,
-      status: 'resolved',
-      description: 'Complaint 2 details...',
-      department: 'HR',
-      tracking: false
-    },
-    {
-      id: 3,
-      status: 'pending',
-      description: 'Complaint 3 details...',
-      department: 'Customer Service',
-      tracking: true
-    }
-  ];
-
-  suggestions = [
-    {
-      id: 1,
-      description: 'Suggestion 1 details...',
-      department: 'IT',
-      status: 'pending'
-    },
-    {
-      id: 2,
-      description: 'Suggestion 2 details...',
-      department: 'HR',
-      status: 'implemented'
-    },
-    {
-      id: 3,
-      description: 'Suggestion 3 details...',
-      department: 'Customer Service',
-      status: 'pending'
-    }
-  ];
-
-  openDetails(type: 'chart' | 'graph') {
-    this.isDetailsModalOpen = true;
-    this.currentDetailsType = type;
-  }
-
-  openComplaintDetails(complaint: any) {
-    this.isDetailsModalOpen = true;
-    this.currentDetailsType = 'complaint';
-    this.selectedComplaint = complaint ? { ...complaint } : null;
-    if (this.selectedComplaint) {
-      this.selectedComplaintStatus = this.selectedComplaint.status;
-    }
-  }
-
-  openSuggestionDetails(suggestion: any) {
-    this.isDetailsModalOpen = true;
-    this.currentDetailsType = 'suggestion';
-    this.selectedSuggestion = suggestion ? { ...suggestion } : null;
-    if (this.selectedSuggestion) {
-      this.selectedSuggestionStatus = this.selectedSuggestion.status;
-    }
-  }
-
-  closeDetails() {
-    this.isDetailsModalOpen = false;
-    this.currentDetailsType = null;
-    this.selectedComplaint = null;
-    this.selectedSuggestion = null;
-    this.selectedComplaintStatus = null;
-    this.selectedSuggestionStatus = null;
   }
 }
