@@ -13,8 +13,9 @@ import joblib
 import os
 from django.conf import settings
 
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'ml_models', 'sikayet_model.joblib')
-ENCODER_PATH = os.path.join(settings.BASE_DIR, 'ml_models', 'label_encoder.joblib')
+MODEL_PATH = os.path.join(settings.ML_MODELS_DIR, 'sikayet_model.joblib')
+ENCODER_PATH = os.path.join(settings.ML_MODELS_DIR, 'label_encoder.joblib')
+
 
 try:
     model = joblib.load(MODEL_PATH)
