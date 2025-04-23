@@ -20,6 +20,8 @@ export class ManagementPanelComponent implements OnInit {
   selectedStatus: string = '';
   selectedCategory: string = '';
   selectedIsTrackable: string = '';
+  selectedSortOption: string = '';
+  selectedTrackable: string = '';
 
   constructor(
     private router: Router,
@@ -32,35 +34,54 @@ export class ManagementPanelComponent implements OnInit {
   }
 
   fetchComplaints(): void {
-    console.log('[fetchComplaints] Şikayetler API çağrısı başlatıldı...');
-  
     const params: any = {
-      type: 'complaint',
+      type: 'complaint'
     };
   
-    if (this.selectedStatus) {
-      params.status = this.selectedStatus;
-    }
+    if (this.selectedStatus) params.status = this.selectedStatus;
+    if (this.selectedCategory) params.category = this.selectedCategory;
+    if (this.selectedTrackable) params.isTrackable = this.selectedTrackable;
   
-    if (this.selectedCategory) {
-      params.category = this.selectedCategory;
-    }
-  
-    if (this.selectedIsTrackable) {
-      params.isTrackable = this.selectedIsTrackable;
-    }
+    console.log('[fetchComplaints] params:', params);
   
     this.apiService.getComplaints(params).subscribe({
       next: (res) => {
         console.log('[fetchComplaints] Gelen yanıt:', res);
-        this.complaintList = res;
+        this.complaintList = this.sortComplaintsLocally(res, this.selectedSortOption);
       },
       error: (err) => {
         console.error('[fetchComplaints] API hatası:', err);
       }
     });
   }
-
+  
+  sortComplaintsLocally(complaints: any[], sortBy: string): any[] {
+    if (!Array.isArray(complaints)) return [];
+  
+    switch (sortBy) {
+      case 'newest':
+        return complaints.sort((a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      case 'oldest':
+        return complaints.sort((a, b) =>
+          new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        );
+      case 'status':
+        const statusOrder: { [key: string]: number } = {
+          new: 1,
+          in_progress: 2,
+          resolved: 3,
+          reopened: 4,
+          closed: 5
+        };
+        return complaints.sort((a, b) =>
+          (statusOrder[a.status] || 99) - (statusOrder[b.status] || 99)
+        );
+      default:
+        return complaints;
+    }
+  }
   fetchComplaintDetails(id: number): void {
     console.log(`[fetchComplaintDetails] ID ${id} için detaylar alınıyor...`);
     this.apiService.getComplaintById(id).subscribe({

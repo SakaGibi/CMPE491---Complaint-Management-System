@@ -5,8 +5,8 @@
       <span>Logo</span>
     </div>
     <div>
-      <button class="btn btn-header">Main Menu</button>
-      <button class="btn btn-header">Help & Support</button>
+      <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
+      <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
     </div>
   </div>
 
@@ -29,7 +29,7 @@
       <div class="complaints-header">
         <h2>All Complaints</h2>
         <div class="filters">
-          
+
           <label>Status:</label>
           <select [(ngModel)]="selectedStatus" (change)="fetchComplaints()">
             <option value="">All</option>
@@ -47,12 +47,19 @@
           </select>
 
           <label>Trackable:</label>
-          <select [(ngModel)]="selectedIsTrackable" (change)="fetchComplaints()">
+          <select [(ngModel)]="selectedTrackable" (change)="fetchComplaints()">
             <option value="">All</option>
             <option value="true">Trackable</option>
             <option value="false">Not Trackable</option>
           </select>
 
+          <label>Trackable:</label>
+          <select [(ngModel)]="selectedSortOption" (change)="fetchComplaints()">
+            <option value="">Sort by</option>
+            <option value="newest">Newest → Oldest</option>
+            <option value="oldest">Oldest → Newest</option>
+          </select>
+          
         </div>
       </div>
       <div class="complaints-list">
