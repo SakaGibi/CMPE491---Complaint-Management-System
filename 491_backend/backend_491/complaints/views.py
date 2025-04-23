@@ -9,18 +9,46 @@ from .models import SuggestionOrComplaint
 from .serializers import SuggestionOrComplaintSerializer
 
 
-def classify_all(description): #PLACEHOLDER FOR ML ALGORITHM. CHANGE WHEN READY
-    desc = description.lower()
-    if "öneri" in desc or "olsun" in desc or "eklenebilir" in desc:
-        return "suggestion", "app", "features"
-    elif "geç" in desc or "kargo" in desc:
-        return "complaint", "delivery", "late"
-    elif "bozuk" in desc or "çalışmıyor" in desc:
-        return "complaint", "product", "defective"
-    elif "donuyor" in desc:
-        return "complaint", "app", "performance"
-    else:
-        return "complaint", "general", "unspecified"
+import joblib
+import os
+from django.conf import settings
+
+MODEL_PATH = os.path.join(settings.BASE_DIR, 'ml_models', 'sikayet_model.joblib')
+ENCODER_PATH = os.path.join(settings.BASE_DIR, 'ml_models', 'label_encoder.joblib')
+
+try:
+    model = joblib.load(MODEL_PATH)
+    label_encoder = joblib.load(ENCODER_PATH)
+    print("ML modeli ve label encoder başarıyla yüklendi.")
+except FileNotFoundError:
+    print(f"HATA: Model veya encoder dosyaları bulunamadı!")
+    print(f"Aranan Model Yolu: {MODEL_PATH}")
+    print(f"Aranan Encoder Yolu: {ENCODER_PATH}")
+    model = None
+    label_encoder = None
+except Exception as e:
+    print(f"ML modeli yüklenirken bir hata oluştu: {e}")
+    model = None
+    label_encoder = None
+
+def classify_all(description):
+    if model is None or label_encoder is None:
+        print("Uyarı: Model yüklenemediği için varsayılan sınıflandırma yapılıyor.")
+        return "complaint", "general", "unspecified_model_error"
+
+    try:
+        prediction_numeric = model.predict([description])
+        predicted_category_name = label_encoder.inverse_transform(prediction_numeric)
+
+        type_ = "complaint"
+        category = predicted_category_name[0]
+        sub_category = category
+
+        return type_, category, sub_category
+
+    except Exception as e:
+        print(f"Sınıflandırma sırasında hata: {e}")
+        return "complaint", "general", "unspecified_prediction_error"
 
 @api_view(['POST'])
 def submit_suggestion_or_complaint(request):
