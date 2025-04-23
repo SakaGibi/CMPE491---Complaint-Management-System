@@ -85,4 +85,10 @@ export class ApiService {
     console.log('[API] Şikayet silme başlatıldı:', complaintId);
     return this.http.delete(`${this.BASE_URL}/complaints/delete/${complaintId}/`);
   }
+
+  getSuggestions(): Observable<any[]> {
+    const params = { type: 'suggestion' };
+    console.log('[API] getSuggestions çağrıldı, params:', params);
+    return this.http.get<any[]>(`${this.BASE_URL}/complaints/complaints/`, { params });
+  }
 }

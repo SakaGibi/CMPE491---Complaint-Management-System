@@ -78,14 +78,36 @@
     <div class="right-section">
       <h2>Suggestions</h2>
       <div class="suggestions-list">
-        <ul>
-          <li>
-            Example Suggestion Description
+        <ul *ngIf="suggestionList.length > 0; else noSuggestions">
+          <li *ngFor="let suggestion of suggestionList" (click)="openSuggestionModal(suggestion)">
+            {{ suggestion.description }}
           </li>
         </ul>
+        <ng-template #noSuggestions>
+          <p>No suggestions found.</p>
+        </ng-template>
       </div>
     </div>
   </div>
+
+  <!-- Modal: Suggestion Details -->
+  <div class="fullscreen-modal" *ngIf="isSuggestionModalOpen">
+    <div class="modal-content">
+      <button class="close-btn" (click)="closeSuggestionModal()">X</button>
+      <div class="modal-detail">
+        <h2>Suggestion Details</h2>
+        <p><strong>ID:</strong> {{ selectedSuggestion?.id }}</p>
+        <p><strong>Description:</strong> {{ selectedSuggestion?.description }}</p>
+        <p><strong>Category:</strong> {{ selectedSuggestion?.category || 'N/A' }}</p>
+        <p><strong>Email:</strong> {{ selectedSuggestion?.email || 'N/A' }}</p>
+        <p><strong>Status:</strong> {{ selectedSuggestion?.status }}</p>
+        <p><strong>Created:</strong> {{ selectedSuggestion?.created_at | date:'short' }}</p>
+        <p><strong>Updated:</strong> {{ selectedSuggestion?.updated_at | date:'short' }}</p>
+        <hr>
+        <button class="btn btn-danger" (click)="deleteSuggestion()">Delete Suggestion</button>
+      </div>
+    </div>
+</div>
 
   <!-- Placeholder Modal for Chart/Graph -->
   <div class="fullscreen-modal" style="display: none">

@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 export class ManagementPanelComponent implements OnInit {
 
   complaintList: any[] = [];
+  suggestionList: any[] = [];
   isComplaintModalOpen: boolean = false;
   selectedComplaint: any = null;
   selectedComplaintStatus: string | null = null;
@@ -22,6 +23,9 @@ export class ManagementPanelComponent implements OnInit {
   selectedIsTrackable: string = '';
   selectedSortOption: string = '';
   selectedTrackable: string = '';
+  isSuggestionModalOpen: boolean = false;
+  selectedSuggestion: any = null;
+
 
   constructor(
     private router: Router,
@@ -29,8 +33,16 @@ export class ManagementPanelComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('[ManagementPanel] ngOnInit çalıştı.');
+    this.fetchSuggestions();
     this.fetchComplaints();
+  }
+
+  goToSupport() {
+    this.router.navigate(['/helpSupport']);
+  }
+
+  goToMainMenu() {
+    this.router.navigate(['/mainMenu']);
   }
 
   fetchComplaints(): void {
@@ -162,11 +174,48 @@ export class ManagementPanelComponent implements OnInit {
     });
   }
 
-  goToSupport() {
-    this.router.navigate(['/helpSupport']);
+  fetchSuggestions(): void {
+    console.log('[fetchSuggestions] Öneri API çağrısı başlatıldı...');
+    this.apiService.getSuggestions().subscribe({
+      next: (res) => {
+        console.log('[fetchSuggestions] Gelen yanıt:', res);
+        this.suggestionList = res;
+      },
+      error: (err) => {
+        console.error('[fetchSuggestions] API hatası:', err);
+      }
+    });
   }
 
-  goToMainMenu() {
-    this.router.navigate(['/mainMenu']);
+  deleteSuggestion(): void {
+    if (!this.selectedSuggestion) return;
+  
+    const confirmDelete = confirm('Bu öneriyi silmek istediğinize emin misiniz?');
+    if (!confirmDelete) return;
+  
+    this.apiService.deleteComplaint(this.selectedSuggestion.id).subscribe({
+      next: (res) => {
+        console.log('[deleteSuggestion] Başarılı:', res);
+        this.suggestionList = this.suggestionList.filter(s => s.id !== this.selectedSuggestion?.id);
+        this.selectedSuggestion = null;
+        this.isSuggestionModalOpen = false;
+        alert('Öneri silindi.');
+      },
+      error: (err) => {
+        console.error('[deleteSuggestion] Hata:', err);
+        alert('Öneri silinemedi.');
+      }
+    });
   }
+
+  openSuggestionModal(suggestion: any): void {
+    this.selectedSuggestion = suggestion;
+    this.isSuggestionModalOpen = true;
+  }
+  
+  closeSuggestionModal(): void {
+    this.selectedSuggestion = null;
+    this.isSuggestionModalOpen = false;
+  }
+  
 }
