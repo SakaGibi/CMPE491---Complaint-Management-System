@@ -247,3 +247,48 @@ select {
 .graph:active {
     background-color: #bbb;
 }
+
+.modal-detail label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+  
+  .modal-detail select {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+  }
+  
+  .modal-detail select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .modal-detail button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .modal-detail button:hover {
+    background-color: #0056b3;
+  }
+  
+  .modal-detail .btn-danger {
+    background-color: #dc3545;
+  }
+  
+  .modal-detail .btn-danger:hover {
+    background-color: #b02a37;
+  }
+  

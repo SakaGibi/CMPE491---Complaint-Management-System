@@ -29,16 +29,30 @@
       <div class="complaints-header">
         <h2>All Complaints</h2>
         <div class="filters">
-          <select>
-            <option value="">Filter by Category</option>
-            <option value="pending">Pending</option>
+          
+          <label>Status:</label>
+          <select [(ngModel)]="selectedStatus" (change)="fetchComplaints()">
+            <option value="">All</option>
+            <option value="new">New</option>
+            <option value="in_progress">In Progress</option>
             <option value="resolved">Resolved</option>
+            <option value="reopened">Reopened</option>
+            <option value="closed">Closed</option>
           </select>
-          <select>
-            <option value="">Sort by</option>
-            <option value="date">Date</option>
-            <option value="status">Status</option>
+
+          <label>Category:</label>
+          <select [(ngModel)]="selectedCategory" (change)="fetchComplaints()">
+            <option value="">All</option>
+            <option value="date">DİĞER KATEGORİLERE GÖRE EKLENİCEK</option>
           </select>
+
+          <label>Trackable:</label>
+          <select [(ngModel)]="selectedIsTrackable" (change)="fetchComplaints()">
+            <option value="">All</option>
+            <option value="true">Trackable</option>
+            <option value="false">Not Trackable</option>
+          </select>
+
         </div>
       </div>
       <div class="complaints-list">
@@ -76,22 +90,37 @@
     </div>
   </div>
 
-  <!-- Modal: Complaint Details -->
-  <div class="fullscreen-modal" *ngIf="isComplaintModalOpen">
-    <div class="modal-content">
-     <button class="close-btn" (click)="closeComplaintModal()">X</button>
-      <div class="modal-detail">
-        <h2>Complaint Details</h2>
-        <p><strong>ID:</strong> {{ selectedComplaint?.id }}</p>
-        <p><strong>Status:</strong> {{ selectedComplaint?.status }}</p>
-        <p><strong>Description:</strong> {{ selectedComplaint?.description }}</p>
-        <p><strong>Category:</strong> {{ selectedComplaint?.category }}</p>
-        <p><strong>Sub-Category:</strong> {{ selectedComplaint?.sub_category }}</p>
-        <p><strong>Trackable:</strong> {{ selectedComplaint?.isTrackable ? 'Yes' : 'No' }}</p>
-        <p><strong>Email:</strong> {{ selectedComplaint?.email || 'N/A' }}</p>
-        <p><strong>Created:</strong> {{ selectedComplaint?.created_at | date:'short' }}</p>
-        <p><strong>Updated:</strong> {{ selectedComplaint?.updated_at | date:'short' }}</p>
-      </div>
+<!-- Modal: Complaint Details -->
+<div class="fullscreen-modal" *ngIf="isComplaintModalOpen">
+  <div class="modal-content">
+    <button class="close-btn" (click)="closeComplaintModal()">X</button>
+    <div class="modal-detail">
+      <h2>Complaint Details</h2>
+      <p><strong>ID:</strong> {{ selectedComplaint?.id }}</p>
+      <p><strong>Status:</strong> {{ selectedComplaint?.status }}</p>
+      <p><strong>Description:</strong> {{ selectedComplaint?.description }}</p>
+      <p><strong>Category:</strong> {{ selectedComplaint?.category }}</p>
+      <p><strong>Sub-Category:</strong> {{ selectedComplaint?.sub_category }}</p>
+      <p><strong>Email:</strong> {{ selectedComplaint?.email || 'N/A' }}</p>
+      <p><strong>Created:</strong> {{ selectedComplaint?.created_at | date:'short' }}</p>
+      <p><strong>Updated:</strong> {{ selectedComplaint?.updated_at | date:'short' }}</p>
+
+      <hr>
+
+      <label for="status">Update Status:</label>
+      <select id="status" [(ngModel)]="selectedComplaintStatus">
+        <option value="new">New</option>
+        <option value="in_progress">In Progress</option>
+        <option value="resolved">Resolved</option>
+        <option value="reopened">Reopened</option>
+        <option value="closed">Closed</option>
+      </select>
+      <button (click)="updateComplaintStatus()">Update Status</button>
+      <hr>
+
+      <button class="btn btn-danger" (click)="deleteComplaint()">Delete Complaint</button>
     </div>
   </div>
+</div>
+
 </div>

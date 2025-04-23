@@ -75,4 +75,14 @@ export class ApiService {
     console.log(`[API] getComplaintById çağrıldı. ID: ${complaintId}`);
     return this.http.get<any>(`${this.BASE_URL}/complaints/detail/${complaintId}/`);
   }
+
+  updateComplaintStatus(complaintId: number, status: string): Observable<any> {
+    console.log('[API] Durum güncelleme başlatıldı:', { complaintId, status });
+    return this.http.put(`${this.BASE_URL}/complaints/update-status/${complaintId}/`, { status });
+  }
+  
+  deleteComplaint(complaintId: number): Observable<any> {
+    console.log('[API] Şikayet silme başlatıldı:', complaintId);
+    return this.http.delete(`${this.BASE_URL}/complaints/delete/${complaintId}/`);
+  }
 }
