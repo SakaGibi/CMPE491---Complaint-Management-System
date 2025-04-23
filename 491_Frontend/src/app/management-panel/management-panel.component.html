@@ -27,39 +27,43 @@
     <!-- Center Section: Complaints List -->
     <div class="center-section">
       <div class="complaints-header">
-        <h2>All Complaints</h2>
+        <div class="complaints-title">
+          <h2>All Complaints</h2>
+        </div>
         <div class="filters">
-
-          <label>Status:</label>
-          <select [(ngModel)]="selectedStatus" (change)="fetchComplaints()">
-            <option value="">All</option>
-            <option value="new">New</option>
-            <option value="in_progress">In Progress</option>
-            <option value="resolved">Resolved</option>
-            <option value="reopened">Reopened</option>
-            <option value="closed">Closed</option>
-          </select>
-
-          <label>Category:</label>
-          <select [(ngModel)]="selectedCategory" (change)="fetchComplaints()">
-            <option value="">All</option>
-            <option value="date">DİĞER KATEGORİLERE GÖRE EKLENİCEK</option>
-          </select>
-
-          <label>Trackable:</label>
-          <select [(ngModel)]="selectedTrackable" (change)="fetchComplaints()">
-            <option value="">All</option>
-            <option value="true">Trackable</option>
-            <option value="false">Not Trackable</option>
-          </select>
-
-          <label>Trackable:</label>
-          <select [(ngModel)]="selectedSortOption" (change)="fetchComplaints()">
-            <option value="">Sort by</option>
-            <option value="newest">Newest → Oldest</option>
-            <option value="oldest">Oldest → Newest</option>
-          </select>
-          
+          <div class="filter-row">
+            <label>Status:</label>
+            <select [(ngModel)]="selectedStatus" (change)="fetchComplaints()">
+              <option value="">All</option>
+              <option value="new">New</option>
+              <option value="in_progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+              <option value="reopened">Reopened</option>
+              <option value="closed">Closed</option>
+            </select>
+        
+            <label>Category:</label>
+            <select [(ngModel)]="selectedCategory" (change)="fetchComplaints()">
+              <option value="">All</option>
+              <option value="date">DİĞER KATEGORİLERE GÖRE EKLENİCEK</option>
+            </select>
+          </div>
+        
+          <div class="filter-row">
+            <label>Trackable:</label>
+            <select [(ngModel)]="selectedTrackable" (change)="fetchComplaints()">
+              <option value="">All</option>
+              <option value="true">Trackable</option>
+              <option value="false">Not Trackable</option>
+            </select>
+        
+            <label>Sort:</label>
+            <select [(ngModel)]="selectedSortOption" (change)="fetchComplaints()">
+              <option value="">Sort by</option>
+              <option value="newest">Newest → Oldest</option>
+              <option value="oldest">Oldest → Newest</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="complaints-list">

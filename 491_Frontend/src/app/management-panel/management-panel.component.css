@@ -292,3 +292,21 @@ select {
     background-color: #b02a37;
   }
   
+  .complaints-header {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    gap: 10px;
+  }
+  
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .filters label {
+    margin-right: 4px;
+    font-weight: bold;
+  }
+  
