@@ -45,7 +45,12 @@
             <label>Category:</label>
             <select [(ngModel)]="selectedCategory" (change)="fetchComplaints()">
               <option value="">All</option>
-              <option value="date">DİĞER KATEGORİLERE GÖRE EKLENİCEK</option>
+              <option value="temizlik">Temizlik</option>
+              <option value="gürültü">Gürültü</option>
+              <option value="bakım ve onarım">Bakım ve Onarım</option>
+              <option value="güvenlik">Güvenlik</option>
+              <option value="Ortak Alan Kullanımı">Ortak Alan Kullanımı</option>
+              <option value="yönetim">Yönetim</option>
             </select>
           </div>
         
