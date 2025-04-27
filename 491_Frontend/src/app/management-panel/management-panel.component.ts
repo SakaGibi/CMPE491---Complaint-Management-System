@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService } from '../services/api.service';
 import { FormsModule } from '@angular/forms';
+import { NgChartsModule } from 'ng2-charts';
+import { ChartData, ChartOptions } from 'chart.js';
 
 @Component({
   selector: 'app-management-panel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgChartsModule],
   templateUrl: './management-panel.component.html',
   styleUrls: ['./management-panel.component.css']
 })
@@ -25,6 +27,41 @@ export class ManagementPanelComponent implements OnInit {
   selectedTrackable: string = '';
   isSuggestionModalOpen: boolean = false;
   selectedSuggestion: any = null;
+  chartData: { category: string; count: number }[] = [];
+  readonly ALL_CATEGORIES = [
+    'bakım ve onarım',
+    'temizlik',
+    'ortak alan kullanımı',
+    'güvenlik',
+    'yönetim',
+    'gürültü'
+  ];
+  isChartModalOpen: boolean = false;
+  chartRange: string = '';
+  barChartLabels: string[] = [];
+  barChartData: ChartData<'bar'> = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Complaint Count',
+        data: [],
+        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+      }
+    ]
+  };
+  barChartOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1
+        }
+      }
+    }
+  };
 
 
   constructor(
@@ -35,6 +72,7 @@ export class ManagementPanelComponent implements OnInit {
   ngOnInit(): void {
     this.fetchSuggestions();
     this.fetchComplaints();
+    this.fetchComplaintStatistics();
   }
 
   goToSupport() {
@@ -218,4 +256,58 @@ export class ManagementPanelComponent implements OnInit {
     this.isSuggestionModalOpen = false;
   }
   
+  fetchComplaintStatistics(range: string = ''): void {
+    console.log('[fetchComplaintStatistics] API çağrısı başlatıldı...', { range });
+  
+    this.apiService.getComplaintStatistics(range).subscribe({
+      next: (res) => {
+        console.log('[fetchComplaintStatistics] Gelen yanıt:', res);
+  
+        const categoryMap: { [key: string]: number } = {};
+        this.ALL_CATEGORIES.forEach(cat => categoryMap[cat] = 0);
+  
+        res.forEach((item: any) => {
+          const cat = item.category?.toLowerCase();
+          if (cat && categoryMap.hasOwnProperty(cat)) {
+            categoryMap[cat] = item.count;
+          }
+        });
+  
+        this.chartData = this.ALL_CATEGORIES.map(category => ({
+          category,
+          count: categoryMap[category]
+        }));
+  
+        // 🔽 Bar chart datasını burada güncelliyoruz
+        this.barChartData = {
+          labels: this.chartData.map(c => c.category),
+          datasets: [
+            {
+              label: 'Complaint Count',
+              data: this.chartData.map(c => c.count),
+              backgroundColor: 'rgba(54, 162, 235, 0.6)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }
+          ]
+        };
+      },
+      error: (err) => {
+        console.error('[fetchComplaintStatistics] API hatası:', err);
+      }
+    });
+  }
+  
+  
+  
+
+  openChartModal(): void {
+    this.isChartModalOpen = true;
+    this.fetchComplaintStatistics();
+  }
+  
+  
+  closeChartModal(): void {
+    this.isChartModalOpen = false;
+  }
 }

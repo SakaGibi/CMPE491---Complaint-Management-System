@@ -91,4 +91,10 @@ export class ApiService {
     console.log('[API] getSuggestions çağrıldı, params:', params);
     return this.http.get<any[]>(`${this.BASE_URL}/complaints/complaints/`, { params });
   }
+
+  getComplaintStatistics(range?: string): Observable<any[]> {
+    const params: any = {};
+    if (range) params.range = range;
+    return this.http.get<any[]>(`${this.BASE_URL}/complaints/statistics/`, { params });
+  }
 }

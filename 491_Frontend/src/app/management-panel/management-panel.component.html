@@ -12,12 +12,49 @@
 
   <!-- Main Content Area -->
   <div class="content-area">
-    <!-- Left Section: Chart and Graph -->
     <div class="left-section">
-      <div class="chart-container">
+
+      <!-- 🟦 Chart Preview -->
+      <div class="chart-container" (click)="openChartModal()">
         <h2>Complaint Chart</h2>
-        <div class="chart">[Chart Placeholder]</div>
+        <canvas baseChart
+          [data]="barChartData"
+          [labels]="barChartLabels"
+          [options]="{ responsive: true, plugins: { legend: { display: false } } }"
+          [type]="'bar'">
+        </canvas>
       </div>
+      <!-- Chart Modal -->
+      <div class="fullscreen-modal" *ngIf="isChartModalOpen">
+        <div class="modal-content">
+          <button class="close-btn" (click)="closeChartModal()">X</button>
+    
+          <div class="modal-detail">
+            <h2>Complaint Chart</h2>
+    
+            <!-- Zaman aralığı filtresi -->
+            <label for="chart-range">Select Range:</label>
+            <select id="chart-range" [(ngModel)]="chartRange" (change)="fetchComplaintStatistics(chartRange)">
+              <option value="">All Time</option>
+              <option value="7d">Last 7 Days</option>
+              <option value="1m">Last 1 Month</option>
+              <option value="3m">Last 3 Months</option>
+              <option value="6m">Last 6 Months</option>
+            </select>
+    
+            <!-- Bar Chart -->
+            <canvas *ngIf="isChartModalOpen"
+            baseChart
+            [data]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [type]="'bar'">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Graph Placeholder -->
       <div class="graph-container">
         <h2>Complaint Trends</h2>
         <div class="graph">[Graph Placeholder]</div>
