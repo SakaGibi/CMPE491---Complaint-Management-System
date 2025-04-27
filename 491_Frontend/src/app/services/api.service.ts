@@ -97,4 +97,8 @@ export class ApiService {
     if (range) params.range = range;
     return this.http.get<any[]>(`${this.BASE_URL}/complaints/statistics/`, { params });
   }
+
+  getComplaintTrends(params?: any): Observable<any[]> {
+    return this.http.get<any[]>(`${this.BASE_URL}/complaints/trends/`, { params });
+  }
 }

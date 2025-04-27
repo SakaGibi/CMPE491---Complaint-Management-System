@@ -62,7 +62,49 @@ export class ManagementPanelComponent implements OnInit {
       }
     }
   };
-
+  isTrendModalOpen: boolean = false;
+  trendRange: string = '';
+  trendCategory: string = '';
+  lineChartLabels: string[] = [];
+  lineChartData: ChartData<'line'> = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Daily Complaints',
+        data: [],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.3
+      }
+    ]
+  };
+  lineChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'day',
+          tooltipFormat: 'MMM d',
+          displayFormats: {
+            day: 'MMM d'
+          }
+        },
+        title: {
+          display: true,
+          text: 'Date'
+        }
+      },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Number of Complaints'
+        }
+      }
+    }
+  };
 
   constructor(
     private router: Router,
@@ -73,6 +115,7 @@ export class ManagementPanelComponent implements OnInit {
     this.fetchSuggestions();
     this.fetchComplaints();
     this.fetchComplaintStatistics();
+    this.fetchComplaintTrends();
   }
 
   goToSupport() {
@@ -302,6 +345,7 @@ export class ManagementPanelComponent implements OnInit {
     console.log('[refreshComplaintsAndChart] Güncelleme başlatıldı...');
     this.fetchComplaints();
     this.fetchComplaintStatistics(this.chartRange);
+    this.fetchComplaintTrends(this.trendRange, this.trendCategory);
   }
   
   openChartModal(): void {
@@ -312,5 +356,46 @@ export class ManagementPanelComponent implements OnInit {
   
   closeChartModal(): void {
     this.isChartModalOpen = false;
+  }
+
+  fetchComplaintTrends(range: string = '', category: string = ''): void {
+    const params: any = {};
+    if (range) params.range = range;
+    if (category) params.category = category;
+  
+    console.log('[fetchComplaintTrends] Params:', params);
+  
+    this.apiService.getComplaintTrends(params).subscribe({
+      next: (res) => {
+        console.log('[fetchComplaintTrends] Gelen yanıt:', res);
+  
+        this.lineChartData = {
+          labels: res.map((item: any) => item.day), // 🔥 ISO string kullan!
+          datasets: [
+            {
+              label: 'Daily Complaints',
+              data: res.map((item: any) => item.count),
+              fill: false,
+              borderColor: '#007bff',
+              tension: 0.3
+            }
+          ]
+        };
+  
+        console.log('📊 lineChartData:', this.lineChartData);
+      },
+      error: (err) => {
+        console.error('[fetchComplaintTrends] Hata:', err);
+      }
+    });
+  }
+
+  openTrendModal(): void {
+    this.isTrendModalOpen = true;
+    this.fetchComplaintTrends(this.trendRange, this.trendCategory);
+  }
+  
+  closeTrendModal(): void {
+    this.isTrendModalOpen = false;
   }
 }

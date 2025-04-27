@@ -13,53 +13,84 @@
   <!-- Main Content Area -->
   <div class="content-area">
     <div class="left-section">
-
-      <!-- 🟦 Chart Preview -->
-      <div class="chart-container" (click)="openChartModal()">
-        <h2>Complaint Chart</h2>
-        <canvas baseChart
-          [data]="barChartData"
-          [labels]="barChartLabels"
-          [options]="{ responsive: true, plugins: { legend: { display: false } } }"
-          [type]="'bar'">
-        </canvas>
-      </div>
-      <!-- Chart Modal -->
-      <div class="fullscreen-modal" *ngIf="isChartModalOpen">
-        <div class="modal-content">
-          <button class="close-btn" (click)="closeChartModal()">X</button>
-    
-          <div class="modal-detail">
-            <h2>Complaint Chart</h2>
-    
-            <!-- Zaman aralığı filtresi -->
-            <label for="chart-range">Select Range:</label>
-            <select id="chart-range" [(ngModel)]="chartRange" (change)="fetchComplaintStatistics(chartRange)">
-              <option value="">All Time</option>
-              <option value="7d">Last 7 Days</option>
-              <option value="1m">Last 1 Month</option>
-              <option value="3m">Last 3 Months</option>
-              <option value="6m">Last 6 Months</option>
-            </select>
-    
-            <!-- Bar Chart -->
-            <canvas *ngIf="isChartModalOpen"
-            baseChart
+        <!-- Chart Preview -->
+        <div class="chart-container" (click)="openChartModal()">
+          <h2>Complaint Chart</h2>
+          <canvas baseChart
             [data]="barChartData"
             [labels]="barChartLabels"
-            [options]="barChartOptions"
+            [options]="{ responsive: true, plugins: { legend: { display: false } } }"
             [type]="'bar'">
-            </canvas>
+          </canvas>
+        </div>
+      
+        <!-- Trend Preview -->
+        <div class="graph-container" (click)="openTrendModal()">
+          <h2>Complaint Trends</h2>
+          <canvas baseChart
+            [data]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="{ responsive: true, plugins: { legend: { display: false } } }"
+            [type]="'line'">
+          </canvas>
+        </div>
+      
+        <!-- Chart Modal -->
+        <div class="fullscreen-modal" *ngIf="isChartModalOpen">
+          <div class="modal-content">
+            <button class="close-btn" (click)="closeChartModal()">X</button>
+            <div class="modal-detail">
+              <h2>Complaint Chart</h2>
+              <label for="chart-range">Select Range:</label>
+              <select id="chart-range" [(ngModel)]="chartRange" (change)="fetchComplaintStatistics(chartRange)">
+                <option value="">All Time</option>
+                <option value="7d">Last 7 Days</option>
+                <option value="1m">Last 1 Month</option>
+                <option value="3m">Last 3 Months</option>
+                <option value="6m">Last 6 Months</option>
+              </select>
+              <canvas baseChart
+                [data]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [type]="'bar'">
+              </canvas>
+            </div>
           </div>
         </div>
-      </div>
-    
-      <!-- Graph Placeholder -->
-      <div class="graph-container">
-        <h2>Complaint Trends</h2>
-        <div class="graph">[Graph Placeholder]</div>
-      </div>
+      
+        <!-- Trend Modal -->
+        <div class="fullscreen-modal" *ngIf="isTrendModalOpen">
+          <div class="modal-content">
+            <button class="close-btn" (click)="closeTrendModal()">X</button>
+            <div class="modal-detail">
+              <h2>Complaint Trends</h2>
+              <label for="trend-range">Select Range:</label>
+              <select id="trend-range" [(ngModel)]="trendRange" (change)="fetchComplaintTrends(trendRange, trendCategory)">
+                <option value="">All Time</option>
+                <option value="7d">Last 7 Days</option>
+                <option value="1m">Last 1 Month</option>
+                <option value="3m">Last 3 Months</option>
+                <option value="6m">Last 6 Months</option>
+              </select>
+            
+              <label for="trend-category">Category:</label>
+              <select id="trend-category" [(ngModel)]="trendCategory" (change)="fetchComplaintTrends(trendRange, trendCategory)">
+                <option value="">All</option>
+                <option *ngFor="let cat of ALL_CATEGORIES" [value]="cat">{{ cat }}</option>
+              </select>
+            
+              <canvas
+                baseChart
+                [data]="lineChartData"
+                [options]="lineChartOptions"
+                [type]="'line'">
+              </canvas>
+            </div>
+          </div>
     </div>
+             
+  </div>
 
     <!-- Center Section: Complaints List -->
     <div class="center-section">
@@ -197,6 +228,4 @@
       <button class="btn btn-danger" (click)="deleteComplaint()">Delete Complaint</button>
     </div>
   </div>
-</div>
-
 </div>
