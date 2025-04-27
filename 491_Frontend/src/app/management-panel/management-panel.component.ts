@@ -298,9 +298,12 @@ export class ManagementPanelComponent implements OnInit {
     });
   }
   
+  refreshComplaintsAndChart(): void {
+    console.log('[refreshComplaintsAndChart] Güncelleme başlatıldı...');
+    this.fetchComplaints();
+    this.fetchComplaintStatistics(this.chartRange);
+  }
   
-  
-
   openChartModal(): void {
     this.isChartModalOpen = true;
     this.fetchComplaintStatistics();
