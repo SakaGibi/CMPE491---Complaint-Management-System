@@ -15,18 +15,31 @@ html, body {
   
   /* Üst Bar (Header) */
   .header-panel {
+    position: relative;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;     /* butonlar sağda kalsın */
     align-items: center;
     padding: 10px 20px;
-    background-color: #f53b4e; /* Panelin arka plan rengi */
+    padding-left: 120px;           /* LOGO genişliği kadar yer bırak */
+    background-color: #f53b4e;
     color: white;
+    height: 70px;
+    overflow: visible;
   }
   
   .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
+    position: absolute;
+    top: -45px;
+    left: -40px;
+    transform: translateY(40%);
+    z-index: 10;
+  }
+  
+  .logo img {
+    height: 100px;        
+    width: auto;
+    object-fit: contain;
+    display: block;
   }
   
   .btn-header {

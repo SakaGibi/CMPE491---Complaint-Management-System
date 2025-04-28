@@ -12,18 +12,30 @@ html, body {
 }
 
 .header-panel {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #f53b4e; 
-    color: white;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f53b4e;
+  color: white;
+  height: 35px;             
+  overflow: visible;
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
+  position: absolute;
+  top: -45px;
+  left: -40px;
+  transform: translateY(40%);
+  z-index: 10;
+}
+
+.logo img {
+  height: 100px;        
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
 
