@@ -8,10 +8,16 @@ from rest_framework import status
 from .models import SuggestionOrComplaint
 from .serializers import SuggestionOrComplaintSerializer
 
+from datetime import datetime, timedelta
+from django.db.models import Q 
+
 
 import joblib
 import os
 from django.conf import settings
+
+from groq import Groq
+import json
 
 MODEL_PATH = os.path.join(settings.ML_MODELS_DIR, 'sikayet_model.joblib')
 ENCODER_PATH = os.path.join(settings.ML_MODELS_DIR, 'label_encoder.joblib')
@@ -210,15 +216,112 @@ def get_complaint_trends(request):
     trend = qs.annotate(day=TruncDay('created_at')).values('day').annotate(count=Count('id')).order_by('day')
     return Response(trend, status=200)
 
+# --- LLM Rapor Fonksiyonları ---
 
-# LLM RAPOR OLUŞTURMA İÇİN PLACEHOLDER
+def _apply_llm_filters(queryset, filters):
+    filter_mapping = {
+        'category': 'category__iexact',
+        'status': 'status__iexact',
+        'type': 'type__iexact',
+        'isTrackable': 'isTrackable',
+    }
+    q_objects = Q()
+    for key, value in filters.items():
+        if key == 'date_from':
+            try: q_objects &= Q(created_at__date__gte=value)
+            except ValueError: raise ValueError(f"Geçersiz tarih formatı (date_from): {value}. YYYY-MM-DD kullanın.")
+        elif key == 'date_to':
+            try:
+                end_date = datetime.strptime(value, '%Y-%m-%d').date() + timedelta(days=1)
+                q_objects &= Q(created_at__date__lt=end_date)
+            except ValueError: raise ValueError(f"Geçersiz tarih formatı (date_to): {value}. YYYY-MM-DD kullanın.")
+        elif key in filter_mapping:
+            processed_value = str(value).lower() in ['true', '1', 't', 'y', 'yes'] if key == 'isTrackable' else value
+            q_objects &= Q(**{filter_mapping[key]: processed_value})
+    return queryset.filter(q_objects)
+
+def _generate_llm_prompt(complaints_list, filters, report_type):
+    filter_desc = ", ".join([f"{k}: {v}" for k, v in filters.items()]) if filters else "Tüm Şikayetler"
+    prompt = f"""
+Görev: Bir apartman yönetimi için '{report_type}' raporu oluştur.
+Filtreler: {filter_desc}
+Aşağıda listelenen şikayetleri dikkatlice analiz et.
+
+Analiz Edilecek Şikayetler:
+"""
+    if not complaints_list:
+        prompt += "- Bu filtrelerle eşleşen şikayet bulunmamaktadır.\n"
+    else:
+        for complaint in complaints_list:
+            short_desc = complaint.description[:150] + ('...' if len(complaint.description) > 150 else '')
+            prompt += f"- ID:{complaint.id}, Kategori: {complaint.category}, Durum: {complaint.status}, Tarih: {complaint.created_at.strftime('%Y-%m-%d')}, Açıklama: {short_desc}\n"
+    prompt += f"""
+İstenen Rapor ({report_type}):
+Lütfen yukarıdaki şikayetlere dayanarak, belirtilen filtreler kapsamında, aşağıdaki formata uygun, kısa ve öz bir '{report_type}' raporu hazırla:
+
+*   **Genel Durum:** (Şikayetlerin genel bir özeti)
+*   **Öne Çıkan Temalar:** (Tekrarlayan sorunlar)
+*   **Öneriler (Varsa):** (Alınabilecek aksiyonlar)
+
+Raporu profesyonel bir dille yaz.
+"""
+    return prompt
+
+def _call_groq_api(prompt):
+
+    api_key = getattr(settings, 'GROQ_API_KEY', None)
+    model_id = getattr(settings, 'LLM_MODEL_ID', "llama-3.1-8b-instant")
+    if not api_key: return None, "Groq API anahtarı (GROQ_API_KEY) Django ayarlarında bulunamadı."
+    try:
+        client = Groq(api_key=api_key, timeout=30.0)
+        print(f"Groq API'ye gönderiliyor (Model: {model_id})...")
+        chat_completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model=model_id, temperature=0.6, max_tokens=500, stream=False,
+        )
+        print("Groq API'den yanıt alındı.")
+        content = chat_completion.choices[0].message.content
+        if not content or content.strip() == "": return None, "LLM API'den boş yanıt alındı."
+        return content, None
+    except Exception as e:
+        error_message = f"Groq API çağrısı sırasında hata oluştu: {e}"
+        print(error_message)
+        return None, error_message
+    
+# LLM RAPOR OLUŞTURMA
 @api_view(['POST'])
 def generate_report(request):
-    report_type = request.data.get('reportType')
+    report_type = request.data.get('reportType', 'Genel Özet')
     filters = request.data.get('filters', {})
 
+    # Şikayetleri Filtrele
+    try:
+        base_qs = SuggestionOrComplaint.objects.filter(type='complaint')
+        filtered_complaints_qs = _apply_llm_filters(base_qs, filters)
+    except ValueError as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        print(f"Filtreleme sırasında beklenmedik hata: {e}")
+        return Response({"error": "Şikayetler filtrelenirken bir hata oluştu."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    # LLM'e gönderilecek şikayet sayısını sınırla (örn. son 10)
+    complaints_for_llm = list(filtered_complaints_qs.order_by('-created_at')[:10])
+
+    # LLM için Prompt Oluştur
+    prompt = _generate_llm_prompt(complaints_for_llm, filters, report_type)
+
+    # LLM API'sini Çağır
+    report_content, error = _call_groq_api(prompt)
+
+    if error:
+        print(f"LLM Rapor Hatası: {error}")
+        return Response({"error": "Yapay zeka raporu oluşturulurken bir hata oluştu."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+    # Başarılı Yanıtı Döndür
     return Response({
-        "message": "Bu endpoint gelecekte yapay zeka destekli bir rapor oluşturacaktır.",
+        "message": f"'{report_type}' raporu başarıyla oluşturuldu.",
+        "report_content": report_content,
         "reportType": report_type,
-        "filters": filters
-    }, status=200)
+        "filters_applied": filters,
+        "complaints_analyzed_count": len(complaints_for_llm)
+    }, status=status.HTTP_200_OK)
