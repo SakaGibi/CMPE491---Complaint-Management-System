@@ -125,6 +125,10 @@ display: block;
     padding: 15px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
+    height: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 5px;
 }
 
 .complaints-list ul {
@@ -157,18 +161,30 @@ display: block;
     margin-top: 0;
 }
 
-.Reports-list ul {
+.reports-list {
+  flex: 1;
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 100%;
+  max-height: 60vh;
+  padding-right: 5px;
+}
+
+.reports-list ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.Reports-list li {
+.reports-list li {
     padding: 10px;
     border-bottom: 1px solid #eee;
 }
 
-.Reports-list li:last-child {
+.reports-list li:last-child {
     border-bottom: none;
 }
 
