@@ -405,8 +405,17 @@ export class ManagementPanelComponent implements OnInit {
   selectedReport: any = null;
   isReportModalOpen: boolean = false;
   isLoadingReport: boolean = false;
-  newReportFilters: any = {};
+  newReportFilters: any = {
+    category: '',
+    status: '',
+    type: 'complaint',         
+    isTrackable: '',
+    date_from: '',
+    date_to: ''
+  };
   newReportType: string = 'Genel Özet';
+  newReportName: string = '';
+
 
   fetchReports(): void {
     this.apiService.listReports().subscribe({
@@ -421,26 +430,43 @@ export class ManagementPanelComponent implements OnInit {
     });
   }
 
+  private cleanFilters(filters: any): any {
+    const cleaned: any = {};
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== '' && value !== null && value !== undefined) {
+        cleaned[key] = value;
+      }
+    });
+    return cleaned;
+  }
+
   generateNewReport(): void {
+    if (!this.newReportName.trim()) {
+      alert('Lütfen bir rapor ismi giriniz.');
+      return;
+    }
+
+    const cleanedFilters = this.cleanFilters(this.newReportFilters);
+
     const payload = {
-      reportType: this.newReportType,
-      filters: this.newReportFilters
+      reportType: this.newReportName.trim(),
+      filters: cleanedFilters
     };
 
-    this.isLoadingReport = true;
     console.log('[generateNewReport] Gönderilen:', payload);
+    this.isLoadingReport = true;
 
     this.apiService.generateReport(payload).subscribe({
       next: (res) => {
         console.log('[generateNewReport] Başarılı:', res);
-        this.fetchReports(); // listeyi güncelle
-        alert('Yeni rapor başarıyla oluşturuldu.');
+        this.fetchReports();
+        this.newReportName = '';
+        this.isLoadingReport = false;
+        alert('Rapor başarıyla oluşturuldu.');
       },
       error: (err) => {
         console.error('[generateNewReport] Hata:', err);
-        alert('Rapor oluşturulamadı.');
-      },
-      complete: () => {
+        alert('Rapor oluşturulurken bir hata oluştu.');
         this.isLoadingReport = false;
       }
     });
