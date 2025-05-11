@@ -10,8 +10,8 @@ from .serializers import SuggestionOrComplaintSerializer
 from django.utils.timezone import now
 from .models import ReportRecommendation
 from datetime import datetime, timedelta
-from django.db.models import Q 
-
+from django.db.models import Q
+from django.core.mail import send_mail
 
 import joblib
 import os
@@ -90,9 +90,33 @@ def submit_suggestion_or_complaint(request):
 
     serializer = SuggestionOrComplaintSerializer(data=data)
     if serializer.is_valid():
-        serializer.save()
+        saved = serializer.save()
+
+        if is_trackable and email:
+            try:
+                message = f"""
+Şikayetiniz başarıyla alındı.
+
+Takip Numarası: {saved.id}
+Açıklama: {saved.description}
+
+Bu şikayet takibini takip numaranız ile sistem üzerinden gerçekleştirebilirsiniz.
+"""
+                send_mail(
+                    subject='Şikayetiniz Alındı – Takip Bilgisi',
+                    message=message.strip(),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[email],
+                    fail_silently=False
+                )
+            except Exception as e:
+                print(f"E‑posta gönderilemedi: {e}")
+
         return Response({'message': 'Kayıt başarıyla eklendi.'}, status=status.HTTP_201_CREATED)
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 @api_view(['GET'])
 def track_complaint(request, complaint_id):
