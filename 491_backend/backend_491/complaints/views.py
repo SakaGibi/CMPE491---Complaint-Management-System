@@ -19,6 +19,7 @@ from django.conf import settings
 
 from groq import Groq
 import json
+import numpy as np
 
 MODEL_PATH = os.path.join(settings.ML_MODELS_DIR, 'sikayet_model.joblib')
 ENCODER_PATH = os.path.join(settings.ML_MODELS_DIR, 'label_encoder.joblib')
@@ -42,21 +43,91 @@ except Exception as e:
 def classify_all(description):
     if model is None or label_encoder is None:
         print("Uyarı: Model yüklenemediği için varsayılan sınıflandırma yapılıyor.")
-        return "complaint", "general", "unspecified_model_error"
+        return "complaint", "general", "general", None
 
     try:
-        prediction_numeric = model.predict([description])
-        predicted_category_name = label_encoder.inverse_transform(prediction_numeric)
+        try:
+            tfidf_vectorizer = model.named_steps['tfidf']
+            classifier = model.named_steps['clf']
+        except (KeyError, AttributeError):
+            print("HATA: Yüklenen model beklenen Pipeline yapısında değil ('tfidf' veya 'clf' adımı eksik/yanlış).")
+            return "complaint", "error_model_structure", "error_model_structure", None
 
+        prediction_numeric_main = model.predict([description])
+        category = label_encoder.inverse_transform(prediction_numeric_main)[0]
         type_ = "complaint"
-        category = predicted_category_name[0]
         sub_category = category
 
-        return type_, category, sub_category
+        proba_threshold = getattr(settings, 'SUB_CATEGORY_PROBA_THRESHOLD', 0.20)
+        score_diff_threshold = getattr(settings, 'SUB_CATEGORY_SCORE_DIFF_THRESHOLD', 0.35)
+
+        all_class_names = label_encoder.classes_
+        num_classes = len(all_class_names)
+        scores_or_probabilities = None
+
+        transformed_text = tfidf_vectorizer.transform([description])
+
+        has_predict_proba = hasattr(classifier, "predict_proba")
+        has_decision_function = hasattr(classifier, "decision_function")
+
+        if has_predict_proba:
+            try:
+                scores_or_probabilities = classifier.predict_proba(transformed_text)[0]
+                using_proba = True
+            except Exception as e:
+                print(f"predict_proba çağrılırken hata: {e}. decision_function denenecek.")
+                has_predict_proba = False
+                using_proba = False
+        
+        if not has_predict_proba and has_decision_function:
+            scores_or_probabilities = classifier.decision_function(transformed_text)[0]
+            using_proba = False
+        elif not has_predict_proba and not has_decision_function:
+            print("Uyarı: Sınıflandırıcı skor/olasılık metodu desteklemiyor.")
+            return type_, category, sub_category, None
+
+        if scores_or_probabilities is not None:
+            sorted_indices = np.argsort(scores_or_probabilities)[::-1]
+
+            if num_classes > 1 and len(sorted_indices) > 1:
+                best_score_index = sorted_indices[0]
+                second_best_index = sorted_indices[1]
+                
+                # En iyi tahminin `category` ile aynı olduğunu teyit et
+                # (predict() ve decision_function/predict_proba'nın en yüksek skoru aynı olmalı)
+                best_category_from_scores = all_class_names[best_score_index]
+                if best_category_from_scores != category:
+                    print(f"Uyarı: predict() sonucu ({category}) ile en yüksek skorlu sınıf ({best_category_from_scores}) farklı")
+                    # Bu durumda predict()'in sonucunu ana kategori olarak kabul etmeye devam edebiliriz
+                    # veya skorlara göre olanı alabiliriz. Şimdilik predict()'i kullanacağız.
+
+                second_best_category_name = all_class_names[second_best_index]
+
+                if using_proba:
+                    second_best_proba_value = scores_or_probabilities[second_best_index]
+                    if second_best_category_name != category and second_best_proba_value >= proba_threshold:
+                        sub_category = second_best_category_name
+                        # print(f"  Proba sub_cat: {sub_category} (P={second_best_proba_value:.2f})")
+                else:
+                    best_score_value = scores_or_probabilities[best_score_index]
+                    second_best_score_value = scores_or_probabilities[second_best_index]
+                    
+                    score_difference = best_score_value - second_best_score_value
+                    
+                    # Eğer ikinci en iyi kategori ana kategoriden farklıysa VE
+                    # en iyi skor ile ikinci en iyi skor arasındaki fark, belirlenen eşikten küçükse
+                    if second_best_category_name != category and score_difference < score_diff_threshold:
+                        sub_category = second_best_category_name
+                        # print(f"  Score sub_cat: {sub_category} (Skor Farkı={score_difference:.2f} < {score_diff_threshold})")
+                        # print(f"    Best score ({category}): {best_score_value:.2f}, Second best ({second_best_category_name}): {second_best_score_value:.2f}")
+        
+        return type_, category, sub_category, scores_or_probabilities
 
     except Exception as e:
-        print(f"Sınıflandırma sırasında hata: {e}")
-        return "complaint", "general", "unspecified_prediction_error"
+        import traceback
+        print(f"Sınıflandırma sırasında genel hata: {e}")
+        traceback.print_exc()
+        return "complaint", "error_classification", "error_classification", None
 
 @api_view(['POST'])
 def submit_suggestion_or_complaint(request):
@@ -71,7 +142,7 @@ def submit_suggestion_or_complaint(request):
         return Response({"error": "Takip için e‑posta gereklidir."}, status=status.HTTP_400_BAD_REQUEST)
 
     # ML sınıflandırma
-    type_, category, sub_category = classify_all(description)
+    type_, category, sub_category, raw_scores = classify_all(description)
 
     data = {
         "sender_id": 1,
