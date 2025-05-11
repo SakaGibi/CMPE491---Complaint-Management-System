@@ -362,3 +362,18 @@ def get_report_by_id(request, report_id):
         }, status=status.HTTP_200_OK)
     except ReportRecommendation.DoesNotExist:
         return Response({"error": f"ID {report_id} olan rapor bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def list_all_reports(request):
+    try:
+        reports = ReportRecommendation.objects.all().order_by('-created_at')
+        data = []
+        for report in reports:
+            data.append({
+                "id": report.id,
+                "report_type": report.report_type,
+                "created_at": report.created_at.strftime("%Y-%m-%d %H:%M"),
+            })
+        return Response(data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": f"Raporlar listelenemedi: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
