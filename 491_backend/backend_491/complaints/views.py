@@ -348,3 +348,17 @@ def delete_report(request, report_id):
         return Response({"error": f"ID {report_id} olan rapor bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": f"Silme işlemi sırasında hata oluştu: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+def get_report_by_id(request, report_id):
+    try:
+        report = ReportRecommendation.objects.get(id=report_id)
+        return Response({
+            "id": report.id,
+            "report_type": report.report_type,
+            "filters_applied": report.filters_applied,
+            "content": report.content,
+            "created_at": report.created_at
+        }, status=status.HTTP_200_OK)
+    except ReportRecommendation.DoesNotExist:
+        return Response({"error": f"ID {report_id} olan rapor bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
