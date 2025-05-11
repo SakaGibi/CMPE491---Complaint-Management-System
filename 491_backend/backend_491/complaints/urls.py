@@ -13,8 +13,8 @@ urlpatterns = [
     path('trends/', views.get_complaint_trends, name='get_complaint_trends'),
     path('generate-report/', views.generate_report, name='generate_report'),
     path('delete-report/<int:report_id>/', views.delete_report, name='delete_report'),
-    path('get-report/<int:report_id>/', views.get_report_by_id, name='get_report_by_id'),  # ✅ yeni eklendi
-    path('list-reports/', views.list_all_reports, name='list_all_reports'),  # ✅ yeni eklendi
+    path('get-report/<int:report_id>/', views.get_report_by_id, name='get_report_by_id'),
+    path('list-reports/', views.list_all_reports, name='list_all_reports'),
 
 
 ]

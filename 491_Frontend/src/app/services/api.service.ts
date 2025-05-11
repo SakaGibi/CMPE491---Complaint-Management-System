@@ -101,4 +101,25 @@ export class ApiService {
   getComplaintTrends(params?: any): Observable<any[]> {
     return this.http.get<any[]>(`${this.BASE_URL}/complaints/trends/`, { params });
   }
+
+  generateReport(payload: {
+    reportType: string;
+    filters: { [key: string]: any };
+  }): Observable<any> {
+    return this.http.post(`${this.BASE_URL}/complaints/generate-report/`, payload);
+  }
+
+  listReports(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.BASE_URL}/complaints/list-reports/`);
+  }
+
+  getReportById(reportId: number): Observable<any> {
+    return this.http.get<any>(`${this.BASE_URL}/complaints/get-report/${reportId}/`);
+  }
+
+  deleteReport(reportId: number): Observable<any> {
+    return this.http.delete(`${this.BASE_URL}/complaints/delete-report/${reportId}/`);
+  }
+
+
 }

@@ -157,18 +157,18 @@ display: block;
     margin-top: 0;
 }
 
-.suggestions-list ul {
+.Reports-list ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.suggestions-list li {
+.Reports-list li {
     padding: 10px;
     border-bottom: 1px solid #eee;
 }
 
-.suggestions-list li:last-child {
+.Reports-list li:last-child {
     border-bottom: none;
 }
 
@@ -257,8 +257,8 @@ select {
     font-size: 14px;
   }
 
-  .complaints-list li:hover,
-.suggestions-list li:hover,
+.complaints-list li:hover,
+.Reports-list li:hover,
 .chart:hover,
 .graph:hover {
     background-color: #ddd;
@@ -267,7 +267,7 @@ select {
 }
 
 .complaints-list li:active,
-.suggestions-list li:active,
+.Reports-list li:active,
 .chart:active,
 .graph:active {
     background-color: #bbb;
@@ -350,3 +350,61 @@ select {
   .btn-refresh:hover {
     background-color: #0056b3;
   }
+
+  .reports-list li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  list-style: none;
+}
+
+.report-actions {
+  margin-top: 5px;
+  display: flex;
+  gap: 10px;
+}
+
+.report-actions button {
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+}
+
+.report-actions button:hover {
+  background-color: #0056b3;
+}
+
+.report-create {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.report-create select {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.report-create button {
+  padding: 6px 14px;
+  font-size: 14px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.report-create button:hover {
+  background-color: #218838;
+}
+
+.modal-content.report-modal {
+  width: 85%;
+  max-width: 600px;
+  max-height: 90vh;
+}

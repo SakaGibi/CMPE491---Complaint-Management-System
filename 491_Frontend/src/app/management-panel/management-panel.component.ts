@@ -116,6 +116,7 @@ export class ManagementPanelComponent implements OnInit {
     this.fetchComplaints();
     this.fetchComplaintStatistics();
     this.fetchComplaintTrends();
+    this.fetchReports();
   }
 
   goToSupport() {
@@ -397,5 +398,87 @@ export class ManagementPanelComponent implements OnInit {
   
   closeTrendModal(): void {
     this.isTrendModalOpen = false;
+  }
+
+  // RAPORLAR
+  reportList: any[] = [];
+  selectedReport: any = null;
+  isReportModalOpen: boolean = false;
+  isLoadingReport: boolean = false;
+  newReportFilters: any = {};
+  newReportType: string = 'Genel Özet';
+
+  fetchReports(): void {
+    this.apiService.listReports().subscribe({
+      next: (res) => {
+       console.log('[fetchReports] Rapor listesi:', res);
+       this.reportList = res;
+      },
+      error: (err) => {
+       console.error('[fetchReports] Hata:', err);
+        alert('Raporlar alınamadı.');
+      }
+    });
+  }
+
+  generateNewReport(): void {
+    const payload = {
+      reportType: this.newReportType,
+      filters: this.newReportFilters
+    };
+
+    this.isLoadingReport = true;
+    console.log('[generateNewReport] Gönderilen:', payload);
+
+    this.apiService.generateReport(payload).subscribe({
+      next: (res) => {
+        console.log('[generateNewReport] Başarılı:', res);
+        this.fetchReports(); // listeyi güncelle
+        alert('Yeni rapor başarıyla oluşturuldu.');
+      },
+      error: (err) => {
+        console.error('[generateNewReport] Hata:', err);
+        alert('Rapor oluşturulamadı.');
+      },
+      complete: () => {
+        this.isLoadingReport = false;
+      }
+    });
+  }
+
+  openReportDetail(reportId: number): void {
+    this.apiService.getReportById(reportId).subscribe({
+      next: (res) => {
+        console.log('[openReportDetail] Rapor:', res);
+        this.selectedReport = res;
+        this.isReportModalOpen = true;
+      },
+      error: (err) => {
+        console.error('[openReportDetail] Hata:', err);
+        alert('Rapor alınamadı.');
+      }
+    });
+  }
+
+  deleteReport(reportId: number): void {
+    const onay = confirm('Bu raporu silmek istediğinizden emin misiniz?');
+    if (!onay) return;
+
+    this.apiService.deleteReport(reportId).subscribe({
+      next: (res) => {
+        console.log('[deleteReport] Silindi:', res);
+        this.reportList = this.reportList.filter(r => r.id !== reportId);
+        alert('Rapor silindi.');
+      },
+      error: (err) => {
+        console.error('[deleteReport] Hata:', err);
+        alert('Rapor silinemedi.');
+      }
+    });
+  }
+
+  closeReportModal(): void {
+    this.selectedReport = null;
+    this.isReportModalOpen = false;
   }
 }

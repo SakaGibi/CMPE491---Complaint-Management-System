@@ -151,20 +151,51 @@
       </div>
     </div>
 
-    <!-- Right Section: Suggestions -->
+    <!-- Right Section: Reports -->
     <div class="right-section">
-      <h2>Suggestions</h2>
-      <div class="suggestions-list">
-        <ul *ngIf="suggestionList.length > 0; else noSuggestions">
-          <li *ngFor="let suggestion of suggestionList" (click)="openSuggestionModal(suggestion)">
-            {{ suggestion.description }}
+      <h2>Reports</h2>
+      <!-- Yeni Rapor Oluşturma -->
+      <div class="report-create">
+        <label>Report Type:</label>
+          <select [(ngModel)]="newReportType">
+            <option value="Genel Özet">Genel Özet</option>
+            <option value="Tematik Analiz">Tematik Analiz</option>
+            <option value="Aksiyon Önerileri">Aksiyon Önerileri</option>
+          </select>
+          <button class="btn btn-submit" (click)="generateNewReport()" [disabled]="isLoadingReport">
+            {{ isLoadingReport ? 'Generating...' : 'Create Report' }}
+          </button>
+      </div>
+      <!-- Rapor Listesi -->
+      <div class="reports-list">
+        <ul *ngIf="reportList.length > 0; else noReports">
+          <li *ngFor="let report of reportList">
+            <strong>{{ report.report_type }}</strong> <br />
+            <small>{{ report.created_at }}</small>
+            <div class="report-actions">
+              <button (click)="openReportDetail(report.id)">View</button>
+              <button (click)="deleteReport(report.id)">Delete</button>
+            </div>
           </li>
         </ul>
-        <ng-template #noSuggestions>
-          <p>No suggestions found.</p>
+        <ng-template #noReports>
+          <p>No Reports found.</p>
         </ng-template>
       </div>
+      <!-- Modal: Rapor Detayları -->
+      <div class="fullscreen-modal" *ngIf="isReportModalOpen">
+        <div class="modal-content report-modal">
+          <button class="close-btn" (click)="closeReportModal()">X</button>
+          <div class="modal-detail">
+            <h2>{{ selectedReport?.report_type }}</h2>
+            <pre style="white-space: pre-wrap; font-size: 14px; line-height: 1.6;">
+              {{ selectedReport?.content }}
+            </pre>
+          </div>
+        </div>
+      </div>
     </div>
+    
   </div>
 
   <!-- Modal: Suggestion Details -->
