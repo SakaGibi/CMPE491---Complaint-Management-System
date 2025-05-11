@@ -5,8 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f8120945-27d7-4ca9-a8a5-780d0ace18d0" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../491_Frontend/src/app/management-panel/management-panel.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/../491_Frontend/src/app/management-panel/management-panel.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../491_Frontend/src/app/management-panel/management-panel.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../491_Frontend/src/app/management-panel/management-panel.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../491_Frontend/src/app/management-panel/management-panel.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../491_Frontend/src/app/management-panel/management-panel.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_491/complaints/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend_491/complaints/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_491/complaints/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend_491/complaints/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +79,7 @@
       <workItem from="1745788385839" duration="2640000" />
       <workItem from="1745838965398" duration="685000" />
       <workItem from="1746963417010" duration="1100000" />
-      <workItem from="1746964534127" duration="2962000" />
+      <workItem from="1746964534127" duration="6540000" />
     </task>
     <servers />
   </component>

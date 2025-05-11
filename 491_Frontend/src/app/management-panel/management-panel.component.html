@@ -163,6 +163,11 @@
           </div>
 
           <div class="filter-item">
+            <label>Complaints to Analyze:</label>
+              <input type="number" [(ngModel)]="maxComplaintsForReport" min="1" max="1000" />
+          </div>
+
+          <div class="filter-item">
             <label>Category:</label>
             <select [(ngModel)]="newReportFilters.category">
               <option value="">All</option>

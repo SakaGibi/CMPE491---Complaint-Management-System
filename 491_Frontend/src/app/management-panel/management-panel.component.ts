@@ -415,6 +415,7 @@ export class ManagementPanelComponent implements OnInit {
   };
   newReportType: string = 'Genel Özet';
   newReportName: string = '';
+  maxComplaintsForReport: number = 10;
 
 
   fetchReports(): void {
@@ -450,7 +451,8 @@ export class ManagementPanelComponent implements OnInit {
 
     const payload = {
       reportType: this.newReportName.trim(),
-      filters: cleanedFilters
+      filters: cleanedFilters,
+      maxComplaints: this.maxComplaintsForReport
     };
 
     console.log('[generateNewReport] Gönderilen:', payload);

@@ -169,7 +169,7 @@ display: block;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   height: 100%;
-  max-height: 60vh;
+  max-height: 56vh;
   padding-right: 5px;
 }
 

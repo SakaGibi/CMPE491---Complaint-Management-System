@@ -244,11 +244,11 @@ def _apply_llm_filters(queryset, filters):
 def _generate_llm_prompt(complaints_list, filters, report_type):
     filter_desc = ", ".join([f"{k}: {v}" for k, v in filters.items()]) if filters else "Tüm Şikayetler"
     prompt = f"""
-Görev: Bir apartman yönetimi için '{report_type}' raporu oluştur.
-Filtreler: {filter_desc}
-Aşağıda listelenen şikayetleri dikkatlice analiz et.
+Görev: Aşağıda belirtilen bina şikayetlerini analiz ederek **'{report_type}'** adında bir rapor hazırla.
 
-Analiz Edilecek Şikayetler:
+Filtreler: {filter_desc}
+
+Şikayet Listesi:
 """
     if not complaints_list:
         prompt += "- Bu filtrelerle eşleşen şikayet bulunmamaktadır.\n"
@@ -256,17 +256,39 @@ Analiz Edilecek Şikayetler:
         for complaint in complaints_list:
             short_desc = complaint.description[:150] + ('...' if len(complaint.description) > 150 else '')
             prompt += f"- ID:{complaint.id}, Kategori: {complaint.category}, Durum: {complaint.status}, Tarih: {complaint.created_at.strftime('%Y-%m-%d')}, Açıklama: {short_desc}\n"
+
     prompt += f"""
-İstenen Rapor ({report_type}):
-Lütfen yukarıdaki şikayetlere dayanarak, belirtilen filtreler kapsamında, aşağıdaki formata uygun, kısa ve öz bir '{report_type}' raporu hazırla:
 
-*   **Genel Durum:** (Şikayetlerin genel bir özeti)
-*   **Öne Çıkan Temalar:** (Tekrarlayan sorunlar)
-*   **Öneriler (Varsa):** (Alınabilecek aksiyonlar)
+📝 Aşağıdaki formatı kullanarak kısa ve öz bir rapor hazırla:
 
-Raporu profesyonel bir dille yaz.
+* **Genel Durum:** (Şikayetlerin genel özeti)
+* **Öne Çıkan Temalar:** (Tekrarlayan problemler)
+* **Öneriler (Varsa):** (Sorunların çözümüne yönelik net, uygulanabilir adımlar)
+
+⚠️ Aşağıdakilerden KAÇIN:
+- "Bina yönetimi adım atmalıdır", "gerekli işlemler yapılmalıdır" gibi belirsiz ve yuvarlak ifadeler kullanma.
+- Öneri gibi görünse de aslında hiçbir şey söylemeyen cümleler kurma.
+- "Sonuç", "Saygılar", "Özetle" gibi kapanış metinleri ekleme.
+
+✅ OLACAK:
+- Her öneri, gerçekten **ne yapılması gerektiğini** net olarak belirtmeli.
+- "Ne yapılmalı?" sorusunun cevabını ver.
+- Öneriler uygulanabilir, somut ve sade bir dille yazılmalı.
+- Teknik detaya girme, ancak "kim/hangi ekip ne yapacak" açık olmalı (örneğin: "temizlik ekibi müdahale etmeli", "teknik servis bilgilendirilmeli").
+- Her öneri bağımsız ve anlaşılır olmalı; belirsiz referanslardan ("sorun", "önceki madde") kaçın.
+- Şikayetin tekrarını değil, doğrudan çözüm yolunu yaz.
+- Gereksiz tekrar yapma; aynı öneriyi farklı cümlelerle sunma.
+- İlgili birime yönlendirme yapılmalıysa, hangi ekip olduğu açıkça belirtilmeli.
+- Gerekiyorsa öncelik/önem vurgusu yapılabilir (örn. "acil olarak değerlendirilmelidir").
+- Öneri sayısı az da olsa kaliteli ve anlamlı olmalı.
+
+
+Sadece yukarıdaki üç başlıkla sınırlı kal ve profesyonel bir dille yaz.
 """
+
+
     return prompt
+
 
 def _call_groq_api(prompt):
 
@@ -306,7 +328,14 @@ def generate_report(request):
         return Response({"error": "Şikayetler filtrelenirken bir hata oluştu."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     # LLM'e gönderilecek şikayet sayısını sınırla (örn. son 10)
-    complaints_for_llm = list(filtered_complaints_qs.order_by('-created_at')[:10])
+    try:
+        max_complaints = int(filters.pop('maxComplaints', 10))
+        if max_complaints < 1 or max_complaints > 1000:
+            max_complaints = 10  # sınır dışıysa default'a dön
+    except (ValueError, TypeError):
+        max_complaints = 10
+
+    complaints_for_llm = list(filtered_complaints_qs.order_by('-created_at')[:max_complaints])
 
     # LLM için Prompt Oluştur
     prompt = _generate_llm_prompt(complaints_for_llm, filters, report_type)
