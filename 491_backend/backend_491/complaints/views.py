@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import SuggestionOrComplaint
 from .serializers import SuggestionOrComplaintSerializer
-
+from django.utils.timezone import now
+from .models import ReportRecommendation
 from datetime import datetime, timedelta
 from django.db.models import Q 
 
@@ -317,6 +318,17 @@ def generate_report(request):
         print(f"LLM Rapor Hatası: {error}")
         return Response({"error": "Yapay zeka raporu oluşturulurken bir hata oluştu."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
+    # DB'ye kaydet
+    try:
+        ReportRecommendation.objects.create(
+            report_type=report_type,
+            filters_applied=filters,
+            content=report_content,
+            created_at=now()
+        )
+    except Exception as e:
+        print(f"Rapor veritabanına kaydedilemedi: {e}")
+
     # Başarılı Yanıtı Döndür
     return Response({
         "message": f"'{report_type}' raporu başarıyla oluşturuldu.",
@@ -325,3 +337,14 @@ def generate_report(request):
         "filters_applied": filters,
         "complaints_analyzed_count": len(complaints_for_llm)
     }, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def delete_report(request, report_id):
+    try:
+        report = ReportRecommendation.objects.get(id=report_id)
+        report.delete()
+        return Response({"message": f"ID {report_id} olan rapor başarıyla silindi."}, status=status.HTTP_200_OK)
+    except ReportRecommendation.DoesNotExist:
+        return Response({"error": f"ID {report_id} olan rapor bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": f"Silme işlemi sırasında hata oluştu: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

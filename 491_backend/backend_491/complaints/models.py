@@ -28,3 +28,14 @@ class SuggestionOrComplaint(models.Model):
 
     class Meta:
         db_table = 'complaints_suggestions'
+
+
+class ReportRecommendation(models.Model):
+    report_type = models.CharField(max_length=100)
+    filters_applied = models.JSONField()
+    content = models.TextField()
+    created_at = models.DateTimeField()
+
+    class Meta:
+        db_table = 'report_recommendation'
+        managed = False

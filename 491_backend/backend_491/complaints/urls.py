@@ -12,5 +12,7 @@ urlpatterns = [
     path('statistics/', views.get_complaint_statistics, name='get_complaint_statistics'),
     path('trends/', views.get_complaint_trends, name='get_complaint_trends'),
     path('generate-report/', views.generate_report, name='generate_report'),
+    path('delete-report/<int:report_id>/', views.delete_report, name='delete_report'),
+
 
 ]
