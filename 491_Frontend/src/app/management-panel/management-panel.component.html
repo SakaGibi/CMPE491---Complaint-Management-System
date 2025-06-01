@@ -1,11 +1,9 @@
 <div class="management-panel-container">
   <!-- Header -->
   <div class="header-panel">
-    <div class="logo">
-      <img src="assets/images/bilgiUni.png"/>  </div>
     <div>
-      <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
-      <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
+      <button class="btn btn-header" (click)="goToMainMenu()">Ana Menü</button>
+      <button class="btn btn-header" (click)="goToSupport()">Yardım & Destek</button>
     </div>
   </div>
 
@@ -14,7 +12,7 @@
     <div class="left-section">
         <!-- Chart Preview -->
         <div class="chart-container" (click)="openChartModal()">
-          <h2>Complaint Chart</h2>
+          <h2>Şikayet Grafiği</h2>
           <canvas baseChart
             [data]="barChartData"
             [labels]="barChartLabels"
@@ -25,7 +23,7 @@
       
         <!-- Trend Preview -->
         <div class="graph-container" (click)="openTrendModal()">
-          <h2>Complaint Trends</h2>
+          <h2>Şikayet Trendleri</h2>
           <canvas baseChart
             [data]="lineChartData"
             [labels]="lineChartLabels"
@@ -39,14 +37,14 @@
           <div class="modal-content">
             <button class="close-btn" (click)="closeChartModal()">X</button>
             <div class="modal-detail">
-              <h2>Complaint Chart</h2>
-              <label for="chart-range">Select Range:</label>
+              <h2>Şikayet Grafiği</h2>
+              <label for="chart-range">Aralık Seçin:</label>
               <select id="chart-range" [(ngModel)]="chartRange" (change)="fetchComplaintStatistics(chartRange)">
-                <option value="">All Time</option>
-                <option value="7d">Last 7 Days</option>
-                <option value="1m">Last 1 Month</option>
-                <option value="3m">Last 3 Months</option>
-                <option value="6m">Last 6 Months</option>
+                <option value="">Tüm Zamanlar</option>
+                <option value="7d">Son 7 Gün</option>
+                <option value="1m">Son 1 Ay</option>
+                <option value="3m">Son 3 Ay</option>
+                <option value="6m">Son 6 Ay</option>
               </select>
               <canvas baseChart
                 [data]="barChartData"
@@ -63,20 +61,20 @@
           <div class="modal-content">
             <button class="close-btn" (click)="closeTrendModal()">X</button>
             <div class="modal-detail">
-              <h2>Complaint Trends</h2>
-              <label for="trend-range">Select Range:</label>
+              <h2>Şikayet Trendleri</h2>
+              <label for="trend-range">Aralık Seçin:</label>
               <select id="trend-range" [(ngModel)]="trendRange" (change)="fetchComplaintTrends(trendRange, trendCategory)">
-                <option value="">All Time</option>
-                <option value="7d">Last 7 Days</option>
-                <option value="1m">Last 1 Month</option>
-                <option value="3m">Last 3 Months</option>
-                <option value="6m">Last 6 Months</option>
+                <option value="">Tüm Zamanlar</option>
+                <option value="7d">Son 7 Gün</option>
+                <option value="1m">Son 1 Ay</option>
+                <option value="3m">Son 3 Ay</option>
+                <option value="6m">Son 6 Ay</option>
               </select>
             
-              <label for="trend-category">Category:</label>
+              <label for="trend-category">Kategori:</label>
               <select id="trend-category" [(ngModel)]="trendCategory" (change)="fetchComplaintTrends(trendRange, trendCategory)">
-                <option value="">All</option>
-                <option *ngFor="let cat of ALL_CATEGORIES" [value]="cat">{{ cat }}</option>
+                <option value="">Tümü</option>
+                <option *ngFor="let cat of ALL_CATEGORIES" [value]="cat">{{ cat }}</option> <!-- {{cat}} TypeScript'ten geldiği için olduğu gibi kalır -->
               </select>
             
               <canvas
@@ -95,24 +93,24 @@
     <div class="center-section">
       <div class="complaints-header">
         <div class="complaints-title">
-          <h2>All Complaints</h2>
+          <h2>Tüm Şikayetler</h2>
           <button class="btn btn-refresh" (click)="refreshComplaintsAndChart()">↻ Yenile</button>
         </div>
         <div class="filters">
           <div class="filter-row">
-            <label>Status:</label>
+            <label>Durum:</label>
             <select [(ngModel)]="selectedStatus" (change)="fetchComplaints()">
-              <option value="">All</option>
-              <option value="new">New</option>
-              <option value="in_progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-              <option value="reopened">Reopened</option>
-              <option value="closed">Closed</option>
+              <option value="">Tümü</option>
+              <option value="new">Yeni</option>
+              <option value="in_progress">Devam Ediyor</option>
+              <option value="resolved">Çözüldü</option>
+              <option value="reopened">Yeniden Açıldı</option>
+              <option value="closed">Kapandı</option>
             </select>
         
-            <label>Category:</label>
+            <label>Kategori:</label>
             <select [(ngModel)]="selectedCategory" (change)="fetchComplaints()">
-              <option value="">All</option>
+              <option value="">Tümü</option>
               <option value="temizlik">Temizlik</option>
               <option value="gürültü">Gürültü</option>
               <option value="bakım ve onarım">Bakım ve Onarım</option>
@@ -123,18 +121,18 @@
           </div>
         
           <div class="filter-row">
-            <label>Trackable:</label>
+            <label>Takip Edilebilir:</label>
             <select [(ngModel)]="selectedTrackable" (change)="fetchComplaints()">
-              <option value="">All</option>
-              <option value="true">Trackable</option>
-              <option value="false">Not Trackable</option>
+              <option value="">Tümü</option>
+              <option value="true">Takip Edilebilir</option>
+              <option value="false">Takip Edilemez</option>
             </select>
         
-            <label>Sort:</label>
+            <label>Sırala:</label>
             <select [(ngModel)]="selectedSortOption" (change)="fetchComplaints()">
-              <option value="">Sort by</option>
-              <option value="newest">Newest → Oldest</option>
-              <option value="oldest">Oldest → Newest</option>
+              <option value="">Sıralama Ölçütü</option>
+              <option value="newest">Yeniden → Eskiye</option>
+              <option value="oldest">Eskiden → Yeniye</option>
             </select>
           </div>
         </div>
@@ -146,31 +144,31 @@
           </li>
         </ul>
         <ng-template #noComplaints>
-          <p>No complaints found.</p>
+          <p>Şikayet bulunamadı.</p>
         </ng-template>
       </div>
     </div>
 
     <!-- Right Section: Reports -->
     <div class="right-section">
-      <h2>Reports</h2>
+      <h2>Raporlar</h2>
       <!-- Yeni Rapor Oluşturma -->
       <div class="report-create">
         <div class="filter-pair">
           <div class="filter-item">
-            <label>Report Name:</label>
-            <input type="text" [(ngModel)]="newReportName" placeholder="Enter a report title..." />
+            <label>Rapor Adı:</label>
+            <input type="text" [(ngModel)]="newReportName" placeholder="Bir rapor başlığı girin..." />
           </div>
 
           <div class="filter-item">
-            <label>Complaints to Analyze:</label>
+            <label>Analiz Edilecek Şikayet Sayısı:</label>
               <input type="number" [(ngModel)]="maxComplaintsForReport" min="1" max="1000" />
           </div>
 
           <div class="filter-item">
-            <label>Category:</label>
+            <label>Kategori:</label>
             <select [(ngModel)]="newReportFilters.category">
-              <option value="">All</option>
+              <option value="">Tümü</option>
               <option *ngFor="let cat of ALL_CATEGORIES" [value]="cat">{{ cat }}</option>
             </select>
           </div>
@@ -178,42 +176,42 @@
 
         <div class="filter-pair">
           <div class="filter-item">
-            <label>Status:</label>
+            <label>Durum:</label>
             <select [(ngModel)]="newReportFilters.status">
-              <option value="">All</option>
-              <option value="new">New</option>
-              <option value="in_progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-              <option value="reopened">Reopened</option>
-              <option value="closed">Closed</option>
+              <option value="">Tümü</option>
+              <option value="new">Yeni</option>
+              <option value="in_progress">Devam Ediyor</option>
+              <option value="resolved">Çözüldü</option>
+              <option value="reopened">Yeniden Açıldı</option>
+              <option value="closed">Kapandı</option>
             </select>
           </div>
 
           <div class="filter-item">
-            <label>Trackable:</label>
+            <label>Takip Edilebilir:</label>
             <select [(ngModel)]="newReportFilters.isTrackable">
-              <option value="">All</option>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
+              <option value="">Tümü</option>
+              <option value="true">Evet</option>
+              <option value="false">Hayır</option>
             </select>
           </div>
         </div>
 
         <div class="filter-pair">
           <div class="filter-item">
-            <label>From:</label>
+            <label>Başlangıç Tarihi:</label>
             <input type="date" [(ngModel)]="newReportFilters.date_from" />
           </div>
 
           <div class="filter-item">
-            <label>To:</label>
+            <label>Bitiş Tarihi:</label>
             <input type="date" [(ngModel)]="newReportFilters.date_to" />
           </div>
         </div>
 
         <div class="filter-pair">
           <button class="btn btn-submit" (click)="generateNewReport()" [disabled]="isLoadingReport">
-            {{ isLoadingReport ? 'Generating...' : 'Create Report' }}
+            {{ isLoadingReport ? 'Oluşturuluyor...' : 'Rapor Oluştur' }}
           </button>
         </div>
       </div>
@@ -224,15 +222,15 @@
         <ul *ngIf="reportList.length > 0; else noReports">
           <li *ngFor="let report of reportList">
             <strong>{{ report.report_type }}</strong> <br />
-            <small>{{ report.created_at }}</small>
+            <small>{{ report.created_at | date:'short' }}</small> <!-- date pipe'ı korundu -->
             <div class="report-actions">
-              <button (click)="openReportDetail(report.id)">View</button>
-              <button (click)="deleteReport(report.id)">Delete</button>
+              <button (click)="openReportDetail(report.id)">Görüntüle</button>
+              <button (click)="deleteReport(report.id)">Sil</button>
             </div>
           </li>
         </ul>
         <ng-template #noReports>
-          <p>No Reports found.</p>
+          <p>Rapor bulunamadı.</p>
         </ng-template>
       </div>
       <!-- Modal: Rapor Detayları -->
@@ -256,26 +254,26 @@
     <div class="modal-content">
       <button class="close-btn" (click)="closeSuggestionModal()">X</button>
       <div class="modal-detail">
-        <h2>Suggestion Details</h2>
+        <h2>Öneri Detayları</h2>
         <p><strong>ID:</strong> {{ selectedSuggestion?.id }}</p>
-        <p><strong>Description:</strong> {{ selectedSuggestion?.description }}</p>
-        <p><strong>Category:</strong> {{ selectedSuggestion?.category || 'N/A' }}</p>
-        <p><strong>Email:</strong> {{ selectedSuggestion?.email || 'N/A' }}</p>
-        <p><strong>Status:</strong> {{ selectedSuggestion?.status }}</p>
-        <p><strong>Created:</strong> {{ selectedSuggestion?.created_at | date:'short' }}</p>
-        <p><strong>Updated:</strong> {{ selectedSuggestion?.updated_at | date:'short' }}</p>
+        <p><strong>Açıklama:</strong> {{ selectedSuggestion?.description }}</p>
+        <p><strong>Kategori:</strong> {{ selectedSuggestion?.category || 'Yok' }}</p>
+        <p><strong>E-posta:</strong> {{ selectedSuggestion?.email || 'Yok' }}</p>
+        <p><strong>Durum:</strong> {{ selectedSuggestion?.status }}</p>
+        <p><strong>Oluşturulma:</strong> {{ selectedSuggestion?.created_at | date:'short' }}</p>
+        <p><strong>Güncellenme:</strong> {{ selectedSuggestion?.updated_at | date:'short' }}</p>
         <hr>
-        <button class="btn btn-danger" (click)="deleteSuggestion()">Delete Suggestion</button>
+        <button class="btn btn-danger" (click)="deleteSuggestion()">Öneriyi Sil</button>
       </div>
     </div>
 </div>
 
   <!-- Placeholder Modal for Chart/Graph -->
-  <div class="fullscreen-modal" style="display: none">
+  <div class="fullscreen-modal" style="display: none"> <!-- Bu modal normalde gizli, içeriği yine de çevrildi -->
     <div class="modal-content">
       <button class="close-btn">X</button>
       <div class="modal-detail">
-        <h2>Modal Content</h2>
+        <h2>Modal İçeriği</h2>
       </div>
     </div>
   </div>
@@ -285,30 +283,30 @@
   <div class="modal-content">
     <button class="close-btn" (click)="closeComplaintModal()">X</button>
     <div class="modal-detail">
-      <h2>Complaint Details</h2>
+      <h2>Şikayet Detayları</h2>
       <p><strong>ID:</strong> {{ selectedComplaint?.id }}</p>
-      <p><strong>Status:</strong> {{ selectedComplaint?.status }}</p>
-      <p><strong>Description:</strong> {{ selectedComplaint?.description }}</p>
-      <p><strong>Category:</strong> {{ selectedComplaint?.category }}</p>
-      <p><strong>Sub-Category:</strong> {{ selectedComplaint?.sub_category }}</p>
-      <p><strong>Email:</strong> {{ selectedComplaint?.email || 'N/A' }}</p>
-      <p><strong>Created:</strong> {{ selectedComplaint?.created_at | date:'short' }}</p>
-      <p><strong>Updated:</strong> {{ selectedComplaint?.updated_at | date:'short' }}</p>
+      <p><strong>Durum:</strong> {{ selectedComplaint?.status }}</p>
+      <p><strong>Açıklama:</strong> {{ selectedComplaint?.description }}</p>
+      <p><strong>Kategori:</strong> {{ selectedComplaint?.category }}</p>
+      <p><strong>Alt Kategori:</strong> {{ selectedComplaint?.sub_category }}</p>
+      <p><strong>E-posta:</strong> {{ selectedComplaint?.email || 'Yok' }}</p>
+      <p><strong>Oluşturulma:</strong> {{ selectedComplaint?.created_at | date:'short' }}</p>
+      <p><strong>Güncellenme:</strong> {{ selectedComplaint?.updated_at | date:'short' }}</p>
 
       <hr>
 
-      <label for="status">Update Status:</label>
+      <label for="status">Durumu Güncelle:</label>
       <select id="status" [(ngModel)]="selectedComplaintStatus">
-        <option value="new">New</option>
-        <option value="in_progress">In Progress</option>
-        <option value="resolved">Resolved</option>
-        <option value="reopened">Reopened</option>
-        <option value="closed">Closed</option>
+        <option value="new">Yeni</option>
+        <option value="in_progress">Devam Ediyor</option>
+        <option value="resolved">Çözüldü</option>
+        <option value="reopened">Yeniden Açıldı</option>
+        <option value="closed">Kapandı</option>
       </select>
-      <button (click)="updateComplaintStatus()">Update Status</button>
+      <button (click)="updateComplaintStatus()">Durumu Güncelle</button>
       <hr>
 
-      <button class="btn btn-danger" (click)="deleteComplaint()">Delete Complaint</button>
+      <button class="btn btn-danger" (click)="deleteComplaint()">Şikayeti Sil</button>
     </div>
   </div>
 </div>

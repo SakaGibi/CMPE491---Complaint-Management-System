@@ -1,39 +1,37 @@
 <div class="main-menu-container">
   <!-- Üst Bar (Header) -->
   <div class="header-panel">
-    <div class="logo">
-      <img src="assets/images/bilgiUni.png"/>  </div>
     <div>
-      <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
-      <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
+      <button class="btn btn-header" (click)="goToMainMenu()">Ana Menü</button>
+      <button class="btn btn-header" (click)="goToSupport()">Yardım & Destek</button>
     </div>
   </div>
 
   <!-- Login Ekranı -->
   <div class="login-container">
     <div class="login-box">
-      <h2>Management Login</h2>
+      <h2>Yönetim Paneli Girişi</h2>
 
       <form (submit)="loginEmployee(); $event.preventDefault()">
         <div class="input-container">
-          <label for="username">Username</label>
+          <label for="username">Kullanıcı Adı</label>
           <input
             type="text"
             id="username"
             name="username"
-            placeholder="Enter your username"
+            placeholder="Kullanıcı adınızı girin"
             required
             [(ngModel)]="username"
           />
         </div>
 
         <div class="input-container">
-          <label for="password">Password</label>
+          <label for="password">Şifre</label>
           <input
             type="password"
             id="password"
             name="password"
-            placeholder="Enter your password"
+            placeholder="Şifrenizi girin"
             required
             [(ngModel)]="password"
           />
@@ -42,14 +40,14 @@
         <div class="checkbox-container">
           <input 
             type="checkbox" 
-            id="trackCheckBox"
+            id="trackCheckBox" <!-- ID'yi değiştirmemek daha güvenli, CSS veya JS tarafından kullanılabilir -->
             [(ngModel)]="isAdmin"
             name="isAdmin"
           />
-          <label for="trackCheckBox">Login as Admin</label>
+          <label for="trackCheckBox">Yönetici olarak giriş yap</label>
         </div>
 
-        <button type="submit" class="btn-login">Login</button>
+        <button type="submit" class="btn-login">Giriş Yap</button>
       </form>
 
       <!-- Hata mesajı -->

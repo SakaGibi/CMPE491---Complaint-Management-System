@@ -1,69 +1,68 @@
 <div class="management-panel-container">
   <!-- Header -->
   <div class="header-panel">
-    <div class="logo">
-      <img src="assets/images/bilgiUni.png"/>  </div>
     <div class="support">
-      <button class="btn btn-support" (click)="goToMainMenu()">Main Menu</button>
+      <button class="btn btn-support" (click)="goToMainMenu()">Ana Menü</button>
     </div>
   </div>
 
   <!-- Main Content Area -->
   <div class="content-area">
     <div class="help-support-container">
-      <h1>Help & Support</h1>
+      <h1>Yardım & Destek</h1>
 
       <!-- Support Introduction -->
       <div class="support-intro">
         <p>
-          Welcome to the Help & Support page. Here, you can find answers to frequently asked questions and contact support if needed.
+          Yardım & Destek sayfasına hoş geldiniz. Burada sıkça sorulan soruların yanıtlarını bulabilir ve gerekirse destek ekibimizle iletişime geçebilirsiniz.
         </p>
       </div>
 
       <!-- FAQ Section -->
       <div class="faq-section">
-        <ul *ngIf="faqs.length > 0; else loading">
+        <h2>Sıkça Sorulan Sorular</h2> <!-- Başlık eklendi -->
+        <ul *ngIf="faqs.length > 0; else loadingFaqs"> <!-- else bloğunun adı değiştirildi karışmaması için -->
           <li *ngFor="let faq of faqs" class="faq-item">
             <p><strong>Soru:</strong> {{ faq.message }}</p>
             <p><strong>Cevap:</strong> {{ faq.response || 'Henüz cevaplanmadı.' }}</p>
           </li>
         </ul>
 
-        <ng-template #loading>
+        <ng-template #loadingFaqs> <!-- else bloğunun adı değiştirildi -->
           <p>SSS verileri yükleniyor...</p>
         </ng-template>
       </div>
 
       <!-- Contact Support Section -->
       <div class="contact-support-section">
-        <h2>Contact Support</h2>
-        <p>If you cannot find the solution you're looking for, feel free to contact our support team.</p>
+        <h2>Destekle İletişime Geçin</h2>
+        <p>Aradığınız çözümü bulamıyorsanız, destek ekibimizle iletişime geçmekten çekinmeyin.</p>
 
         <form (submit)="submitSupport(); $event.preventDefault()">
           <div class="form-group">
-            <label for="email">Your Email:</label>
+            <label for="email">E-posta Adresiniz:</label>
             <input
               type="email"
               id="email"
               name="email"
-              placeholder="Enter your email address"
+              placeholder="E-posta adresinizi girin"
               [(ngModel)]="email"
               required
             />
           </div>
 
           <div class="form-group">
-            <label for="message">Your Message:</label>
+            <label for="message">Mesajınız:</label>
             <textarea
               id="message"
               name="message"
-              placeholder="Enter your message"
+              placeholder="Mesajınızı girin"
               [(ngModel)]="userMessage"
               required
             ></textarea>
           </div>
 
-          <button type="submit">Submit</button>
+          <button type="submit">Gönder</button>
 
           <p *ngIf="submitMessage" class="submit-feedback">{{ submitMessage }}</p>
         </form>

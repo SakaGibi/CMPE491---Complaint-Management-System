@@ -1,20 +1,18 @@
 <div class="main-menu-container">
     <!-- Header -->
   <div class="header-panel">
-   <div class="logo">
-     <img src="assets/images/bilgiUni.png"/>  </div>
    <div class="support">
-      <button class="btn btn-support" (click)="goToSupport()">Help & Support</button>
+      <button class="btn btn-support" (click)="goToSupport()">Yardım & Destek</button>
     </div>
   </div>
 
   <!-- Main content area -->
   <div class="content-area">
-    <h1>Complaint and Suggestion System</h1>
+    <h1>Şikayet ve Öneri Sistemi</h1>
 
     <textarea
       [(ngModel)]="complaintText"
-      placeholder="Enter your complaint or suggestion..."
+      placeholder="Şikayet veya önerinizi girin..."
       rows="5"
       class="complaint-textarea">
     </textarea>
@@ -28,7 +26,7 @@
         [(ngModel)]="isTracking"
         (change)="toggleEmailInput()" 
       />
-      <label for="trackCheckBox">Do you want to track your complaint?</label>
+      <label for="trackCheckBox">Şikayetinizi takip etmek istiyor musunuz?</label>
     </div>
 
     <!-- Email giriş alanı -->
@@ -36,7 +34,7 @@
       <input 
         [(ngModel)]="email" 
         type="email" 
-        placeholder="Enter your email (only for updates)" 
+        placeholder="E-postanızı girin (sadece güncellemeler için)" 
        class="email-input"
      />
     </div>
@@ -46,51 +44,51 @@
       <button 
        class="btn btn-submit" 
        (click)="writeComplaintOrSuggestion()">
-       Submit
+       Gönder
       </button>
      <button 
        class="btn btn-cancel" 
        (click)="resetModal()">
-       Cancel
+       İptal
      </button>
     </div>
 
     <!-- management panel button -->
-    <button class="btn btn-management" (click)="goToManagementPanelLogin()">Go to Management Panel</button>
+    <button class="btn btn-management" (click)="goToManagementPanelLogin()">Yönetim Paneline Git</button>
   </div>
 
   <!-- Modal Trigger Button -->
-  <button class="btn btn-track" (click)="openModal()">Complaint Tracking</button>
+  <button class="btn btn-track" (click)="openModal()">Şikayet Takibi</button>
 
   <!-- Şikayet Takip Modal -->
   <div id="complaintModal" class="modal" style="display: none;">
    <div class="modal-content">
-      <button class="btn-close" (click)="closeModal()">&times;</button>
-     <h2>Complaint Tracking</h2>
+      <button class="btn-close" (click)="closeModal()">×</button>
+     <h2>Şikayet Takibi</h2>
     
      <!-- Başlangıçta gösterilen form -->
-      <div *ngIf="!isTracking">
+      <div *ngIf="!isTracking"> <!-- Değişken ismi isTracking kalacak, mantığı etkilememeli -->
        <form (submit)="trackComplaint($event)">
           <div class="form-group">
-           <label for="complaintNumber">Complaint Number:</label>
-            <input type="text" id="complaintNumber" name="complaintNumber" [(ngModel)]="complaintNumber" placeholder="Enter your complaint number" required>
+           <label for="complaintNumber">Şikayet Numarası:</label>
+            <input type="text" id="complaintNumber" name="complaintNumber" [(ngModel)]="complaintNumber" placeholder="Şikayet numaranızı girin" required>
           </div>
-         <button class='btn-modalSubmit' type="submit">Track</button>
+         <button class='btn-modalSubmit' type="submit">Takip Et</button>
         </form>
       </div>
     
      <!-- Şikayet durumu sorgulandıktan sonra gösterilecek alan -->
-     <div *ngIf="isTracking">
-      <h3>Complaint Status</h3>
+     <div *ngIf="isTracking"> <!-- Değişken ismi isTracking kalacak -->
+      <h3>Şikayet Durumu</h3>
     
       <!-- Başarılı takip durumu -->
       <div *ngIf="complaintStatus && !complaintStatus.error">
-        <p><strong>Status:</strong> {{ complaintStatus.status }}</p>
-        <p><strong>Category:</strong> {{ complaintStatus.category }}</p>
-        <p><strong>Description:</strong> {{ complaintStatus.description }}</p>
-        <p><strong>Created:</strong> {{ complaintStatus.created_at }}</p>
-        <p><strong>Updated:</strong> {{ complaintStatus.updated_at }}</p>
-        <p><strong>Trackable:</strong> {{ complaintStatus.trackable }}</p>
+        <p><strong>Durum:</strong> {{ complaintStatus.status }}</p>
+        <p><strong>Kategori:</strong> {{ complaintStatus.category }}</p>
+        <p><strong>Açıklama:</strong> {{ complaintStatus.description }}</p>
+        <p><strong>Oluşturulma:</strong> {{ complaintStatus.created_at | date:'short' }}</p> <!-- date pipe'ı korundu -->
+        <p><strong>Güncellenme:</strong> {{ complaintStatus.updated_at | date:'short' }}</p> <!-- date pipe'ı korundu -->
+        <p><strong>Takip Edilebilir:</strong> {{ complaintStatus.trackable ? 'Evet' : 'Hayır' }}</p> <!-- Boolean gösterimi için basit bir iyileştirme -->
       </div>
     
       <!-- Hatalı takip durumu -->
@@ -98,7 +96,7 @@
         {{ complaintStatus.error }}
       </p>
     
-      <button (click)="resetModal()">Back</button>
+      <button (click)="resetModal()">Geri</button>
     </div>
     </div>
   </div>

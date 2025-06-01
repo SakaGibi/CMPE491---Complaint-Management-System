@@ -1,20 +1,18 @@
 <div class="management-panel-container">
   <!-- Header -->
   <div class="header-panel">
-    <div class="logo">
-      <img src="assets/images/bilgiUni.png"/>  </div>
     <div>
-      <button class="btn btn-header" (click)="goToMainMenu()">Main Menu</button>
-      <button class="btn btn-header" (click)="goToSupport()">Help & Support</button>
+      <button class="btn btn-header" (click)="goToMainMenu()">Ana Menü</button>
+      <button class="btn btn-header" (click)="goToSupport()">Yardım & Destek</button>
     </div>
   </div>
 
   <!-- User Transactions -->
   <div class="user-management">
-    <h2>User Transactions</h2>
+    <h2>Kullanıcı İşlemleri</h2>
 
     <div class="user-form">
-      <label for="user-name">Username:</label>
+      <label for="user-name">Kullanıcı Adı:</label>
       <input
         type="text"
         id="user-name"
@@ -23,7 +21,7 @@
         [(ngModel)]="username"
       />
 
-      <label for="user-password">Password:</label>
+      <label for="user-password">Şifre:</label>
       <input
         type="password"
         id="user-password"
@@ -32,7 +30,7 @@
         [(ngModel)]="password"
       />
 
-      <label for="user-email">Email:</label>
+      <label for="user-email">E-posta:</label>
       <input
         type="email"
         id="user-email"
@@ -41,7 +39,7 @@
         [(ngModel)]="email"
       />
 
-      <label for="isAdminCheck">Is Admin:</label>
+      <label for="isAdminCheck">Admin mi:</label>
       <div class="form-group checkbox-group">
         <input
           type="checkbox"
@@ -52,12 +50,12 @@
         />
       </div>
 
-      <button class="btn btn-add-user" (click)="addNewUser()">Add User</button>
+      <button class="btn btn-add-user" (click)="addNewUser()">Kullanıcı Ekle</button>
       <p *ngIf="addUserMessage" class="user-message">{{ addUserMessage }}</p>
     </div>
 
     <div class="user-list">
-      <h2>Current Users</h2>
+      <h2>Mevcut Kullanıcılar</h2>
       <ul *ngIf="userList.length > 0; else noUsers">
         <li
           *ngFor="let user of userList"
@@ -69,14 +67,14 @@
       </ul>
 
       <ng-template #noUsers>
-        <p>No users found.</p>
+        <p>Kullanıcı bulunamadı.</p>
       </ng-template>
     </div>
   </div>
 
   <!-- Öneriler -->
   <div class="suggestions-section">
-    <h2>Suggestions and Questions</h2>
+    <h2>Öneriler ve Sorular</h2>
 
     <ul class="suggestions-list" *ngIf="supportMessages.length > 0; else noSuggestions">
       <li
@@ -90,45 +88,45 @@
     </ul>
 
     <ng-template #noSuggestions>
-      <p>No suggestions or questions found.</p>
+      <p>Öneri veya soru bulunamadı.</p>
     </ng-template>
   </div>
 
   <!-- Kullanıcı Modalı -->
   <div class="user-modal-overlay" *ngIf="isUserModalOpen">
     <div class="user-modal">
-      <h3>User Details</h3>
+      <h3>Kullanıcı Detayları</h3>
       <p><strong>ID:</strong> {{ selectedUser.employee_id }}</p>
-      <p><strong>Username:</strong> {{ selectedUser.username }}</p>
-      <p><strong>Email:</strong> {{ selectedUser.email }}</p>
-      <p><strong>Role:</strong> {{ selectedUser.role }}</p>
-      <p><strong>Created:</strong> {{ selectedUser.created_at | date: 'short' }}</p>
+      <p><strong>Kullanıcı Adı:</strong> {{ selectedUser.username }}</p>
+      <p><strong>E-posta:</strong> {{ selectedUser.email }}</p>
+      <p><strong>Rol:</strong> {{ selectedUser.role }}</p>
+      <p><strong>Oluşturulma:</strong> {{ selectedUser.created_at | date: 'short' }}</p>
 
       <hr />
 
-      <label>Change Role:</label>
+      <label>Rolü Değiştir:</label>
       <select [(ngModel)]="selectedUser.role">
-        <option value="employee">Employee</option>
+        <option value="employee">Çalışan</option>
         <option value="admin">Admin</option>
       </select>
-      <button (click)="changeUserRole()">Change Role</button>
+      <button (click)="changeUserRole()">Rolü Değiştir</button>
 
-      <button class="btn-danger" (click)="deleteUser()">Delete User</button>
-      <button (click)="closeUserModal()">Close</button>
+      <button class="btn-danger" (click)="deleteUser()">Kullanıcıyı Sil</button>
+      <button (click)="closeUserModal()">Kapat</button>
     </div>
   </div>
 
   <!-- Support Modal -->
   <div class="user-modal-overlay" *ngIf="isSupportModalOpen">
     <div class="user-modal">
-      <h3>Support Request</h3>
-      <p><strong>Email:</strong> {{ selectedSupport?.email }}</p>
-      <p><strong>Message:</strong> {{ selectedSupport?.message }}</p>
-      <p><strong>Status:</strong> {{ selectedSupport?.status }}</p>
-      <p><strong>Created:</strong> {{ selectedSupport?.created_at | date:'short' }}</p>
+      <h3>Destek Talebi</h3>
+      <p><strong>E-posra:</strong> {{ selectedSupport?.email }}</p>
+      <p><strong>Mesaj:</strong> {{ selectedSupport?.message }}</p>
+      <p><strong>Durum:</strong> {{ selectedSupport?.status }}</p>
+      <p><strong>Oluşturulma:</strong> {{ selectedSupport?.created_at | date:'short' }}</p>
 
-      <button class="btn-danger" (click)="deleteSupportMessage()">Delete</button>
-      <button (click)="closeSupportModal()">Close</button>
+      <button class="btn-danger" (click)="deleteSupportMessage()">Sil</button>
+      <button (click)="closeSupportModal()">Kapat</button>
     </div>
   </div>
 </div>
