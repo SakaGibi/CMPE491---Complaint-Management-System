@@ -20,15 +20,15 @@
 
       <!-- FAQ Section -->
       <div class="faq-section">
-        <h2>Sıkça Sorulan Sorular</h2> <!-- Başlık eklendi -->
-        <ul *ngIf="faqs.length > 0; else loadingFaqs"> <!-- else bloğunun adı değiştirildi karışmaması için -->
+        <h2>Sıkça Sorulan Sorular</h2>
+        <ul *ngIf="faqs.length > 0; else loadingFaqs">
           <li *ngFor="let faq of faqs" class="faq-item">
             <p><strong>Soru:</strong> {{ faq.message }}</p>
             <p><strong>Cevap:</strong> {{ faq.response || 'Henüz cevaplanmadı.' }}</p>
           </li>
         </ul>
 
-        <ng-template #loadingFaqs> <!-- else bloğunun adı değiştirildi -->
+        <ng-template #loadingFaqs>
           <p>SSS verileri yükleniyor...</p>
         </ng-template>
       </div>

@@ -287,8 +287,8 @@
       <p><strong>ID:</strong> {{ selectedComplaint?.id }}</p>
       <p><strong>Durum:</strong> {{ selectedComplaint?.status }}</p>
       <p><strong>Açıklama:</strong> {{ selectedComplaint?.description }}</p>
-      <p><strong>Kategori:</strong> {{ selectedComplaint?.category }}</p>
-      <p><strong>Alt Kategori:</strong> {{ selectedComplaint?.sub_category }}</p>
+      <p><strong>1. Kategori:</strong> {{ selectedComplaint?.category }}</p>
+      <p><strong>2. Kategori:</strong> {{ selectedComplaint?.sub_category }}</p>
       <p><strong>E-posta:</strong> {{ selectedComplaint?.email || 'Yok' }}</p>
       <p><strong>Oluşturulma:</strong> {{ selectedComplaint?.created_at | date:'short' }}</p>
       <p><strong>Güncellenme:</strong> {{ selectedComplaint?.updated_at | date:'short' }}</p>
