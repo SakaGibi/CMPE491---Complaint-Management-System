@@ -9,73 +9,76 @@
 
   <!-- User Transactions -->
   <div class="user-management">
-    <h2>Kullanıcı İşlemleri</h2>
+    <div class="user-form-list-container">
+      <!-- Kullanıcı Formu -->
+      <div class="user-form">
+        <h2>Kullanıcı İşlemleri</h2>
 
-    <div class="user-form">
-      <label for="user-name">Kullanıcı Adı:</label>
-      <input
-        type="text"
-        id="user-name"
-        name="username"
-        placeholder="Enter a username"
-        [(ngModel)]="username"
-      />
-
-      <label for="user-password">Şifre:</label>
-      <input
-        type="password"
-        id="user-password"
-        name="password"
-        placeholder="Enter a password"
-        [(ngModel)]="password"
-      />
-
-      <label for="user-email">E-posta:</label>
-      <input
-        type="email"
-        id="user-email"
-        name="email"
-        placeholder="Enter an email"
-        [(ngModel)]="email"
-      />
-
-      <label for="isAdminCheck">Admin mi:</label>
-      <div class="form-group checkbox-group">
+        <label for="user-name">Kullanıcı Adı:</label>
         <input
-          type="checkbox"
-          id="isAdminCheck"
-          [(ngModel)]="isAdmin"
-          (change)="role = isAdmin ? 'admin' : 'employee'"
-          name="isAdmin"
+          type="text"
+          id="user-name"
+          name="username"
+          placeholder="Enter a username"
+          [(ngModel)]="username"
         />
+
+        <label for="user-password">Şifre:</label>
+        <input
+          type="password"
+          id="user-password"
+          name="password"
+          placeholder="Enter a password"
+          [(ngModel)]="password"
+        />
+
+        <label for="user-email">E-posta:</label>
+        <input
+          type="email"
+          id="user-email"
+          name="email"
+          placeholder="Enter an email"
+          [(ngModel)]="email"
+        />
+
+        <div class="form-group checkbox-group">
+          <label for="isAdminCheck">Admin mi:</label>
+          <input
+            type="checkbox"
+            id="isAdminCheck"
+            [(ngModel)]="isAdmin"
+            (change)="role = isAdmin ? 'admin' : 'employee'"
+            name="isAdmin"
+          />
+        </div>
+
+        <button class="btn btn-add-user" (click)="addNewUser()">Kullanıcı Ekle</button>
+        <p *ngIf="addUserMessage" class="user-message">{{ addUserMessage }}</p>
       </div>
 
-      <button class="btn btn-add-user" (click)="addNewUser()">Kullanıcı Ekle</button>
-      <p *ngIf="addUserMessage" class="user-message">{{ addUserMessage }}</p>
-    </div>
+      <!-- Mevcut Kullanıcılar -->
+      <div class="user-list">
+        <h2>Mevcut Kullanıcılar</h2>
+        <ul *ngIf="userList.length > 0; else noUsers">
+          <li
+            *ngFor="let user of userList"
+            (click)="openUserModal(user)"
+            class="clickable-user"
+          >
+            <strong>{{ user.username }}</strong> ({{ user.role }}) - {{ user.email }}
+          </li>
+        </ul>
 
-    <div class="user-list">
-      <h2>Mevcut Kullanıcılar</h2>
-      <ul *ngIf="userList.length > 0; else noUsers">
-        <li
-          *ngFor="let user of userList"
-          (click)="openUserModal(user)"
-          class="clickable-user"
-        >
-          <strong>{{ user.username }}</strong> ({{ user.role }}) - {{ user.email }}
-        </li>
-      </ul>
-
-      <ng-template #noUsers>
-        <p>Kullanıcı bulunamadı.</p>
-      </ng-template>
+        <ng-template #noUsers>
+          <p>Kullanıcı bulunamadı.</p>
+        </ng-template>
+      </div>
     </div>
   </div>
 
   <!-- Öneriler -->
   <div class="suggestions-section">
     <h2>Öneriler ve Sorular</h2>
-
     <ul class="suggestions-list" *ngIf="supportMessages.length > 0; else noSuggestions">
       <li
         *ngFor="let message of supportMessages"
@@ -86,7 +89,6 @@
         <small>{{ message.created_at | date:'short' }}</small>
       </li>
     </ul>
-
     <ng-template #noSuggestions>
       <p>Öneri veya soru bulunamadı.</p>
     </ng-template>
@@ -103,24 +105,22 @@
       <p><strong>Oluşturulma:</strong> {{ selectedUser.created_at | date: 'short' }}</p>
 
       <hr />
-
       <label>Rolü Değiştir:</label>
       <select [(ngModel)]="selectedUser.role">
         <option value="employee">Çalışan</option>
         <option value="admin">Admin</option>
       </select>
       <button (click)="changeUserRole()">Rolü Değiştir</button>
-
       <button class="btn-danger" (click)="deleteUser()">Kullanıcıyı Sil</button>
       <button (click)="closeUserModal()">Kapat</button>
     </div>
   </div>
 
-  <!-- Support Modal -->
+  <!-- Destek Modal -->
   <div class="user-modal-overlay" *ngIf="isSupportModalOpen">
     <div class="user-modal">
       <h3>Destek Talebi</h3>
-      <p><strong>E-posra:</strong> {{ selectedSupport?.email }}</p>
+      <p><strong>E-posta:</strong> {{ selectedSupport?.email }}</p>
       <p><strong>Mesaj:</strong> {{ selectedSupport?.message }}</p>
       <p><strong>Durum:</strong> {{ selectedSupport?.status }}</p>
       <p><strong>Oluşturulma:</strong> {{ selectedSupport?.created_at | date:'short' }}</p>
