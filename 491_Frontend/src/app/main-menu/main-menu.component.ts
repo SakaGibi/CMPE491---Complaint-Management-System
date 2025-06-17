@@ -115,8 +115,8 @@ export class MainMenuComponent {
           status: res.status,
           category: `${res.category} > ${res.sub_category}`,
           description: res.description,
-          created_at: new Date(res.created_at).toLocaleString(),
-          updated_at: new Date(res.updated_at).toLocaleString(),
+          created_at: res.created_at,
+          updated_at: res.updated_at,
           trackable: res.isTrackable ? 'Yes' : 'No'
         };
   
@@ -143,5 +143,17 @@ export class MainMenuComponent {
     this.isTracking = false;
   }
   
+  convertToISOFormat(dateStr: string | undefined | null): string | null {
+    if (!dateStr || typeof dateStr !== 'string') return null;
+
+    const parts = dateStr.split(' ');
+    if (parts.length !== 2) return null;
+
+    const [datePart, timePart] = parts;
+    const [day, month, year] = datePart.split('.');
+    if (!day || !month || !year || !timePart) return null;
+
+    return `${year}-${month}-${day}T${timePart}`;
+  }
 
 }
