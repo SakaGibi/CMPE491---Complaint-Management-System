@@ -30,7 +30,7 @@ def add_user(request):
     username = request.data.get('username')
     password = request.data.get('password')
     email = request.data.get('email')
-    role = request.data.get('role', 'employee')  # default: employee
+    role = request.data.get('role', 'employee')
 
     if not username or not password:
         return Response({"error": "Kullanıcı adı ve şifre zorunludur."}, status=400)
@@ -108,7 +108,6 @@ def forgot_password(request):
 
     try:
         user = Employee.objects.get(username=username)
-        # şifre sıfırlama maili place holder.
         return Response({
             "message": f"{user.email} adresine şifre sıfırlama bağlantısı gönderildi (simülasyon)."
         }, status=200)

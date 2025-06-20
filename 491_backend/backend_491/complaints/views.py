@@ -78,7 +78,7 @@ def classify_all(description):
                 print(f"predict_proba çağrılırken hata: {e}. decision_function denenecek.")
                 has_predict_proba = False
                 using_proba = False
-        
+
         if not has_predict_proba and has_decision_function:
             scores_or_probabilities = classifier.decision_function(transformed_text)[0]
             using_proba = False
@@ -92,14 +92,10 @@ def classify_all(description):
             if num_classes > 1 and len(sorted_indices) > 1:
                 best_score_index = sorted_indices[0]
                 second_best_index = sorted_indices[1]
-                
-                # En iyi tahminin `category` ile aynı olduğunu teyit et
-                # (predict() ve decision_function/predict_proba'nın en yüksek skoru aynı olmalı)
+
                 best_category_from_scores = all_class_names[best_score_index]
                 if best_category_from_scores != category:
                     print(f"Uyarı: predict() sonucu ({category}) ile en yüksek skorlu sınıf ({best_category_from_scores}) farklı")
-                    # Bu durumda predict()'in sonucunu ana kategori olarak kabul etmeye devam edebiliriz
-                    # veya skorlara göre olanı alabiliriz. Şimdilik predict()'i kullanacağız.
 
                 second_best_category_name = all_class_names[second_best_index]
 
@@ -107,20 +103,16 @@ def classify_all(description):
                     second_best_proba_value = scores_or_probabilities[second_best_index]
                     if second_best_category_name != category and second_best_proba_value >= proba_threshold:
                         sub_category = second_best_category_name
-                        # print(f"  Proba sub_cat: {sub_category} (P={second_best_proba_value:.2f})")
+
                 else:
                     best_score_value = scores_or_probabilities[best_score_index]
                     second_best_score_value = scores_or_probabilities[second_best_index]
-                    
+
                     score_difference = best_score_value - second_best_score_value
-                    
-                    # Eğer ikinci en iyi kategori ana kategoriden farklıysa VE
-                    # en iyi skor ile ikinci en iyi skor arasındaki fark, belirlenen eşikten küçükse
+
                     if second_best_category_name != category and score_difference < score_diff_threshold:
                         sub_category = second_best_category_name
-                        # print(f"  Score sub_cat: {sub_category} (Skor Farkı={score_difference:.2f} < {score_diff_threshold})")
-                        # print(f"    Best score ({category}): {best_score_value:.2f}, Second best ({second_best_category_name}): {second_best_score_value:.2f}")
-        
+
         return type_, category, sub_category, scores_or_probabilities
 
     except Exception as e:
@@ -141,7 +133,6 @@ def submit_suggestion_or_complaint(request):
     if is_trackable and not email:
         return Response({"error": "Takip için e‑posta gereklidir."}, status=status.HTTP_400_BAD_REQUEST)
 
-    # ML sınıflandırma
     type_, category, sub_category, raw_scores = classify_all(description)
 
     data = {
@@ -264,10 +255,9 @@ def delete_complaint(request, complaint_id):
         return Response({"error": "Şikayet veya öneri bulunamadı."}, status=status.HTTP_404_NOT_FOUND)
 
 
-# İHTİYAÇ HALİNDE GÜNCELLENİCEK
 @api_view(['GET'])
 def get_complaint_statistics(request):
-    range_param = request.GET.get('range')  # '7d', '1m', '3m', '6m'
+    range_param = request.GET.get('range')
 
     qs = SuggestionOrComplaint.objects.filter(type='complaint')
 
@@ -287,7 +277,6 @@ def get_complaint_statistics(request):
     return Response(stats, status=200)
 
 
-# İHTİYAÇ HALİNDE GÜNCELLENİCEK.
 @api_view(['GET'])
 def get_complaint_trends(request):
     category = request.GET.get('category')
@@ -406,13 +395,11 @@ def _call_groq_api(prompt):
         print(error_message)
         return None, error_message
     
-# LLM RAPOR OLUŞTURMA
 @api_view(['POST'])
 def generate_report(request):
     report_type = request.data.get('reportType', 'Genel Özet')
     filters = request.data.get('filters', {})
 
-    # Şikayetleri Filtrele
     try:
         base_qs = SuggestionOrComplaint.objects.filter(type='complaint')
         filtered_complaints_qs = _apply_llm_filters(base_qs, filters)
@@ -422,27 +409,23 @@ def generate_report(request):
         print(f"Filtreleme sırasında beklenmedik hata: {e}")
         return Response({"error": "Şikayetler filtrelenirken bir hata oluştu."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    # LLM'e gönderilecek şikayet sayısını sınırla (örn. son 10)
     try:
         max_complaints = int(filters.pop('maxComplaints', 10))
         if max_complaints < 1 or max_complaints > 1000:
-            max_complaints = 10  # sınır dışıysa default'a dön
+            max_complaints = 10
     except (ValueError, TypeError):
         max_complaints = 10
 
     complaints_for_llm = list(filtered_complaints_qs.order_by('-created_at')[:max_complaints])
 
-    # LLM için Prompt Oluştur
     prompt = _generate_llm_prompt(complaints_for_llm, filters, report_type)
 
-    # LLM API'sini Çağır
     report_content, error = _call_groq_api(prompt)
 
     if error:
         print(f"LLM Rapor Hatası: {error}")
         return Response({"error": "Yapay zeka raporu oluşturulurken bir hata oluştu."}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
 
-    # DB'ye kaydet
     try:
         ReportRecommendation.objects.create(
             report_type=report_type,
@@ -453,7 +436,6 @@ def generate_report(request):
     except Exception as e:
         print(f"Rapor veritabanına kaydedilemedi: {e}")
 
-    # Başarılı Yanıtı Döndür
     return Response({
         "message": f"'{report_type}' raporu başarıyla oluşturuldu.",
         "report_content": report_content,
