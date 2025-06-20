@@ -74,7 +74,7 @@
               <label for="trend-category">Kategori:</label>
               <select id="trend-category" [(ngModel)]="trendCategory" (change)="fetchComplaintTrends(trendRange, trendCategory)">
                 <option value="">Tümü</option>
-                <option *ngFor="let cat of ALL_CATEGORIES" [value]="cat">{{ cat }}</option> <!-- {{cat}} TypeScript'ten geldiği için olduğu gibi kalır -->
+                <option *ngFor="let cat of ALL_CATEGORIES" [value]="cat">{{ cat }}</option>
               </select>
             
               <canvas
@@ -222,7 +222,7 @@
         <ul *ngIf="reportList.length > 0; else noReports">
           <li *ngFor="let report of reportList">
             <strong>{{ report.report_type }}</strong> <br />
-            <small>{{ report.created_at | date:'short' }}</small> <!-- date pipe'ı korundu -->
+            <small>{{ report.created_at | date:'short' }}</small>
             <div class="report-actions">
               <button (click)="openReportDetail(report.id)">Görüntüle</button>
               <button (click)="deleteReport(report.id)">Sil</button>
@@ -269,7 +269,7 @@
 </div>
 
   <!-- Placeholder Modal for Chart/Graph -->
-  <div class="fullscreen-modal" style="display: none"> <!-- Bu modal normalde gizli, içeriği yine de çevrildi -->
+  <div class="fullscreen-modal" style="display: none">
     <div class="modal-content">
       <button class="close-btn">X</button>
       <div class="modal-detail">

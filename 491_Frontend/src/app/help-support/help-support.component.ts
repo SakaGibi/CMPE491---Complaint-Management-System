@@ -74,7 +74,6 @@ export class HelpSupportComponent implements OnInit {
         console.log('[submitSupport] API başarılı:', res);
         this.submitMessage = 'Mesajınız başarıyla gönderildi.';
   
-        // formu temizle
         this.email = '';
         this.userMessage = '';
       },

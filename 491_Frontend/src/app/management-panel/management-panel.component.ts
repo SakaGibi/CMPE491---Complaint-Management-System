@@ -322,7 +322,6 @@ export class ManagementPanelComponent implements OnInit {
           count: categoryMap[category]
         }));
   
-        // 🔽 Bar chart datasını burada güncelliyoruz
         this.barChartData = {
           labels: this.chartData.map(c => c.category),
           datasets: [
@@ -371,7 +370,7 @@ export class ManagementPanelComponent implements OnInit {
         console.log('[fetchComplaintTrends] Gelen yanıt:', res);
   
         this.lineChartData = {
-          labels: res.map((item: any) => item.day), // 🔥 ISO string kullan!
+          labels: res.map((item: any) => item.day),
           datasets: [
             {
               label: 'Daily Complaints',

@@ -67,7 +67,7 @@
      <h2>Şikayet Takibi</h2>
     
      <!-- Başlangıçta gösterilen form -->
-      <div *ngIf="!isTracking"> <!-- Değişken ismi isTracking kalacak, mantığı etkilememeli -->
+      <div *ngIf="!isTracking">
        <form (submit)="trackComplaint($event)">
           <div class="form-group">
            <label for="complaintNumber">Şikayet Numarası:</label>
@@ -78,7 +78,7 @@
       </div>
     
      <!-- Şikayet durumu sorgulandıktan sonra gösterilecek alan -->
-     <div *ngIf="isTracking"> <!-- Değişken ismi isTracking kalacak -->
+     <div *ngIf="isTracking">
       <h3>Şikayet Durumu</h3>
     
       <!-- Başarılı takip durumu -->
@@ -86,9 +86,9 @@
         <p><strong>Durum:</strong> {{ complaintStatus.status }}</p>
         <p><strong>Kategori:</strong> {{ complaintStatus.category }}</p>
         <p><strong>Açıklama:</strong> {{ complaintStatus.description }}</p>
-        <p><strong>Oluşturulma:</strong> {{ complaintStatus.created_at | date:'short' }}</p> <!-- date pipe'ı korundu -->
-        <p><strong>Güncellenme:</strong> {{ complaintStatus.updated_at | date:'short' }}</p> <!-- date pipe'ı korundu -->
-        <p><strong>Takip Edilebilir:</strong> {{ complaintStatus.trackable ? 'Evet' : 'Hayır' }}</p> <!-- Boolean gösterimi için basit bir iyileştirme -->
+        <p><strong>Oluşturulma:</strong> {{ complaintStatus.created_at | date:'short' }}</p>
+        <p><strong>Güncellenme:</strong> {{ complaintStatus.updated_at | date:'short' }}</p>
+        <p><strong>Takip Edilebilir:</strong> {{ complaintStatus.trackable ? 'Evet' : 'Hayır' }}</p>
       </div>
     
       <!-- Hatalı takip durumu -->

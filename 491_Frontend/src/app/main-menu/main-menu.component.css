@@ -232,7 +232,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Submit Button */
 .btn-modalSubmit {
   margin-top: 15px;
   padding: 10px 20px;
@@ -245,12 +244,10 @@ body {
   transition: background-color 0.3s;
 }
 
-/* Submit Button Hover */
 .btn-modalSubmit:hover {
   background-color: #0056b3;
 }
 
-/* Close Button */
 .btn-close {
   position: absolute;
   top: 10px;
@@ -263,7 +260,6 @@ body {
   border-radius: 8px;
 }
 
-/* Close Button Hover */
 .btn-close:hover {
   background-color: #c82333;
 }

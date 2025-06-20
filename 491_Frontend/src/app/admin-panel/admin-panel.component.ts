@@ -119,7 +119,7 @@ export class AdminPanelComponent {
       next: (res) => {
         console.log('[Kullanıcı silindi]', res);
         this.closeUserModal();
-        this.loadUsers(); // listeyi yenile
+        this.loadUsers(); 
       },
       error: (err) => {
         console.error('[Silme Hatası]', err);
@@ -139,7 +139,7 @@ export class AdminPanelComponent {
         console.log('[Rol değiştirildi]', res);
         alert(res.message || 'Rol başarıyla güncellendi.');
         this.closeUserModal();
-        this.loadUsers(); // listeyi yenile
+        this.loadUsers(); 
       },
       error: (err) => {
         console.error('[Rol Değiştirme Hatası]', err);
