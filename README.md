@@ -2,7 +2,7 @@
 
 ## en English
 
-### 🎯 Purpose
+###  Purpose
 
 This is an **AI-powered complaint management system** designed to help organizations manage user feedback more efficiently. It includes automatic classification of Turkish complaints, a user-friendly frontend, a management dashboard, and AI-generated summary reports.
 
@@ -12,7 +12,7 @@ We encourage others to **integrate this system into their own infrastructure** a
 
 ---
 
-### ⚙️ Overview of the Implementation
+###  Overview of the Implementation
 
 - **Frontend**: Angular-based, responsive UI with complaint submission, tracking, and management features.
 - **Backend**: Django REST framework; handles complaint storage, user login, classification, and report generation.
@@ -21,15 +21,15 @@ We encourage others to **integrate this system into their own infrastructure** a
 
 ---
 
-### 🛠️ Things to Improve / Known Limitations
+###  Things to Improve / Known Limitations
 
-- **🔐 Login System**: Currently, passwords are stored in **plain text** in the database. This should be replaced with proper password hashing (e.g., using bcrypt).
-- **🌐 Language Limitation**: The AI classifier only works for **Turkish** complaints. To support other languages, a multilingual or retrained model is required.
-- **🏢 Domain Limitation**: The AI model is specifically trained on **building management complaints**. If used in another sector, retraining with relevant data is recommended.
+- ** Login System**: Currently, passwords are stored in **plain text** in the database. This should be replaced with proper password hashing (e.g., using bcrypt).
+- ** Language Limitation**: The AI classifier only works for **Turkish** complaints. To support other languages, a multilingual or retrained model is required.
+- ** Domain Limitation**: The AI model is specifically trained on **building management complaints**. If used in another sector, retraining with relevant data is recommended.
 
 ---
 
-### 📖 License & Usage
+###  License & Usage
 
 This project is **fully open-source**. You are free to use, modify, deploy, or integrate it in any way you'd like.
 
@@ -39,7 +39,7 @@ This project is **fully open-source**. You are free to use, modify, deploy, or i
 
 ## tr Türkçe
 
-### 🎯 Projenin Amacı
+###  Projenin Amacı
 
 Bu proje, kurumların şikayet süreçlerini daha verimli yönetebilmeleri için geliştirilmiş **AI destekli bir şikayet yönetim sistemidir**. Kullanıcıların şikayetlerini kolayca iletebilmesi, yöneticilerin şikayetleri görüntüleyip raporlayabilmesi ve sınıflandırma modülüyle hızlı analiz yapılabilmesi amaçlanmıştır.
 
@@ -49,7 +49,7 @@ Projeyi kendi sistemlerinize **entegre ederek kullanabilir**, ihtiyacınıza gö
 
 ---
 
-### ⚙️ Kısaca Nasıl Yaptık?
+###  Kısaca Nasıl Yaptık?
 
 - **Frontend**: Angular ile geliştirildi. Şikayet gönderme, takip, yönetim paneli gibi modüller içeriyor.
 - **Backend**: Django REST Framework kullanılarak geliştirildi. Şikayetlerin kaydı, kullanıcı girişi, sınıflandırma ve raporlama burada işleniyor.
@@ -58,15 +58,15 @@ Projeyi kendi sistemlerinize **entegre ederek kullanabilir**, ihtiyacınıza gö
 
 ---
 
-### 🛠️ Düzeltilmesi Gerekenler / Bilinen Eksikler
+###  Düzeltilmesi Gerekenler / Bilinen Eksikler
 
-- **🔐 Giriş Sistemi**: Şifreler şu anda **şifrelenmemiş şekilde** (plaintext) veri tabanında tutuluyor. Güvenlik açısından mutlaka hashleme (örneğin bcrypt) yapılmalı.
-- **🌐 Dil Kısıtı**: Sınıflandırma modeli sadece **Türkçe şikayetler** için çalışıyor. İngilizce veya diğer diller için yeniden eğitim gerekir.
-- **🏢 Sektörel Kısıt**: Model sadece **bina yönetimi şikayetleri** için eğitilmiştir. Başka sektörlerde kullanmak istenirse, uygun verilerle tekrar eğitilmesi önerilir.
+- ** Giriş Sistemi**: Şifreler şu anda **şifrelenmemiş şekilde** (plaintext) veri tabanında tutuluyor. Güvenlik açısından mutlaka hashleme (örneğin bcrypt) yapılmalı.
+- ** Dil Kısıtı**: Sınıflandırma modeli sadece **Türkçe şikayetler** için çalışıyor. İngilizce veya diğer diller için yeniden eğitim gerekir.
+- ** Sektörel Kısıt**: Model sadece **bina yönetimi şikayetleri** için eğitilmiştir. Başka sektörlerde kullanmak istenirse, uygun verilerle tekrar eğitilmesi önerilir.
 
 ---
 
-### 📖 Lisans & Kullanım
+###  Lisans & Kullanım
 
 Bu proje **tamamen açık kaynaklıdır**. Dilediğiniz gibi kullanabilir, değiştirebilir veya entegre edebilirsiniz.
 
