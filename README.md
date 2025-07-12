@@ -29,9 +29,10 @@ We encourage others to **integrate this system into their own infrastructure** a
 
 ---
 
-### Contributors
-Mustafa Deniz Demirhas @whenthiswinter
-Emre Cem Kenarcı @SakaGibi
+###  Contributors
+
+- [@whenthiswinter](https://github.com/whenthiswinter) – Mustafa Deniz Demirhas  
+- [@SakaGibi](https://github.com/SakaGibi) – Emre Cem Kenarcı
 
 ---
 
@@ -72,9 +73,10 @@ Projeyi kendi sistemlerinize **entegre ederek kullanabilir**, ihtiyacınıza gö
 
 ---
 
-Katkıda Bulunanlar
-Mustafa Deniz Demirhas @whenthiswinter
-Emre Cem Kenarcı @SakaGibi
+###  Katkıda Bulunanlar
+
+- [@whenthiswinter](https://github.com/whenthiswinter) – Mustafa Deniz Demirhas  
+- [@SakaGibi](https://github.com/SakaGibi) – Emre Cem Kenarcı
 
 ---
 
