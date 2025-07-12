@@ -29,6 +29,12 @@ We encourage others to **integrate this system into their own infrastructure** a
 
 ---
 
+### Contributors
+Mustafa Deniz Demirhas @whenthiswinter
+Emre Cem Kenarcı @SakaGibi
+
+---
+
 ###  License & Usage
 
 This project is **fully open-source**. You are free to use, modify, deploy, or integrate it in any way you'd like.
@@ -63,6 +69,12 @@ Projeyi kendi sistemlerinize **entegre ederek kullanabilir**, ihtiyacınıza gö
 - ** Giriş Sistemi**: Şifreler şu anda **şifrelenmemiş şekilde** (plaintext) veri tabanında tutuluyor. Güvenlik açısından mutlaka hashleme (örneğin bcrypt) yapılmalı.
 - ** Dil Kısıtı**: Sınıflandırma modeli sadece **Türkçe şikayetler** için çalışıyor. İngilizce veya diğer diller için yeniden eğitim gerekir.
 - ** Sektörel Kısıt**: Model sadece **bina yönetimi şikayetleri** için eğitilmiştir. Başka sektörlerde kullanmak istenirse, uygun verilerle tekrar eğitilmesi önerilir.
+
+---
+
+Katkıda Bulunanlar
+Mustafa Deniz Demirhas @whenthiswinter
+Emre Cem Kenarcı @SakaGibi
 
 ---
 
