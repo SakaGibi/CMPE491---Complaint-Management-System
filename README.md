@@ -1,6 +1,6 @@
 # Complaint Management System / Şikayet Yönetim Sistemi
 
-## en English
+##  English
 
 ###  Purpose
 
@@ -37,7 +37,7 @@ This project is **fully open-source**. You are free to use, modify, deploy, or i
 
 ---
 
-## tr Türkçe
+##  Türkçe
 
 ###  Projenin Amacı
 
