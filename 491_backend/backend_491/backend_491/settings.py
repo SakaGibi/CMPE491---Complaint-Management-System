@@ -24,6 +24,7 @@ ML_MODELS_DIR = os.path.join(BASE_DIR, 'complaints', 'ml_models')
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-(27-l%zu^fqdc7hvagx$4y8068$k*y3adni$e1=8smc(2q$92$'
 GROQ_API_KEY = "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"
+# REVOKED
 LLM_MODEL_ID = "llama-3.1-8b-instant"
 SUB_CATEGORY_PROBA_THRESHOLD = 0.20
 SUB_CATEGORY_SCORE_DIFF_THRESHOLD = 0.35
